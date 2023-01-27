@@ -1,0 +1,158 @@
+epic = frontend
+epic = backend
+
+
+backend 
+	data modeling:
+		create schemas
+
+
+			Registration {
+				users [{
+					email 
+					token (for registration with 3 hour time limit)
+					expiredTime
+					password? 
+					profile: ObjID for user profile, with all the data
+				}]
+			}
+
+			generate a unique id for the link parameter
+
+
+
+			Profile
+				role: employee | hr
+				personal info {
+					address {}
+					name
+					phone number
+					email
+				}
+				car info {
+					make,
+					model,
+					color,
+				}
+				profilePic: link to s3
+				employmentInfo {
+					ssn,
+					DOB,
+					gender,
+					citizenship
+					visaInfo {
+						title,
+						startDate,
+						endDate,
+					}
+					driver's license: {
+						number, 
+						expiration, 
+						document: link to s3
+					}
+					references: [{
+						first, last, middle, phone, email, relationship
+					}]
+					emergencyContacts: [{
+						first, last, middle, phone, email, relationship
+					}]
+					documents: {
+						doc1: link to s3
+						doc2: link to s3
+					}
+					feedback: string (message)
+					applicationStatus: pending | approved | rejected
+				}
+
+
+			HR should be able to view, add, delete houses:
+
+			house (Employees cannot modify, but they can view)
+				Address {}
+				landlord {
+					legal full name
+					phone
+					email
+				}
+				Roommates [ObjIDS] (users)
+				numOfResidents (could just get the length of the roommates)
+				facilityInfo {
+					bedCount
+					mattressCount
+					tableCount
+					chairCount
+					facilityReports [ObjIDS] (facilityReports)
+
+				}
+
+
+			
+
+			facilityReport { (Users only see their own, HR can view all)
+				title
+				description
+				createdBy (ObjID user)
+				timestamp ??
+				status (Open | in progress | closed)
+
+				comment [{
+					description
+					created by (ObjID User or HR)
+					timestamp
+				}]
+
+			}
+
+	uploading documents to s3	
+		getting links for the documents
+
+
+
+Flow for employees:
+	Register (given a link via email by HR employee)
+	User clicks link => onboarding application page
+	Fill it out, personal info, citizenship, references, contacts
+	choose green card, citizen, or no
+		what is your work authorization? 
+		if OPT, require more documents
+			submit OPT?
+			wait for HR approval? 
+			(repeat for other documents)
+		Else, just require the one document
+			input box for visa title,
+			start date,
+			end date
+
+
+
+HR submits employee email
+ > sends token in email to the target email
+ > also registers a basic registrationUser with email/token
+
+ Now user clicks the link >
+		Fill out profile info, documents, etc
+		When  they save, it creates a profile (schema) and associates it with the registrationUser
+ 
+
+
+Registration / login
+
+
+user > profile
+
+profile CRUD (auth from employees)
+
+Housing CRUD (from HR only - auth with role check)
+
+facility reports CRUD
+	create from user/employee 
+	update from HR or employee (adding a comment to the report)
+	HR can also update status
+
+Documents > store on cloud (s3) through server
+
+documents CRUD with s3
+	add, update, read, (delete)
+	from client > server > s3 (gives us a link)
+
+	schema can hold the links so client can view the links
