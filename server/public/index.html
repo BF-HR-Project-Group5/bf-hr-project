@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			rel="stylesheet"
+			href="/styles/main.css"
+		/>
+		<!-- defer -->
+		<!-- <script defer src="https://kit.fontawesome.com/47862eacfc.js" crossorigin="anonymous"></script> -->
+		<script
+			defer
+			src="/scripts/main.js"
+		></script>
+
+		<title>2. Spotify Lite</title>
+	</head>
+	<!-- make basic interactive page -->
+	<!-- input fields/buttons for signup/login/logout/edit-profile -->
+	<!-- search bar (input field & button) to find songs -->
+	<!-- list of songs to display (a container) -->
+	<!-- buttons to like songs (on each song in the list?), follow artists, etc -->
+	<body>
+		<div id="left-column">
+			<nav id="nav">
+				<a
+					href="#"
+					id="nav-home"
+					class="active"
+				>
+					<svg
+						class="icon"
+						stroke="white"
+						style="enable-background: new 0 0 24 24"
+						version="1.1"
+						viewBox="0 0 24 24"
+						width="20px"
+						height="20px"
+						xml:space="preserve"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+					>
+						<path
+							d="M21.146,8.576l-7.55-6.135c-0.925-0.751-2.267-0.751-3.192,0c0,0,0,0,0,0L2.855,8.575C2.59,8.79,2.439,9.108,2.439,9.448  v11.543c0,0.62,0.505,1.13,1.125,1.13h5.062c0.62,0,1.125-0.51,1.125-1.13v-7.306h4.499v7.306c0,0.62,0.505,1.13,1.125,1.13h5.062  c0.62,0,1.125-0.51,1.125-1.13V9.448C21.561,9.108,21.41,8.79,21.146,8.576z M20.436,20.997h-5.062V13.68  c0-0.62-0.505-1.119-1.125-1.119H9.75c-0.62,0-1.125,0.499-1.125,1.119v7.317H3.564V9.448l7.55-6.134  c0.513-0.418,1.26-0.417,1.773,0l7.55,6.134V20.997z"
+						/>
+					</svg>
+					<div class="text">Home</div>
+				</a>
+				<a
+					href="#"
+					id="nav-search"
+				>
+					<svg
+						class="icon"
+						height="20px"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						viewBox="0 0 24 24"
+						width="20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<circle
+							cx="11"
+							cy="11"
+							r="8"
+						/>
+						<line
+							x1="21"
+							x2="16.65"
+							y1="21"
+							y2="16.65"
+						/>
+					</svg>
+					<div class="text">Search</div>
+				</a>
+				<a
+					href="#"
+					id="nav-likes"
+				>
+					<svg
+						class="icon"
+						height="20px"
+						fill="white"
+						version="1.1"
+						viewBox="0 0 512 512"
+						width="20px"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+					>
+						<path
+							d="M340.8,98.4c50.7,0,91.9,41.3,91.9,92.3c0,26.2-10.9,49.8-28.3,66.6L256,407.1L105,254.6c-15.8-16.6-25.6-39.1-25.6-63.9  c0-51,41.1-92.3,91.9-92.3c38.2,0,70.9,23.4,84.8,56.8C269.8,121.9,302.6,98.4,340.8,98.4 M340.8,83C307,83,276,98.8,256,124.8  c-20-26-51-41.8-84.8-41.8C112.1,83,64,131.3,64,190.7c0,27.9,10.6,54.4,29.9,74.6L245.1,418l10.9,11l10.9-11l148.3-149.8  c21-20.3,32.8-47.9,32.8-77.5C448,131.3,399.9,83,340.8,83L340.8,83z"
+						/>
+					</svg>
+					<div class="text">Liked Songs</div>
+				</a>
+				<hr />
+			</nav>
+
+			<div id="notifications-container">
+				<p
+					class="notification"
+					id="error"
+				>
+					<button>X</button>
+					<span></span>
+				</p>
+				<p
+					class="notification"
+					id="message"
+				>
+					<button>X</button>
+					<span></span>
+				</p>
+			</div>
+		</div>
+		<div id="content-wrapper">
+			<header id="header">
+				<div id="header-container">
+					<div id="header-back">Back</div>
+					<div id="header-profile">Log In</div>
+				</div>
+
+				<ul id="window-buttons">
+					<li>-</li>
+					<li>[ ]</li>
+					<li>X</li>
+				</ul>
+			</header>
+
+			<main id="content">
+				<section id="login-content">
+					<div
+						id="login-title"
+						class="title"
+					>
+						<h1>Log In</h1>
+						<p class="subtitle">Use your account email or account name</p>
+					</div>
+
+					<form id="login">
+						<!-- <h2>Log in</h2> -->
+						<!-- <p>Log in with username OR email</p> -->
+						<div class="username">
+							<label for="username">Username:</label>
+							<input
+								placeholder="Username"
+								name="username"
+								type="text"
+								minlength="4"
+								maxlength="16"
+								pattern="^\w{4,}$"
+								title="Please no symbols"
+							/>
+						</div>
+						<div class="email">
+							<label for="email">Email:</label>
+							<input
+								placeholder="Email"
+								name="email"
+								type="email"
+							/>
+						</div>
+						<div class="password">
+							<label for="password">Password:</label>
+							<input
+								placeholder="Password"
+								name="password"
+								type="password"
+								required
+								minlength="8"
+								maxlength="16"
+								pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+								title="Please use a symbol, capital + lowercase letter, a number, and at least 8 characters."
+							/>
+						</div>
+						<div
+							class="repeatPassword"
+							style="display: none"
+						>
+							<label for="repeatPassword">Repeat Password:</label>
+							<input
+								placeholder="Repeat Password"
+								name="repeatPassword"
+								type="password"
+								minlength="8"
+								maxlength="16"
+								pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+								title="Please use a symbol, capital + lowercase letter, a number, and at least 8 characters."
+							/>
+						</div>
+						<div class="buttons">
+							<button id="toggle">Trying to Register?</button>
+							<button
+								type="submit"
+								id="complete"
+							>
+								Log In
+							</button>
+						</div>
+					</form>
+				</section>
+				<!-- end #login-content -->
+
+				<section
+					id="home-content"
+					style="display: none"
+				>
+					<div
+						id="home-title"
+						class="title"
+					>
+						<h1>Spotify Lite</h1>
+						<p class="subtitle">
+							SPA-like app, lots of client-side JS to handle the rendering and communication
+						</p>
+					</div>
+					<div
+						id="home-songs"
+						class="songs-grid"
+					>
+						<!-- browse songs goes here, cards? grid row -->
+					</div>
+				</section>
+				<!-- end #home-content -->
+
+				<section
+					id="search-content"
+					style="display: none"
+				>
+					<div
+						id="search-title"
+						class="title"
+					>
+						<h1>Search</h1>
+						<p class="subtitle">
+							Search by artist name, song title, music genre, and song language
+						</p>
+					</div>
+					<form id="search">
+						<div class="name">
+							<label for="search">Name / Title</label>
+							<input
+								type="text"
+								name="search"
+								placeholder="Name or Title"
+								maxlength="18"
+								pattern="^[\w\s]{0,18}$"
+								title="Please no symbols"
+							/>
+						</div>
+						<div class="language">
+							<label for="language">Language</label>
+							<input
+								type="text"
+								name="language"
+								placeholder="En, es, zh,..."
+								maxlength="2"
+								pattern="^[a-zA-Z]{2}$"
+								title="Please use a two-letter code"
+							/>
+						</div>
+						<div class="genre">
+							<label for="genre">Genre</label>
+							<input
+								type="text"
+								name="genre"
+								placeholder="Rock, Country, EDM, ..."
+								maxlength="18"
+								pattern="^[\w\s]{0,18}$"
+								title="Please no symbols"
+							/>
+						</div>
+						<button>Search</button>
+					</form>
+					<div
+						id="search-songs"
+						class="songs-grid"
+					>
+						<!-- search results: display a grid I guess -->
+					</div>
+				</section>
+				<!-- end #home-content -->
+
+				<section
+					id="likes-content"
+					style="display: none"
+				>
+					<div
+						id="likes-title"
+						class="title"
+					>
+						<p>Playlist</p>
+						<h1>Liked Songs</h1>
+						<p class="subtitle">
+							<!-- username -->
+						</p>
+					</div>
+					<div
+						id="likes-songs"
+						class="songs-list"
+					>
+						<!-- a list display of the liked songs -->
+					</div>
+				</section>
+				<!-- end #likes-content -->
+
+				<section
+					id="profile-content"
+					style="display: none"
+				>
+					<div
+						id="profile-title"
+						class="title"
+					>
+						<div>Profile</div>
+						<h1>
+							<!-- username -->
+						</h1>
+						<p class="subtitle">
+							<a
+								href="#"
+								id="following"
+							>
+								<!-- {count} Following -->
+							</a>
+						</p>
+					</div>
+					<div id="profile-information">
+						<h2>Profile Information:</h2>
+						<ul id="userInfo">
+							<!-- shows profile information -->
+						</ul>
+					</div>
+					<div id="profile-buttons-container">
+						<button id="logout">Log Out</button>
+					</div>
+					<form id="edit-profile">
+						<div id="edit-title">
+							<h2>Edit Profile</h2>
+							<button id="edit-toggle">Edit Profile</button>
+						</div>
+						<div id="edit-profile-content">
+							<p>
+								Only fill the fields you want to change. If changing passwords, your old password is
+								required.
+							</p>
+
+							<div class="username">
+								<label for="username">Username:</label>
+								<input
+									placeholder="Username"
+									name="username"
+									type="text"
+									minlength="4"
+									maxlength="16"
+									pattern="^\w{4,}$"
+									title="Please no symbols"
+								/>
+							</div>
+							<div class="email">
+								<label for="email">Email:</label>
+								<input
+									placeholder="Email"
+									name="email"
+									type="email"
+								/>
+							</div>
+							<div class="oldPassword">
+								<label for="oldPassword">Old Password:</label>
+								<input
+									placeholder="Old Password"
+									name="oldPassword"
+									type="password"
+									minlength="8"
+									maxlength="16"
+									pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+									title="Please use a symbol, capital + lowercase letter, a number, and at least 8 characters."
+								/>
+							</div>
+							<div class="password">
+								<label for="password">New Password:</label>
+								<input
+									placeholder="Password"
+									name="password"
+									type="password"
+									minlength="8"
+									maxlength="16"
+									pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+									title="Please use a symbol, capital + lowercase letter, a number, and at least 8 characters."
+								/>
+							</div>
+							<div class="repeatPassword">
+								<label for="repeatPassword">Repeat New Password:</label>
+								<input
+									placeholder="Repeat Password"
+									name="repeatPassword"
+									type="password"
+									minlength="8"
+									maxlength="16"
+									pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+									title="Please use a symbol, capital + lowercase letter, a number, and at least 8 characters."
+								/>
+							</div>
+							<div class="buttons">
+								<button id="edit">Edit</button>
+							</div>
+						</div>
+					</form>
+				</section>
+				<!-- end #profile-content-->
+			</main>
+		</div>
+		<aside id="media-player">
+			<div>
+				( fake media player => => )
+			</div>
+			<img src="/images/spotify media player.png">
+			<img class="volume" src="/images/spotify media volume control.png">
+		</aside>
+	</body>
+</html>

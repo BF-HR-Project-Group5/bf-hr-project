@@ -1,0 +1,7 @@
+| % Stmts | % Branch | % Funcs | % Lines | 
+|   94.31 |    65.11 |   94.73 |   95.32 |
+
+Test Suites: 4 passed, 4 total
+Tests:       20 passed, 20 total
+Snapshots:   0 total
+Time:        23.45 s
