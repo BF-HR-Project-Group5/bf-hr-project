@@ -44,6 +44,7 @@ const getUsersByFullName = async (fullName) => {
 	return queryUsers(filter);
 };
 
+// needs more work
 const createUser = async (userBody) => {
 	const promises = [];
 	const messages = [];
@@ -69,6 +70,7 @@ const createUser = async (userBody) => {
 	return User.create(userBody);
 };
 
+// TODO: probably needs work
 // oldPassword must be included and be correct
 const updateUserById = async (userId, updateBody) => {
 	const user = await getUserById(userId);
@@ -108,6 +110,7 @@ const updateUserById = async (userId, updateBody) => {
 };
 
 // fields === string[] of fieldNames
+// can get user and populate 'Documents', etc.
 const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 	const user = await getUserById(userId);
 	if (!user) {
@@ -121,35 +124,62 @@ const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 	return user;
 };
 
-// assumes it's not already following
-const putUserFollowArtistId = async (user, artistId) => {
-	user.followedArtists.push(artistId);
-	await user.save();
-	return user;
-};
 
-// assumes following already
-const putUserUnfollowArtistId = async (user, artistId) => {
-	const indexOfArtist = user.followedArtists.indexOf(artistId);
-	user.followedArtists.splice(indexOfArtist, 1);
-	await user.save();
-	return user;
-};
+// put a document to the user
+const putDocumentIdToUserId = async (docId, userId) => {
+	// find user
+	const user = await getUserById(userId);
 
-// assumes it's not already liked
-const putUserLikeSongId = async (user, songId) => {
-	user.likedSongs.push(songId);
-	await user.save();
-	return user;
-};
+	// update user with the document, update status???
+	user.documents.push(docId);
 
-// assumes liked already
-const putUserUnlikeSongId = async (user, songId) => {
-	const indexOfSong = user.likedSongs.indexOf(songId);
-	user.likedSongs.splice(indexOfSong, 1);
 	await user.save();
 	return user;
-};
+}
+
+
+
+// put a house to the user? Or only done on creation?
+const putHouseIdToUserId = async (houseId, userId) => {
+	const user = await getUserById(userId);
+	user.house = houseId;
+	await user.save();
+	return user;
+}
+
+
+
+
+
+// // assumes it's not already following
+// const putUserFollowArtistId = async (user, artistId) => {
+// 	user.followedArtists.push(artistId);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes following already
+// const putUserUnfollowArtistId = async (user, artistId) => {
+// 	const indexOfArtist = user.followedArtists.indexOf(artistId);
+// 	user.followedArtists.splice(indexOfArtist, 1);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes it's not already liked
+// const putUserLikeSongId = async (user, songId) => {
+// 	user.likedSongs.push(songId);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes liked already
+// const putUserUnlikeSongId = async (user, songId) => {
+// 	const indexOfSong = user.likedSongs.indexOf(songId);
+// 	user.likedSongs.splice(indexOfSong, 1);
+// 	await user.save();
+// 	return user;
+// };
 
 module.exports = {
 	getUserByEmail,
@@ -158,8 +188,6 @@ module.exports = {
 	createUser,
 	updateUserById,
 	getUserByIdAndPopulateFields,
-	putUserFollowArtistId,
-	putUserUnfollowArtistId,
-	putUserLikeSongId,
-	putUserUnlikeSongId,
+	putDocumentIdToUserId,
+	putHouseIdToUserId,
 };
