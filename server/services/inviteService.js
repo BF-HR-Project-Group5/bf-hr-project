@@ -1,4 +1,3 @@
-const { User } = require('../models');
 const Invite = require('../models/invite.model');
 const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
@@ -25,7 +24,7 @@ const getInvitesByIsRegistered = (isRegistered = true) =>
 	Invite.find({ isRegistered: isRegistered });
 
 const getInvitesByFullName = async (fullName) => {
-	const names = fullName.split(' ');
+	const names = fullName.split(' '); // fullName = 'John Doe'
 
 	const filter = {
 		$or: [
@@ -41,6 +40,13 @@ const getInvitesByFullName = async (fullName) => {
 
 // when an HR person creates an invite, the email should be unique.
 // (Afterwards, when the user registers using the link, they need to use (this email or ) a unique email, and also a unique username)
+// const createFacilityReport = async (data) => {
+// 	// 
+// 	return FacilityReport.create(data);
+// }
+
+
+
 const createInvite = async (
 	data = {
 		email: '',

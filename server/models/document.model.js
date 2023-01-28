@@ -13,7 +13,7 @@ const DocumentSchema = new Schema(
 );
 
 
-// could add a 'isLinkTaken' function if we want to guarantee one link cannot be used for multiple documents
+// could add a 'isLinkTaken' function if we want to guarantee one link cannot be used for multiple documents ?
 
 const Document = mongoose.model('Document', DocumentSchema, 'Document');
 
