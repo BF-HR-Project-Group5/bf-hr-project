@@ -5,12 +5,27 @@ exports.users = [
 	'63bc96244c418933398d85ab',
 	'63bc96254c418933398d85b6',
 	'error',
-]
-
+];
 
 const config = {
 	tokenExpirationMinutes: 10,
-}
+	registration: {
+		expiresAfterMinutes: 180,
+	},
 
+	statusTypes: [
+		'OPT_RECEIPT',
+		'OPT_RECEIPT_APPROVED',
+		'OPT_EAD',
+		'OPT_EAD_APPROVED',
+		'I-983',
+		'I-983_APPROVED',
+		'I-20',
+		'I-20_APPROVED',
+	],
+
+	documentStatus: ['PENDING', 'APPROVED', 'REJECTED'],
+	documentTypes: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'], // ...all document types
+};
 
 exports.config = config;
