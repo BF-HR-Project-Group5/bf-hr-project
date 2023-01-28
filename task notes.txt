@@ -156,3 +156,5 @@ documents CRUD with s3
 	from client > server > s3 (gives us a link)
 
 	schema can hold the links so client can view the links
+
+
