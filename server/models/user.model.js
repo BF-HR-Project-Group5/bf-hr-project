@@ -12,6 +12,7 @@ const UserSchema = new Schema(
 		name: {
 			first: { type: String, required: true },
 			last: { type: String, required: true },
+			middle: { type: String},
 			preferred: { type: String },
 		},
 		username: { type: String, required: true },
@@ -40,7 +41,7 @@ const UserSchema = new Schema(
 
 		documents: [{type: refType, ref: 'Document'}],
 
-		applicationStatus: { type: String, enum: documentStatus, default: 'PENDING' },
+		applicationStatus: { type: String, enum: config.documentStatus, default: 'PENDING' },
 
 		invite: { type: refType, ref: 'Invite' },
 		house: { type: refType, ref: 'House' },

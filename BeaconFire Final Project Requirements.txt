@@ -1,0 +1,82 @@
+Final Project:
+* Users
+   * Provides unique username, password, unique email
+   * Receive registration token link via email, 3hr expiration
+   * Fills out onboarding application
+   * Upload profile picture
+   * Email - prefilled, based on registered email, not editable
+   * No, citizen / permanent resident
+   * Upload => 
+      * 1. H1-B, L2, F1(CPT/OPT), H4, Other
+         * If F1(CPT/OPT), upload OPT Receipt 
+         * If Other, input box to specify visa title.
+
+
+   * Yes Driver’s License
+      * Upload copy of driver’s license
+   * Summary of uploaded files or documents
+      * Profile picture, 
+      * DL, 
+      * work auth
+      
+* User must complete form at same time. Work will not be saved.
+* User completes the form. Form success.
+* Receives email notification of application status
+   * If rejected - receives feedback
+   * If approved - link to login page
+
+
+* If no F1 => 
+   * OnBoarding application
+   * Visa Status Management blank, 
+   * Personal Information
+   * Housing
+
+
+* If F1
+   * OnBoarding application
+   * Personal Information
+   * Housing
+
+
+* Visa Status: Management
+1. OPT Receipt - approved, message to upload OPT EAD
+   1. rejected - HR feedback 
+2. 2. OPT EAD
+   1. Pending- waiting HR to approve
+   2. Approved - Please download and fill out I-983 form
+   3. Rejected- HR Feedback
+3. 3. I-983
+4. 4. I-20
+
+
+* Housing - users view their assigned housing details. Read-only
+* Facility Reports- report facility issues
+   * CRUD
+
+
+* HR
+* Login to portal
+* View navigation page
+* Receives unique username, password, unique email
+* Sends registration token link via email
+* Search for employee’s profile / particular employee and view profile
+* View user’s onboarding applications and status (Never Submitted, Rejected, Pending,         
+* Visa Status Management page
+   * List of all employees - required OPT documents In Progress
+      * Info: name, work authorization, profile
+      * application status
+      * View Visa Status documents and status
+      * Next steps
+      * Action: if document is waiting approval, allow HR to preview uploaded document in the browser.
+      * Allow approve or reject document
+      * If reject, send feedback
+   * List of all employees - ALL Visa-status employees
+      * View and download each document.
+      * Search for employee’s first/last/ preferred name
+         * Display a matching list based on every key press.
+
+
+* Housing 
+* CRUD
+* Summary view of each house

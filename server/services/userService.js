@@ -1,9 +1,50 @@
-const {User} = require('../models');
+const User = require('../models/user.model');
+const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
 const getUserById = async (id) => User.findById(id);
 const getUserByEmail = async (email) => User.findOne({ email });
 const getUserByUsername = async (username) => User.findOne({ username });
+const getUsersByFirstName = async (firstName) =>
+	User.find({ name: { first: caseInsensitiveRegex(firstName) } });
+const getUsersByLastName = async (lastName) =>
+	User.find({ name: { last: caseInsensitiveRegex(lastName) } });
+const getUsersByMiddleName = async (middleName) =>
+	User.find({ name: { middle: caseInsensitiveRegex(middleName) } });
+const getUsersByPreferredName = async (preferredName) =>
+	User.find({ name: { preferred: caseInsensitiveRegex(preferredName) } });
 
+const queryUsers = async (filter) => User.find(filter);
+
+// searches first and last name? Assumes fullName === 'john doe'?
+// would be nice to filter first, middle, last, and preferred
+// so would need to build a big filter:
+/**	{
+ * $or: [
+ * {name: {first: {$or: [names[0], ..., names[n],]}}},
+ * {name: {last: {$or: [names[0], ..., names[n],]}}},
+ * {name: {middle: {$or: [names[0], ..., names[n],]}}},
+ * {name: {preferred: {$or: [names[0], ..., names[n],]}}},
+ * ]
+ * }
+ * 
+ * 
+ */
+const getUsersByFullName = async (fullName) => {
+	const names = fullName.split(' ');
+
+	const filter = {
+		'$or': [
+			{name: {first: {$or: names}}},
+			{name: {last: {$or: names}}},
+			{name: {middle: {$or: names}}},
+			{name: {preferred: {$or: names}}},
+		],
+	};
+
+	return queryUsers(filter);
+};
+
+// needs more work
 const createUser = async (userBody) => {
 	const promises = [];
 	const messages = [];
@@ -29,6 +70,7 @@ const createUser = async (userBody) => {
 	return User.create(userBody);
 };
 
+// TODO: probably needs work
 // oldPassword must be included and be correct
 const updateUserById = async (userId, updateBody) => {
 	const user = await getUserById(userId);
@@ -64,10 +106,11 @@ const updateUserById = async (userId, updateBody) => {
 
 	Object.assign(user, updateBody);
 	await user.save();
-	return user
+	return user;
 };
 
 // fields === string[] of fieldNames
+// can get user and populate 'Documents', etc.
 const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 	const user = await getUserById(userId);
 	if (!user) {
@@ -82,35 +125,62 @@ const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 };
 
 
-// assumes it's not already following
-const putUserFollowArtistId = async (user, artistId) => {
-	user.followedArtists.push(artistId);
-	await user.save();
-	return user;
-};
+// put a document to the user
+const putDocumentIdToUserId = async (docId, userId) => {
+	// find user
+	const user = await getUserById(userId);
 
-// assumes following already
-const putUserUnfollowArtistId = async (user, artistId) => {
-	const indexOfArtist = user.followedArtists.indexOf(artistId);
-	user.followedArtists.splice(indexOfArtist, 1);
-	await user.save();
-	return user;
-};
+	// update user with the document, update status???
+	user.documents.push(docId);
 
-// assumes it's not already liked
-const putUserLikeSongId = async (user, songId) => {
-	user.likedSongs.push(songId);
 	await user.save();
 	return user;
-};
+}
 
-// assumes liked already
-const putUserUnlikeSongId = async (user, songId) => {
-	const indexOfSong = user.likedSongs.indexOf(songId);
-	user.likedSongs.splice(indexOfSong, 1);
+
+
+// put a house to the user? 
+// Or only done on creation? <<<
+const putHouseIdToUserId = async (houseId, userId) => {
+	const user = await getUserById(userId);
+	user.house = houseId;
 	await user.save();
 	return user;
-};
+}
+
+
+
+
+
+// // assumes it's not already following
+// const putUserFollowArtistId = async (user, artistId) => {
+// 	user.followedArtists.push(artistId);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes following already
+// const putUserUnfollowArtistId = async (user, artistId) => {
+// 	const indexOfArtist = user.followedArtists.indexOf(artistId);
+// 	user.followedArtists.splice(indexOfArtist, 1);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes it's not already liked
+// const putUserLikeSongId = async (user, songId) => {
+// 	user.likedSongs.push(songId);
+// 	await user.save();
+// 	return user;
+// };
+
+// // assumes liked already
+// const putUserUnlikeSongId = async (user, songId) => {
+// 	const indexOfSong = user.likedSongs.indexOf(songId);
+// 	user.likedSongs.splice(indexOfSong, 1);
+// 	await user.save();
+// 	return user;
+// };
 
 module.exports = {
 	getUserByEmail,
@@ -119,8 +189,6 @@ module.exports = {
 	createUser,
 	updateUserById,
 	getUserByIdAndPopulateFields,
-	putUserFollowArtistId,
-	putUserUnfollowArtistId,
-	putUserLikeSongId,
-	putUserUnlikeSongId,
+	putDocumentIdToUserId,
+	putHouseIdToUserId,
 };
