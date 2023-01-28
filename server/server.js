@@ -22,6 +22,8 @@ app.use('/', routes.authRouter);
 app.use('/', routes.artistsRouter);
 app.use('/', routes.songsRouter);
 app.use('/', routes.userRouter);
+app.use('/', routes.testRouter);
+
 
 // 404 handler
 app.use((req, res, next) => {
