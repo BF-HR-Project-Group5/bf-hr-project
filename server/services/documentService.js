@@ -67,5 +67,9 @@ module.exports = {
 	getDocumentsByType,
 	createDocument,
 	updateDocumentById,
+	updateFieldById,
 	updateFeedbackById,
+	updateStatusById,
+	deleteDocumentById,
+	replaceDocumentById,
 };
