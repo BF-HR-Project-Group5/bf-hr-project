@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', (req, res, next) => {
-	console.log('new request:', req.url, req.body, req.method);
+	console.log('neww request:', req.url, req.body, req.method);
 	next();
 });
 // routes
@@ -22,7 +22,6 @@ app.use('/', routes.authRouter);
 app.use('/', routes.artistsRouter);
 app.use('/', routes.songsRouter);
 app.use('/', routes.userRouter);
-app.use('/', routes.testRouter);
 
 
 // 404 handler
