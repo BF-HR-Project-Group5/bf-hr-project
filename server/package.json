@@ -11,7 +11,7 @@
     "dev": "nodemon --ignore public/ index.js",
     "seed": "node config/seed.js",
     "jest-coverage": "jest --coverage --detectOpenHandles --testTimeout=20000",
-		"jest": "jest"
+    "jest": "jest"
   },
   "keywords": [],
   "author": "",
