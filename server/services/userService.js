@@ -1,8 +1,48 @@
-const {User} = require('../models');
+const User = require('../models/user.model');
+const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
 const getUserById = async (id) => User.findById(id);
 const getUserByEmail = async (email) => User.findOne({ email });
 const getUserByUsername = async (username) => User.findOne({ username });
+const getUsersByFirstName = async (firstName) =>
+	User.find({ name: { first: caseInsensitiveRegex(firstName) } });
+const getUsersByLastName = async (lastName) =>
+	User.find({ name: { last: caseInsensitiveRegex(lastName) } });
+const getUsersByMiddleName = async (middleName) =>
+	User.find({ name: { middle: caseInsensitiveRegex(middleName) } });
+const getUsersByPreferredName = async (preferredName) =>
+	User.find({ name: { preferred: caseInsensitiveRegex(preferredName) } });
+
+const queryUsers = async (filter) => User.find(filter);
+
+// searches first and last name? Assumes fullName === 'john doe'?
+// would be nice to filter first, middle, last, and preferred
+// so would need to build a big filter:
+/**	{
+ * $or: [
+ * {name: {first: {$or: [names[0], ..., names[n],]}}},
+ * {name: {last: {$or: [names[0], ..., names[n],]}}},
+ * {name: {middle: {$or: [names[0], ..., names[n],]}}},
+ * {name: {preferred: {$or: [names[0], ..., names[n],]}}},
+ * ]
+ * }
+ * 
+ * 
+ */
+const getUsersByFullName = async (fullName) => {
+	const names = fullName.split(' ');
+
+	const filter = {
+		'$or': [
+			{name: {first: {$or: names}}},
+			{name: {last: {$or: names}}},
+			{name: {middle: {$or: names}}},
+			{name: {preferred: {$or: names}}},
+		],
+	};
+
+	return queryUsers(filter);
+};
 
 const createUser = async (userBody) => {
 	const promises = [];
@@ -64,7 +104,7 @@ const updateUserById = async (userId, updateBody) => {
 
 	Object.assign(user, updateBody);
 	await user.save();
-	return user
+	return user;
 };
 
 // fields === string[] of fieldNames
@@ -80,7 +120,6 @@ const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 	await Promise.allSettled(promises);
 	return user;
 };
-
 
 // assumes it's not already following
 const putUserFollowArtistId = async (user, artistId) => {
