@@ -40,7 +40,7 @@ const UserSchema = new Schema(
 
 		documents: [{type: refType, ref: 'Document'}],
 
-		applicationStatus: { type: String, enum: documentStatus, default: 'PENDING' },
+		applicationStatus: { type: String, enum: config.documentStatus, default: 'PENDING' },
 
 		invite: { type: refType, ref: 'Invite' },
 		house: { type: refType, ref: 'House' },
