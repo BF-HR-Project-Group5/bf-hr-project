@@ -1,0 +1,49 @@
+.row{
+    padding: 5px;
+    margin: 0;
+    .col-6{
+        width: 50%;
+        margin-bottom: 20px;
+    }
+    
+    .col-3{
+        width: 25%;
+        margin-bottom: 20px;
+    }
+    .title{
+        display: flex;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        position: relative;
+    }
+    .document-container{
+        width:100%;
+        padding: 16px;
+        .makeStyles-root-1{
+            max-width: 100%;
+        }
+        .MuiTypography-body1{
+            font-size: 14px;
+        }
+    }
+    .form-control{
+        margin-bottom: 10px;
+    }
+    .btn-success{
+        margin-right: 5px;
+    }
+}
+
+.my-5{
+    display: block;
+    margin-bottom: 20px;
+    display: inline-block;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+
+
+
