@@ -1,27 +1,37 @@
 const userService = require('../services/userService');
 const authService = require('../services/authService');
+const inviteService = require('../services/inviteService');
 const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const { validatePasswordsMatch } = require('../utils/validate');
 
 
-// takes name, email...
-
-// const invite = catchAsync()
-// create a token for the unique invite
-// creates an Invite (using the form data inputted by the HR person)
-//			also sets the expiration  when it's created
-// send email with their special link from the token/invite
-// send a confirm response to the HR person so they know the action is completed
 
 
+// register:
+// they came from the special link and have now filled out the form and are submitting the register data.
+// Need to grab the 'token' header and make sure it's not expired
 const register = catchAsync(async (req, res) => {
 	console.log('"register" route', { body: req.body });
-	validatePasswordsMatch(req.body);
+
+	// check if req.headers.token exists and is valid or expired
+	const headers = req.headers;
+	const {invite} = await inviteService.getInviteFromHeaders(headers);
+	if (!invite) throw {status: 400, message: 'Token is required'};
+
+	// If invite is used to register, need to mark isRegistered = true;
+	// if token is expired
+	// throw token is expired
+
+	
 	const user = await userService.createUser(req.body);
 	const jwt = tokenService.createJwt(user);
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/; HttpOnly`);
+	// res.headers = {
+	// 	"auth": jwt
+	// }
+	// should change to header 
 	return res.status(201).send({ user, jwt }); // send jwt so client can save it in redux
 });
 

@@ -14,6 +14,7 @@ exports.createJwt = (data) => {
 		_id: data._id,
 		username: data.username,
 		email: data.email,
+		role: data.role,
 		iat: Date.now(),
 		exp: Date.now() + config.tokenExpirationMinutes * 60 * 1000,
 	};

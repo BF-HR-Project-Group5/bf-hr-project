@@ -1,8 +1,8 @@
 
 const allRoles = {
-	user: [],
+	user: [], // not really needed?
 	employee: [],
-	admin: [], // 
+	hr: [], //  array of 'roleRights'? if we need them
 };
 
 const roles = Object.keys(allRoles); // names of roles
