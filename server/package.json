@@ -29,5 +29,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "serve-static": "^1.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
