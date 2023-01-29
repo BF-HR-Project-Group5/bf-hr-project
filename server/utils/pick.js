@@ -1,9 +1,9 @@
 // type === title || name (for song || artist)
 const pick = (
 	object,
-	 keys,
+	keys,
 	//  searchType = 'search'
-	 ) => {
+) => {
 	return keys.reduce((obj, key) => {
 		if (object && Object.prototype.hasOwnProperty.call(object, key)) {
 			// obj[(key === 'search') ? searchType : key] = object[key];

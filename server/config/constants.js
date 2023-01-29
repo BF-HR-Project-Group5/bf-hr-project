@@ -28,4 +28,4 @@ const config = {
 	documentTypes: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'], // ...all document types
 };
 
-exports.config = config;
+exports.config = { config };
