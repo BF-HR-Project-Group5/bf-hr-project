@@ -4,6 +4,7 @@ const refType = Schema.Types.ObjectId;
 const House = require('./house.model');
 const bcrypt = require('../utils/bcrypt');
 const { config } = require('../config/constants');
+const { roles } = require( '../config/roles' );
 
 
 // When created, token will automatically create the expiresAt date
@@ -37,7 +38,11 @@ const UserSchema = new Schema(
 			expiration: {type: Date},
 			link: {type: refType, ref: 'Document'},
 		},
-		phone: { type: Number, required: true },
+		phone: {
+			mobile: { type: Number, required: true },
+			work: { type: Number },
+		},
+		role: {type: String, enum: roles, default: 'user', required: true},
 
 		documents: [{type: refType, ref: 'Document'}],
 
@@ -88,6 +93,10 @@ UserSchema.methods.isPasswordMatch = async function (password) {
 		return Promise.reject(error);
 	}
 };
+
+UserSchema.methods.isHr = async function() {
+	return this.role === 'hr'
+}
 
 // used on the schema i.e. User.isEmailTaken()
 UserSchema.statics.isEmailTaken = async function (email, excludeUserId) {
