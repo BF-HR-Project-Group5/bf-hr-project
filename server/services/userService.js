@@ -57,8 +57,7 @@ const createUser = async (userBody) => {
 	return User.create(userBody);
 };
 
-// TODO: probably needs work
-// oldPassword must be included and be correct
+// Looks like email is editable so need to check it here, to make sure they're not taken
 const updateUserById = async (userId, updateBody) => {
 	const user = await getUserById(userId);
 	if (!user) {
@@ -66,19 +65,12 @@ const updateUserById = async (userId, updateBody) => {
 	}
 
 	// use array of promises so they can run concurrently
+	// (in case there are multiple)
 	const promises = [];
 	const messages = [];
-	if (updateBody.password) {
-		promises.push(user.isPasswordMatch(updateBody.oldPassword));
-		messages.push({ statusCode: 400, message: 'updateUserById: Old password was not correct' });
-	}
 	if (updateBody.email) {
 		promises.push(User.isEmailTaken(updateBody.email));
 		messages.push({ statusCode: 400, message: 'updateUserById: Email already taken' });
-	}
-	if (updateBody.username) {
-		promises.push(User.isUsernameTaken(updateBody.username));
-		messages.push({ statusCode: 400, message: 'updateUserById: Username already taken' });
 	}
 
 	const results = await Promise.allSettled(promises);
@@ -173,6 +165,11 @@ module.exports = {
 	getUserByEmail,
 	getUserById,
 	getUserByUsername,
+	getUsersByFirstName,
+	getUsersByLastName,
+	getUsersByMiddleName,
+	getUsersByFullName,
+	getUsersByPreferredName,
 	createUser,
 	updateUserById,
 	getUserByIdAndPopulateFields,
