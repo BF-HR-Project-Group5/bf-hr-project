@@ -20,12 +20,18 @@ const register = catchAsync(async (req, res) => {
 	if (!invite) throw {status: 400, message: 'Token is required'};
 
 	// If invite is used to register, need to mark isRegistered = true;
+	// if token is expired
+	// throw token is expired
 
 	
 	const user = await userService.createUser(req.body);
 	const jwt = tokenService.createJwt(user);
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/; HttpOnly`);
+	// res.headers = {
+	// 	"auth": jwt
+	// }
+	// should change to header 
 	return res.status(201).send({ user, jwt }); // send jwt so client can save it in redux
 });
 
