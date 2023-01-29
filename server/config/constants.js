@@ -26,6 +26,8 @@ const config = {
 
 	documentStatus: ['PENDING', 'APPROVED', 'REJECTED'],
 	documentTypes: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'], // ...all document types
+
+	frontendBaseUrl: `http://localhost:3001`, // for the react origin/port
 };
 
 exports.config = config;
