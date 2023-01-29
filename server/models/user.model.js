@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const refType = Schema.Types.ObjectId;
-const House = require('./house.model');
+// const House = require('./house.model');
 const bcrypt = require('../utils/bcrypt');
 const { config } = require('../config/constants');
 const { roles } = require( '../config/roles' );
@@ -28,10 +28,10 @@ const UserSchema = new Schema(
 			zipcode: { type: String, required: true },
 		},
 		workAuth: {
-			title: { type: String, required: true },
-			startDate: { type: Number, required: true },
-			endDate: { type: Number, required: true },
-			daysRemaining: { type: Number, required: true }, // could also use -1 for infinite if needed
+			title: { type: String},
+			startDate: { type: Number},
+			endDate: { type: Number},
+			daysRemaining: { type: Number}, // could also use -1 for infinite if needed
 		},
 		license: {
 			number: {type: String},
