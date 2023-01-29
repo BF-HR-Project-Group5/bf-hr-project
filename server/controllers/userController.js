@@ -23,15 +23,10 @@ const putEditInfo = catchAsync(async (req, res) => {
 	console.log('put edit user/info controller:', { reqUser: req.user, body: req.body });
 	const userId = req.user._id;
 
-	// password && repeatPassword
-	// validatePasswordsMatch(req.body);
-	// requires oldPassword
-	// isOldPasswordExists(req.body);
-
 	// remove nulls/empties, remove repeatPassword
 	const data = pruneDataForPutInfo(req.body);
 	const user = await userService.updateUserById(userId, data);
-	const jwt = tokenService.createJwt(user);
+	const jwt = tokenService.createJwt(user); // create a new JWT in case some of the data in the JWT changed
 
 	console.log('new JWT:', jwt);
 
@@ -40,6 +35,8 @@ const putEditInfo = catchAsync(async (req, res) => {
 
 	res.status(202).json({ message: `Success saving user!`, user });
 });
+
+// const putDocumentToUserId
 
 
 module.exports = {
