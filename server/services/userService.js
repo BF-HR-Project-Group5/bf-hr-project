@@ -29,6 +29,7 @@ const queryUsers = async (filter) => User.find(filter);
  * 
  * 
  */
+// for querying users by name
 const getUsersByFullName = async (fullName) => {
 	const names = fullName.split(' ');
 
@@ -45,28 +46,14 @@ const getUsersByFullName = async (fullName) => {
 };
 
 // needs more work
+// This runs as when the user accepts the invite from the email and is starting to register their new account
+// Validation of the userBody already happens before this, so what do we need to check in here?
+// we'll build off the invite so we already know the email is not taken, assuming we use the invite email
 const createUser = async (userBody) => {
-	const promises = [];
-	const messages = [];
-	if (userBody.email) {
-		promises.push(User.isEmailTaken(userBody.email));
-		messages.push({ statusCode: 409, message: 'createUser: Email already taken' });
+	// only one thing to check, so can just check it and throw error
+	if (userBody.username && await User.isUsernameTaken(userBody.username)) {
+		throw { statusCode: 409, message: 'createUser: Username already taken' };
 	}
-	if (userBody.username) {
-		promises.push(User.isUsernameTaken(userBody.username));
-		messages.push({ statusCode: 409, message: 'createUser: Username already taken' });
-	}
-
-	const results = await Promise.all(promises);
-	console.log({ results });
-
-	results.forEach((isTaken, index) => {
-		if (isTaken === true) {
-			console.log('createUser: promise failed:', messages[index]);
-			throw messages[index];
-		}
-	});
-
 	return User.create(userBody);
 };
 
