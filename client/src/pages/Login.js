@@ -92,16 +92,20 @@ const schema = yup.object({
 const LoginForm = (props) => {
   const [formData, setFormData] = useState(null);
   const [isCheck, setIsCheck] = useState(false);
-
-  console.log('props',props)
+  const { submitLogin } = props;
 
   useEffect(() => {
     async function signIn() {
       if (formData) {
-        //login API called
         try {
+          //login API called
           const response = await submitLogin(formData);
-          props.history.push({pathname: '/'})
+          // if application is APPROVED, Redirect to "personal info page", else Onboarding Application page
+          if(response.auth.user.applicationStatus == 'APPROVED'){
+            props.history.push({pathname: '/PersonalInfor'})
+          }else{
+            props.history.push({pathname: '/OnboardingApp'})
+          }
         } catch (err) {
           console.log(err);
         }

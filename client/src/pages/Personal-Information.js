@@ -683,7 +683,12 @@ const PersonalInformation = (props) => {
 }
 
 // export default PersonalInformation;
+const mapStateToProps = ({ auth }) => ({
+    auth
+});
+
+
 export default connect(
-null,
-{ submitLogin }
+    mapStateToProps,
+    { submitLogin }
 )(PersonalInformation);
