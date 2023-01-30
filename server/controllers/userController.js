@@ -31,7 +31,7 @@ const putEditInfo = catchAsync(async (req, res) => {
 	console.log('new JWT:', jwt);
 
 	// res.set('Set-Cookie', 'jwt=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT');
-	res.set('Set-Cookie', `jwt=${jwt}; path=/; HttpOnly`);
+	res.set('Set-Cookie', `jwt=${jwt}; path=/;`);
 
 	res.status(202).json({ message: `Success saving user!`, user });
 });

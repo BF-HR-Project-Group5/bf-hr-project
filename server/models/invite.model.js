@@ -20,7 +20,7 @@ const InviteSchema = new Schema(
 
 		expiresAt: {
 			type: Number, // Date.now() returns number of ms since jan 1 1970
-			default: Date.now() + config.registration.expiresAfterMinutes * 1000 * 60, // convert minutes to ms
+			default: Date.now() + config.invite.expiresAfterMinutes * 1000 * 60, // convert minutes to ms
 		},
 	},
 

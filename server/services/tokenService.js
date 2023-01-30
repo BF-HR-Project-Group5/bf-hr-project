@@ -9,12 +9,12 @@ exports.verifySessionCookie = (cookies) => {
 	return {user};
 };
 
-exports.createJwt = (data) => {
+exports.createJwt = (user) => {
 	const payload = {
-		_id: data._id,
-		username: data.username,
-		email: data.email,
-		role: data.role,
+		_id: user._id,
+		username: user.username,
+		email: user.email,
+		role: user.role,
 		iat: Date.now(),
 		exp: Date.now() + config.tokenExpirationMinutes * 60 * 1000,
 	};
