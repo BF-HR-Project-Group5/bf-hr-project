@@ -30,11 +30,19 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 	// create invite (check for unique email, create random token, create invite)
 	const invite = await inviteService.createInvite(inviteData);
 
+	const data = {
+		link: invite.link,
+		name: {
+			first: req.body.firstName,
+			last: req.body.lastName,
+		},
+		email: req.body.email
+	}
 
 	// send the email to the req.body.email
-	// emailService.sendEmail()
+	const response = await emailService.sendEmail(data)
 
-	return res.status(201).send({ invite });
+	return res.status(201).send({ invite, response });
 });
 
 
