@@ -28,7 +28,7 @@ app.use('/', routes.authRouter);
 app.use('/', routes.houseRouter);
 app.use('/', routes.inviteRouter);
 // app.use('/', routes.userRouter);
-// app.use('/', routes.facilityRouter);
+app.use('/', routes.facilityRouter);
 // app.use('/', routes.documentRouter);
 
 
