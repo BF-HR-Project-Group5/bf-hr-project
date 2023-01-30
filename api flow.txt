@@ -102,7 +102,7 @@ Hiring Management Page:
 (registration tokens)
 => /invites/all (GET)
 	(get all invites)
-=> /invites/send (POST) 
+=> /invites/{user._id}/send (POST) 
 	(send an invite with the data)
 	({email, firstName, lastName, middleName?, preferredName?})
 

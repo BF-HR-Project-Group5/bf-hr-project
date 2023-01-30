@@ -8,5 +8,11 @@ router.post(
 	controllers.inviteNewEmployee
 );
 
+// router.post(
+	// '/sendNotification/:user',
+// 	// auth, // require user
+// 	// authHr, // require user.role === 'hr'
+// 	controllers.sendNot
+// );
 
 module.exports = router;

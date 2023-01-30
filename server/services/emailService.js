@@ -42,6 +42,7 @@ const sendReminder = async (data) => {
 	return data;
 }
 
+
 module.exports = {
 	sendReminder,
 	sendInvite

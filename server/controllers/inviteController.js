@@ -46,4 +46,13 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 });
 
 
+
+//
+// 
+const sendNotification = catchAsync(async (req, res) => {
+
+})
+
+
+
 module.exports = { inviteNewEmployee };
