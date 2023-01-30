@@ -20,12 +20,12 @@ const HouseSchema = new Schema({
     numResidents: { type: Number }, // array of roommates
     roommates: [{ type: refType, ref: "User" }],
     houseInfo: {
-        bedsCount: { type: Number, required: true },
+        bedCount: { type: Number, required: true },
         mattressCount: { type: Number, required: true },
         tableCount: { type: Number, required: true },
         chairCount: { type: Number, required: true },
     },
-    facilityReports: { type: refType, ref: 'Facility' }
+    facilityReports: [{ type: refType, ref: 'Facility' }]
 }, { timestamp: true });
 
 /**

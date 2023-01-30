@@ -1,9 +1,15 @@
 const router = require('express').Router();
 const controllers = require('../controllers/houseController');
 const auth = require('../middlewares/auth');
+const validate = require('../middlewares/validate');
 
-router.post('/house/createHouse', auth, controllers.createHouse);
-router.get('/house/allHouses', auth, controllers.getAllHouses);
-router.get('/house/getHouse', auth, controllers.getHouse);
-router.get('/house/updateHouse', auth, controllers.updateHouse);
-router.get('/house/deleteHouse', auth, controllers.deleteHouse);
+console.log("house router")
+
+// router.get('/house', controllers.index);
+router.post('/house/createHouse', controllers.createHouse);
+router.get('/house/allHouses', controllers.getAllHouses);
+router.get('/house/:id', controllers.getHouse);
+router.put('/house/:id',controllers.updateHouse);
+router.delete('/house/:id',controllers.deleteHouse);
+
+module.exports = router;
