@@ -78,24 +78,25 @@ const getInviteFromHeaders = async (headers) => {
 	if (!headers || !headers?.token) return {};
 
 	const token = headers.token;
-	return {invite: getInviteByToken(token) }; // look up invite
+	const invite = await  getInviteByToken(token)
+	return {invite}; // look up invite
 }
 
-// returns object with token, or empty object
-const getValidInviteFromHeaders = async (headers) => {
-	// if no headers, return empty
-	if (!headers || !headers?.token) return {};
+// // returns object with token, or empty object
+// const getValidInviteFromHeaders = async (headers) => {
+// 	// if no headers, return empty
+// 	if (!headers || !headers?.token) return {};
 
-	const token = headers.token;
-	const invite = await getInviteByToken(token); // look up invite
+// 	const token = headers.token;
+// 	const invite = await getInviteByToken(token); // look up invite
 
-	// if expired, return empty object
-	if (await invite.isTokenExpired()) {
-		return {};
-	}
-	// if not expired, return invite inside object
-	return {invite}
-}
+// 	// if expired, return empty object
+// 	if (await invite.isTokenExpired()) {
+// 		return {};
+// 	}
+// 	// if not expired, return invite inside object
+// 	return {invite}
+// }
 
 
 module.exports = {
@@ -114,6 +115,6 @@ module.exports = {
 	createInvite,
 	putIsRegisteredToInviteId,
 	isExpiredByToken,
-	getValidInviteFromHeaders,
+	// getValidInviteFromHeaders,
 getInviteFromHeaders,
 };

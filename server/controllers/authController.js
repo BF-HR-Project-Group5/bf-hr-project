@@ -27,7 +27,7 @@ const register = catchAsync(async (req, res) => {
 	const user = await userService.createUser(req.body);
 	const jwt = tokenService.createJwt(user);
 
-	res.set('Set-Cookie', `jwt=${jwt}; Path=/; HttpOnly`);
+	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`);
 	// res.headers = {
 	// 	"auth": jwt
 	// }
@@ -46,7 +46,7 @@ const login = catchAsync(async (req, res) => {
 	// user has role: hr | employee
 	console.log('login:', { user });
 
-	res.set('Set-Cookie', `jwt=${token}; Path=/; HttpOnly`);
+	res.set('Set-Cookie', `jwt=${token}; Path=/;`);
 	return res.status(200).send({ user });
 });
 
