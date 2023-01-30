@@ -2,6 +2,8 @@ const houseService = require('../services/houseService')
 const catchAsync = require( '../utils/catchAsync' );
 // const pick = require('../utils/pick' );
 
+// console.log('house controller')
+
 const index = (req, res) => {
     console.log('res', res)
     res.json({
@@ -12,8 +14,8 @@ const index = (req, res) => {
 // CREATE house
 const createHouse = catchAsync(async (req, res) => {
     console.log('create house controller:', { reqUser: req.user }, { reqHouse: req.body })
-    const houseBody = await houseService.create(req.body);
-    res.status(200).json({house})
+    const houseBody = await houseService.createHouse(req.body);
+    res.status(200).json({houseBody})
 })
 
 // GET ALL houses - view existing houses
@@ -41,6 +43,7 @@ const updateHouse = catchAsync(async (req, res) => {
     console.log('update house controller:', { reqUser: req.user }, { reqHouse: req.params });
     const houseId = req.params.id;
     const houseBody = req.body;
+    console.log('houseBody', houseBody);
     const house = await houseService.updateHouse(houseId, houseBody);
     res.status(200).json({house});
 })
@@ -50,8 +53,9 @@ const deleteHouse = catchAsync(async (req, res) => {
     console.log('delete house controller:', { reqUser: req.user }, { reqHouse: req.params.id });
     const houseId = req.params.id;
     const house = await houseService.deleteHouseById(houseId);
-    res.status(httpStatus.NO_CONTENT).send();
+    res.status(200).json({ house });
 })
+
 
 module.exports = {
     index,

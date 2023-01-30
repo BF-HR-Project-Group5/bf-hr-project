@@ -1,0 +1,83 @@
+HOUSE1:
+{
+    "houseBody": {
+        "address": {
+            "line1": "123 Main St.",
+            "line2": "",
+            "city": "Seattle",
+            "state": "Washington",
+            "zipcode": "92584"
+        },
+        "landlord": {
+            "legalFullName": "John Doe",
+            "phone": 8888888888,
+            "email": "test@email.com"
+        },
+        "roommates": [],
+        "houseInfo": {
+            "bedCount": 10,
+            "mattressCount": 10,
+            "tableCount": 10,
+            "chairCount": 10
+        },
+        "facilityReports": [],
+        "_id": "63d72146a281d7d4ace55eaf",
+        "__v": 0
+    }
+}
+
+HOUSE2:
+
+    "houseBody": {
+        "address": {
+            "line1": "123 abc St.",
+            "line2": "Apt 3",
+            "city": "Tacoma",
+            "state": "Washington",
+            "zipcode": "11111"
+        },
+        "landlord": {
+            "legalFullName": "Jack Johnson",
+            "phone": 8888888888,
+            "email": "test@email.com"
+        },
+        "roommates": [],
+        "houseInfo": {
+            "bedCount": 6,
+            "mattressCount": 6,
+            "tableCount": 6,
+            "chairCount": 6
+        },
+        "facilityReports": [],
+        "_id": "63d722c0a281d7d4ace55ebc",
+        "__v": 0
+    }
+}
+
+HOUSE3:
+{
+    "house": {
+        "address": {
+            "line1": "456 Abc St.",
+            "line2": "Apt 432",
+            "city": "Seattle",
+            "state": "Washington",
+            "zipcode": "92584"
+        },
+        "landlord": {
+            "legalFullName": "John Doe",
+            "phone": 8888888888,
+            "email": "test@email.com"
+        },
+        "houseInfo": {
+            "bedCount": 10,
+            "mattressCount": 10,
+            "tableCount": 10,
+            "chairCount": 10
+        },
+        "_id": "63d72115659c28204686525f",
+        "roommates": [],
+        "facilityReports": [],
+        "__v": 0
+    }
+}

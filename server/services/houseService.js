@@ -1,5 +1,5 @@
+// const House = require('../models/house.model');
 const { House } = require('../models');
-
 // CREATE house
 const createHouse = async (houseBody) => {
     const promises = [];
@@ -55,6 +55,7 @@ const getHouseByIdAndPopulateFields = async (houseId, fieldNames) => {
     const promises = [];
     for (let i = 0; i < fieldNames.length; i++) {
         promises.push(house.populate(fieldNames[i]));
+        console.log('getHouseByIdAndPopulate', promises);
     }
     await Promise.allSettled(promises);
     return house;
@@ -68,7 +69,7 @@ const updateHouse = async (houseId, updateBody) => {
     // const house = await getHouseById(houseId);
     const house = await House.findOneAndUpdate(
         { _id: houseId },
-        req.body,
+        updateBody,
         { new: true, runValidators: true }
     )
     if (!house) {
@@ -87,11 +88,44 @@ const updateHouse = async (houseId, updateBody) => {
 const deleteHouseById = async (houseId) => {
     const house = await getHouseById(houseId);
     if (!house) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'House not found');
+        throw { statusCode: 404, message: 'deleteHouse: House not found' };
     }
     await house.remove();
     return house;
 };
+
+
+// NEW SERVICE: add user id to random house
+// + NEW SERVICE: UPDATE numResidents
+// ADD THIS TO REGISTRATION CONTROLLER
+const assignUserIdToHouse = async (userId) => {
+    const houses = await queryHouses();
+    console.log('houses', houses);
+
+    let min = 0;
+    let max = houses.length;
+    // get random number
+    function randomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    // if there are more than 4 residents find another house.
+    // if(roommatesArr.length < 4) {
+    // randomly assign house by id
+    const randomId = randomNumber(houses[min], houses[max])
+    console.log('randomId', randomId);
+
+    const houseId = getHouseById(randomId);
+    console.log('houseId', houseId);
+
+    const roommatesArr = House.findOne({ _id: houseId }).populate(roommates);
+    console.log('roommatesArr', roommatesArr)
+    const house = await updateHouse(houseId, { roommates: roommatesArr.push(userId), numResidents: roommatesArr.length })
+    // } 
+
+    return house
+}
+
 
 
 module.exports = {
@@ -101,5 +135,6 @@ module.exports = {
     getHouseByAddressLine1,
     createHouse,
     updateHouse,
-    deleteHouseById
+    deleteHouseById,
+    assignUserIdToHouse
 };
