@@ -30,7 +30,8 @@ Can go to Personal Info page
 
 
 Visa Status Management page
-=> /profile/status ? (GET)
+=> /profile/status ? (GET) ?? 
+or just get the profile with documents populated, and use frontend logic to figure out what's next
 	(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 
 need to be able to add next document if needed:

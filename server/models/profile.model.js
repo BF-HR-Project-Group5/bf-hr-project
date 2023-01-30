@@ -37,6 +37,7 @@ const ProfileSchema = new Schema(
 			work: { type: Number },
 		},
 		documents: [{type: refType, ref: 'Document'}],
+		feedback: {type: String},
 
 		// overall application status
 		status: { type: String, enum: config.document.statuses, default: 'PENDING' },

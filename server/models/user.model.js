@@ -14,9 +14,10 @@ const UserSchema = new Schema(
 		password: { type: String, required: true },
 
 		// need name here so we can search by name when getting profiles
+		// not required because we initialize this with ONLY username, password, email
 		name: {
-			first: { type: String, required: true },
-			last: { type: String, required: true },
+			first: { type: String},
+			last: { type: String},
 			middle: { type: String},
 			preferred: { type: String },
 		},
