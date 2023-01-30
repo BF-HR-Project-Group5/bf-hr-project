@@ -38,13 +38,15 @@ const updateDocumentById = async (
 	return document;
 };
 
-const updateFieldById = async (id, field, value) => updateDocumentById(id, { [field]: value });
-const updateFeedbackById = async (id, feedback) => updateFieldById(id, 'feedback', feedback);
-const updateStatusById = async (id, status) => updateFieldById(id, 'status', status);
+// const updateFieldById = async (id, field, value) => updateDocumentById(id, { [field]: value });
+const rejectDocumentIdWithFeedback = async (id, feedback) => updateDocumentById(id, {feedback, status: 'REJECTED'});
+
+const updateStatusById = async (id, status) => updateDocumentById(id, {status});
 
 const approveDocumentId = async (id) => updateStatusById(id, 'APPROVED');
-const rejectDocumentId = async (id) => updateStatusById(id, 'REJECTED');
 const pendingDocumentId = async (id) => updateStatusById(id, 'PENDING');
+const rejectDocumentId = async (id) => updateStatusById(id, 'REJECTED');
+
 
 // types and links should not need to be updated ??
 // maybe if user  wants to replace a file, find and delete  one and then create a new one
@@ -71,8 +73,7 @@ module.exports = {
 	getDocumentsByType,
 	createDocument,
 	updateDocumentById,
-	updateFieldById,
-	updateFeedbackById,
+	rejectDocumentIdWithFeedback,
 	approveDocumentId,
 	rejectDocumentId,
 	pendingDocumentId,
