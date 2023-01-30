@@ -8,6 +8,8 @@ const inviteService = require('../services/inviteService');
 const Invite = require('../models/invite.model');
 const userService = require('../services/userService');
 const User = require( '../models/user.model' );
+const houseService = require('../services/houseService');
+const House = require( '../models/house.model' );
 
 const seedInvites = async (count) => {
 	// create a handful of invites
@@ -25,10 +27,10 @@ const seedInvites = async (count) => {
 			isRegistered: false,
 		};
 		invites.push(inviteService.createInvite(data));
-		console.log('pushing invite:', data);
+		// console.log('pushing invite:', data);
 	}
 	const results = await Promise.all(invites);
-	console.log('inviteResults:', { results });
+	// console.log('inviteResults:', { results });
 	return results;
 };
 
@@ -66,18 +68,55 @@ const seedInvitedUsers = async (count, invites, role = 'user') => {
 			invite: invites[i]._id, // add the created invite
 		};
 		users.push(userService.createUser(data));
-		console.log('pushing user:', data);
+		// console.log('pushing user:', data);
 	}
-	const results = await Promise.all(invites);
-	console.log('userResults:', { results });
+	const results = await Promise.all(users);
+	// console.log('userResults:', { results });
 	// now should have users and invites!
 	return results;
 };
 
+
+const seedHouses = async (count) => {
+	// create a user for each invite
+
+	const houses = [];
+	for (let i = 0; i < count; i++) {
+		const data = {
+			address: {
+				line1: `addressLine1_${i}`,
+				line2: `addressLine2_${i}`,
+				city: `city_${i}`,
+				state: `state_${i}`,
+				zipcode: `55555(-5555)${i}`,
+			},
+			landlord: {
+				legalFullName: `John Doe`,
+				phone: Number(`999999999${i}`),
+				email: `email${i}@email.com`,
+			},
+			roommates: [],
+			houseInfo: {
+				bedCount: 4,
+				mattressCount: 4,
+				tableCount: 1,
+				chairCount: 4,
+			},
+			facilityReports: [],
+		};
+		houses.push(houseService.createHouse(data));
+		// console.log('pushing house:', data);
+	}
+	const results = await Promise.all(houses);
+	// console.log('houseResults:', { results });
+	// now should have users and invites!
+	return results;
+};
+
+
 const clearInvites = () => Invite.deleteMany({});
 const clearUsers = () => User.deleteMany({_id: {$ne: '63d6da694ba462d927745b7e'}});
-
-
+const clearHouses = () => House.deleteMany({});
 
 async function run() {
 	try {
@@ -88,8 +127,10 @@ async function run() {
 
 		await clearInvites();
 		await clearUsers();
+		await clearHouses();
 
-		// seed invites/users
+		const houses = await seedHouses(5);
+
 		const invites = await seedInvites(5);
 
 		const users = await seedInvitedUsers(5, invites);
@@ -100,7 +141,7 @@ async function run() {
 
 	} finally {
 		console.log('~~ seed completed');
-		// mongoose.connection.close();
+		mongoose.connection.close();
 	}
 }
 
