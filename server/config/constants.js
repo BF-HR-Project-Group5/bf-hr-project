@@ -7,9 +7,9 @@ exports.users = [
 	'error',
 ];
 
-const config = {
+exports.config = {
 	tokenExpirationMinutes: 10,
-	registration: {
+	invite: {
 		expiresAfterMinutes: 180,
 	},
 
@@ -29,5 +29,3 @@ const config = {
 
 	frontendBaseUrl: `http://localhost:3001`, // for the react origin/port
 };
-
-exports.config = { config };
