@@ -16,6 +16,7 @@ const createHouse = catchAsync(async (req, res) => {
     console.log('create house controller:', { reqUser: req.user }, { reqHouse: req.body })
     const houseBody = await houseService.createHouse(req.body);
     res.status(200).json({houseBody})
+   
 })
 
 // GET ALL houses - view existing houses
