@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const refType = Schema.Types.ObjectId;
-const House = require('./house.model');
+// const House = require('./house.model');
 const bcrypt = require('../utils/bcrypt');
 const { config } = require('../config/constants');
+const { roles } = require( '../config/roles' );
 
 
 // When created, token will automatically create the expiresAt date
@@ -12,6 +13,7 @@ const UserSchema = new Schema(
 		name: {
 			first: { type: String, required: true },
 			last: { type: String, required: true },
+			middle: { type: String},
 			preferred: { type: String },
 		},
 		username: { type: String, required: true },
@@ -26,17 +28,21 @@ const UserSchema = new Schema(
 			zipcode: { type: String, required: true },
 		},
 		workAuth: {
-			title: { type: String, required: true },
-			startDate: { type: Number, required: true },
-			endDate: { type: Number, required: true },
-			daysRemaining: { type: Number, required: true }, // could also use -1 for infinite if needed
+			title: { type: String},
+			startDate: { type: Number},
+			endDate: { type: Number},
+			daysRemaining: { type: Number}, // could also use -1 for infinite if needed
 		},
 		license: {
 			number: {type: String},
 			expiration: {type: Date},
 			link: {type: refType, ref: 'Document'},
 		},
-		phone: { type: Number, required: true },
+		phone: {
+			mobile: { type: Number, required: true },
+			work: { type: Number },
+		},
+		role: {type: String, enum: roles, default: 'user', required: true},
 
 		documents: [{type: refType, ref: 'Document'}],
 
@@ -87,6 +93,10 @@ UserSchema.methods.isPasswordMatch = async function (password) {
 		return Promise.reject(error);
 	}
 };
+
+UserSchema.methods.isHr = async function() {
+	return this.role === 'hr'
+}
 
 // used on the schema i.e. User.isEmailTaken()
 UserSchema.statics.isEmailTaken = async function (email, excludeUserId) {

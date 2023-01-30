@@ -1,0 +1,2 @@
+export const FETCH_EMPLOYEE = 'FETCH_EMPLOYEE';
+export const FETCH_FAILED = 'FETCH_FAILED';
