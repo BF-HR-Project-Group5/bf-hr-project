@@ -73,7 +73,9 @@ module.exports = {
 	updateDocumentById,
 	updateFieldById,
 	updateFeedbackById,
-	updateStatusById,
+	approveDocumentId,
+	rejectDocumentId,
+	pendingDocumentId,
 	deleteDocumentById,
 	replaceDocumentById,
 };
