@@ -15,8 +15,11 @@ exports.createJwt = (user) => {
 		username: user.username,
 		email: user.email,
 		role: user.role,
+		// invite: user.invite,
 		iat: Date.now(),
 		exp: Date.now() + config.tokenExpirationMinutes * 60 * 1000,
 	};
+	// if (user.profile) payload.profile = user.profile;
+	// if (user.house) payload.house = user.house;
 	return jwt.sign(payload, process.env.SECRET_KEY);
 };
