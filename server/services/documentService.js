@@ -1,5 +1,6 @@
 // handles saving Document objects to Mongoose
 const Document = require('../models/document.model');
+const { default: removeEmptyFields } = require( '../utils/removeEmptyFields' );
 
 // find one
 const getDocumentById = async (id) => Document.findById(id);
@@ -30,9 +31,8 @@ const updateDocumentById = async (
 	if (!document) throw { statusCode: 404, message: 'Document not found' };
 
 	// remove fields that have value of ''
-	const nonEmptyUpdateObj = Object.fromEntries(
-		Object.entries(updateBody).filter(([key, val]) => val !== '')
-	);
+	const nonEmptyUpdateObj = removeEmptyFields(updateBody);
+
 	Object.assign(document, nonEmptyUpdateObj);
 	await document.save();
 	return document;
@@ -41,6 +41,10 @@ const updateDocumentById = async (
 const updateFieldById = async (id, field, value) => updateDocumentById(id, { [field]: value });
 const updateFeedbackById = async (id, feedback) => updateFieldById(id, 'feedback', feedback);
 const updateStatusById = async (id, status) => updateFieldById(id, 'status', status);
+
+const approveDocumentId = async (id) => updateStatusById(id, 'APPROVED');
+const rejectDocumentId = async (id) => updateStatusById(id, 'REJECTED');
+const pendingDocumentId = async (id) => updateStatusById(id, 'PENDING');
 
 // types and links should not need to be updated ??
 // maybe if user  wants to replace a file, find and delete  one and then create a new one

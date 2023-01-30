@@ -13,8 +13,17 @@ const UserSchema = new Schema(
 		email: { type: String, required: true },
 		password: { type: String, required: true },
 
-		profile: {type: refType, ref: 'Profile'},
+		// need name here so we can search by name when getting profiles
+		name: {
+			first: { type: String, required: true },
+			last: { type: String, required: true },
+			middle: { type: String},
+			preferred: { type: String },
+		},
+
 		role: {type: String, enum: roles, default: 'user', required: true},
+
+		profile: {type: refType, ref: 'Profile'},
 		invite: { type: refType, ref: 'Invite' },
 		house: { type: refType, ref: 'House' },
 	},
@@ -37,6 +46,7 @@ UserSchema.pre('save', async function (next) {
 		// save the password
 		user.password = hashResult;
 		next();
+
 	} catch (error) {
 		console.log('hashPassword error:', { error });
 		return next(error);

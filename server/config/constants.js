@@ -7,7 +7,14 @@ exports.users = [
 	'error',
 ];
 
-const status = ['PENDING', 'APPROVED', 'REJECTED'];
+const allStatuses = {
+	PENDING: 'PENDING',
+	APPROVED: 'APPROVED',
+	REJECTED: 'REJECTED',
+}
+// exports.allStatuses = allStatuses;
+const statusEnum = Object.keys(allStatuses);
+// exports.statusEnum = statusEnum;
 
 exports.config = {
 	tokenExpirationMinutes: 10,
@@ -17,12 +24,14 @@ exports.config = {
 
 	// document model: status, doctype
 	document: {
-		status: status,
-		type: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'],
+		statuses: statusEnum,
+		types: [ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER', 'LICENSE'],
 	},
+
 	// profile or application: status, steps
 	application: {
-		status: status,
+		statuses: statusEnum,
+
 		// for "Next Step"
 		steps: [
 			'OPT_RECEIPT',
