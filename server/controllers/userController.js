@@ -44,6 +44,5 @@ const putEditInfo = catchAsync(async (req, res) => {
 
 module.exports = {
 	getUser,
-	getLikedSongs,
 	putEditInfo,
 };

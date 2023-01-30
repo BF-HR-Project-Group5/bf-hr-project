@@ -11,10 +11,6 @@ const { validatePasswordsMatch } = require('../utils/validate');
 const register = catchAsync(async (req, res) => {
 	console.log('"register" route', { body: req.body, token: req.params.token });
 
-	// check if req.headers.token exists
-	// const headers = req.headers;
-	// console.log({headers});
-	// const { invite } = await inviteService.getInviteFromHeaders(headers);
 	const { invite } = await inviteService.getInviteFromParams(req.params);
 	if (!invite) throw { statusCode: 400, message: 'Token is required' };
 
@@ -25,10 +21,13 @@ const register = catchAsync(async (req, res) => {
 	const isDifferentEmail = invite.email !== req.body.email;
 	if (isDifferentEmail) throw { statusCode: 400, message: 'Email does not match the invite' };
 
-	// create user, create token
+	// add this to the body so it's added into the user
 	req.body.invite = invite;
+
+	// create user, create token
 	const user = await userService.createUser(req.body);
 	const jwt = tokenService.createJwt(user);
+
 	// mark registered
 	await inviteService.putIsRegisteredToInviteId(invite._id);
 

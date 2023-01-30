@@ -103,6 +103,10 @@ const getUserByIdAndPopulateFields = async (userId, fieldNames) => {
 	return user;
 };
 
+const getUserByIdAndPopulate = async (userId) => {
+	return getUserByIdAndPopulateFields(userId, ['profile', 'invite', 'house']);
+}
+
 
 // put a document to the user
 const putDocumentIdToUserId = async (docId, userId) => {
@@ -173,6 +177,7 @@ module.exports = {
 	createUser,
 	updateUserById,
 	getUserByIdAndPopulateFields,
+	getUserByIdAndPopulate,
 	putDocumentIdToUserId,
 	putHouseIdToUserId,
 };
