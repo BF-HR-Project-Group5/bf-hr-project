@@ -21,9 +21,7 @@ const register = catchAsync(async (req, res) => {
 
 	// check if invite matches the register email
 	const isDifferentEmail = invite.email !== req.body.email;
-	if (isDifferentEmail)
-		throw { status: 400, message: 'Email does not match the invite' };
-
+	if (isDifferentEmail) throw { status: 400, message: 'Email does not match the invite' };
 
 	// create user, create token
 	const user = await userService.createUser(req.body);
@@ -36,6 +34,7 @@ const register = catchAsync(async (req, res) => {
 	// 	"auth": jwt
 	// }
 	// should change to header
+
 	return res.status(201).send({ user, jwt }); // send jwt so client can save it in redux
 });
 
