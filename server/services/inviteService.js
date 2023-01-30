@@ -82,6 +82,14 @@ const getInviteFromHeaders = async (headers) => {
 	return {invite}; // look up invite
 }
 
+const getInviteFromParams = async (params) => {
+	// if no headers, return empty
+	if (!params || !params?.token) return {};
+
+	const invite = await getInviteByToken(params.token)
+	return {invite}; // look up invite
+}
+
 module.exports = {
 	getInviteById,
 	getInviteByEmail,
@@ -99,4 +107,5 @@ module.exports = {
 	putIsRegisteredToInviteId,
 	isExpiredByToken,
 	getInviteFromHeaders,
+getInviteFromParams,
 };

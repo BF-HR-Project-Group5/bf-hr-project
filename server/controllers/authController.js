@@ -9,12 +9,13 @@ const { validatePasswordsMatch } = require('../utils/validate');
 // they came from the special link and have now filled out the form and are submitting the register data.
 // Need to grab the 'token' header and make sure it's not expired
 const register = catchAsync(async (req, res) => {
-	console.log('"register" route', { body: req.body });
+	console.log('"register" route', { body: req.body, token: req.params.token });
 
 	// check if req.headers.token exists
-	const headers = req.headers;
-	console.log({headers});
-	const { invite } = await inviteService.getInviteFromHeaders(headers);
+	// const headers = req.headers;
+	// console.log({headers});
+	// const { invite } = await inviteService.getInviteFromHeaders(headers);
+	const { invite } = await inviteService.getInviteFromParams(req.params);
 	if (!invite) throw { statusCode: 400, message: 'Token is required' };
 
 	// check if invite is expired

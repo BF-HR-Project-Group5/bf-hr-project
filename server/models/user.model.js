@@ -16,9 +16,20 @@ const UserSchema = new Schema(
 			middle: { type: String},
 			preferred: { type: String },
 		},
+
+
+
 		username: { type: String, required: true },
 		email: { type: String, required: true },
 		password: { type: String, required: true },
+		// profile
+		// invite
+		// house
+		// role
+
+
+
+		
 		ssn: { type: Number, required: true },
 		address: {
 			line1: { type: String, required: true },

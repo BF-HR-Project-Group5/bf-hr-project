@@ -10,7 +10,7 @@ router.post(
 	controllers.login
 );
 router.post(
-	'/user/register',
+	'/user/register/:token',
 	// validate(registerUser),
 	controllers.register
 );
