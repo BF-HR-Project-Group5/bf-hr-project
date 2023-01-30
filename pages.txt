@@ -1,0 +1,372 @@
+Pages and flow:
+
+
+Navbar :
+	(unauthorized):	Login
+
+	Authorized as User {
+		PersonalInformation, VisaStatusManagement, Housing, Logout
+	}
+
+	Authorized as HR {
+		Home (PersonalInformation ???), EmployeeProfiles, VisaStatusManagement, HiringManagement, HousingManagement, Logout
+	}
+
+
+
+Base page: 
+	if NOT LOGGED IN:
+			(cannot access any other page)
+			Show Login Page as home page
+
+	if LOGGED IN:
+			(can access entire website)
+
+			For HR {
+				show Personal Information page ?
+			}
+
+			For Users {
+				if application is APPROVED:
+						show Personal Information Page (home page)
+				
+				else 
+						show Onboarding Application Page
+			}
+
+
+=================================================================================
+				USER ONLY PAGES:
+=================================================================================
+
+Onboarding Application Page:
+	(to view or fill out the application)
+	(to view feedback on the application, if there is any feedback)
+
+		if application is APPROVED:
+				Redirect to "home page" (personal info page)
+	
+		else if NEVER SUBMITTED:
+				show the form so they can fill out and submit the application
+
+		else if (REJECTED || PENDING):
+				show the submitted application
+				view list of all uploaded documents from the user
+					- can download documents
+					- can preview documents in browser
+
+				if REJECTED:
+					- show the feedback from HR
+					 			(ENTIRE APPLICATION feedback)
+					- can make changes
+					- can resubmit!
+
+				if PENDING:
+					- "Please wait for HR to review your application."
+					- can NOT edit
+
+
+
+
+
+Personal Information page:
+	(to view and edit personal info, AKA the application info, once an application is APPROVED)
+
+		sections of info: 
+		Name
+		Address
+		ContactInfo
+		Employment
+		EmergencyContact
+		Documents
+				list of uploaded docs (license, work auth)
+				can download
+				can preview
+
+
+
+
+Visa Status Management Page:
+	(manage their work auth documents)
+
+	if NOT chose OPT during onboarding application:
+	OR if ALL documents  are ACCEPTED:
+			"You're all set! Your documents have been approved."
+
+	else, we need more documents:
+	(They already uploaded the first document during Onboarding Application, so we need to wait for approval)
+			Show a section:
+					if thisDoc.status === PENDING: "Waiting for HR to approve your {this document}"
+					if thisDoc.status === APPROVED: "Please upload your {next needed document}"
+					if thisDoc.status === REJECTED: show the document's feedback
+
+***
+Could do this in a bunch of sections, and create a new section below when we need them to submit a new doc.
+So at the start, only one section will be visible, but once it is approved, the next section will appear.
+	i.e.
+(first section, thisDocument = "OPT RECEIPT")
+
+	"Please submit your {thisDocument}" || "Thanks for submitting your {thisDocument}"
+	(PENDING | APPROVED | REJECTED: statusMessage from above)
+	(if status === REJECTED, show feedback for {thisDocument})
+	
+(once previous section is APPROVED, show the next section: thisDocument = "OPT EAD")
+
+	"Please submit your {thisDocument}" || "Thanks for submitting your {thisDocument}"
+	(PENDING | APPROVED | REJECTED: statusMessage from above)
+	(if status === REJECTED, show feedback for {thisDocument})
+
+(once previous section is APPROVED, show the next section: thisDocument = "I-983 Form")
+
+	...etc
+***
+
+
+
+
+Housing Page:
+	(View their housing details, NO EDITING)
+	(Add a facility report)
+
+	Details: 
+		(address, list of roommates)
+
+	Facility Reports
+		(Only see reports that YOU have created)
+		(Could make a separate page for viewing and editing and commenting on a particular report)
+		( Or build functionality into the Housing page )
+
+		Create New Facility Report:
+				show a form, fill it out, submit it and it appears below at the top of the list of Facility Reports
+				To add a comment, click on it in the list below
+				
+		view your previous Facility reports, most recent at the top:
+				click on a facility report to:
+						view,
+						edit,
+						add a comment,
+						mark as closed
+
+	(Or could separate the facility report to a different page, so view/edit/comment on a different page?)
+
+
+
+
+
+
+
+
+
+
+
+=================================================================================
+				HR ONLY PAGES:
+=================================================================================
+
+Employee Profiles Page:
+	("Summary View": view summary of each employee's profile)
+	(Click the link in the summary to open a NEW TAB to view one employee's entire profile)
+	(Search for an employee)
+
+	"Search Bar":
+			type in first | last | preferred name
+					Should update list on every key press (onKeyUp event?)
+
+			"Cover all cases for search results": (talking about the status message when searching I guess)
+					"one record found" | "multiple records found" | "no records found" 
+					(display number of search results found)
+
+	"Summary View": (list of summaries)
+			(display TOTAL employee count)
+			(List summaries, sorted alphabetically by LAST NAME)
+					Each summary: {
+						Legal Full Name (Click name => open ENTIRE PROFILE in a NEW TAB)
+						SSN
+						Work Authorization Title
+						Phone Number (mobile I guess)
+						Email
+					}
+
+
+"Entire" Employee Profile (opened in a NEW TAB from the summary)
+	(I guess display all application info?)
+	(Name, address, work status, documents, car info, phone, email, etc etc)
+
+
+
+
+
+Visa Status Management Page:
+	(show a list of VisaStatus employees, a summary for each one, like the Employee Profiles summary list)
+	(Filter summary list by "ALL" or "IN PROGRESS")
+
+	(Could add search bar here so it applies to both IN PROGRESS && ALL ??)
+	
+	"IN PROGRESS":
+			filter to show all employees who have NOT been approved for ALL REQUIRED OPT DOCUMENTS
+			
+			Show employee information: {
+					Legal Full Name
+					Work Auth {
+						Title,
+						Start date
+						End date
+						Number of Days Remaining
+					}
+					Next Steps (?? list of steps remaining??? Or if done, could say "All finished" or some message)
+					Action 
+			}
+
+			"Next Step" means: show next step for the employee: i.e.
+					"Submit Onboarding Application" | "Wait for HR Approval on OPT Receipt" | "Submit (next document)" | "Wait for approval of (next document)" | etc
+			
+			"Action" means: Show an action button to the HR: 
+			(Either approve/reject document, or send notification to remind the employee to submit the next document)
+					if Document needs approval:
+							Show the document
+							Allow HR to preview the document
+							Allow HR to APPROVE or REJECT the document
+
+							if REJECT:
+									Show a "Feedback" box, and HR can submit feedback for that document
+									(Feedback should be visible to the employee when they access their VisaStatusManagement page)
+
+					if Waiting for the next document submission:
+							Show a button "Send Notification"
+									sends email to employee which tells them the next step they need to do (i.e. "Please submit the {nextDocument} document.")
+
+	"ALL": all employees with visa status
+			(purpose: to look at their documents)
+			Search/filter for a particular employee (name search?)
+			Same search functionality as in the EMPLOYEE PROFILES PAGE
+
+			Show employee information: {
+				same as above, but:
+				(except NO Action)
+				(Show Next Steps: "All finished" ??)
+			
+				Show ALL uploaded && approved documents
+						can download
+						can preview
+			}
+
+
+
+
+
+Hiring Management Page:
+	(Can generate token to register a user, can review onboarding applications)
+
+	Registration token (section?):
+			Show a form to invite a new user to register
+					Form: {
+						firstName,
+						lastName,
+						email,
+						middleName | empty,
+						preferredName | empty,
+					}
+					"Generate token and send email" submit button
+			
+			Show history of past invites:
+					List of each entry: {
+						email,
+						name,
+						registrationLink,
+						status (if has been registered or not)
+					}
+
+	Onboarding Application Review (section?):
+			Three sections: PENDING | REJECTED | APPROVED
+			(Could be 3 tabs, and each tab has the list of the applications?)
+
+			"Pending":
+					(View all submitted && pending applications)
+					(similar to other Employee summary lists above)
+					Shows a summary of each employee: { 
+							Full Name
+							email
+							"View Application" button
+									=> opens a NEW TAB: "View Application" page below
+					}
+				
+			"REJECTED" || "APPROVED":
+					(View all submitted && rejected applications)
+					(displays SAME STUFF as above, except:)
+							"View Application" button
+									=> opens a NEW TAB: "View Application" page below
+
+
+"View Application" page: (for Hiring Management page)
+	(Shows "entire form" for the user's application)
+	
+	If is REJECTED || is APPROVED: 
+			(Can do nothing more)
+	
+	if is PENDING:
+			Can APPROVE or REJECT the application
+					if Rejecting, can give feedback on the application	
+	
+
+
+
+
+
+
+
+Housing Management Page:
+	(create houses, delete houses, view existing houses)
+
+	Add a house: 
+			(need a form somewhere?)
+			Required data: {
+				address,
+				landlord info,
+				basic facility info
+			}
+
+	Summary View (I'm seeing a pattern here with these Summary Views):
+			(shows a list of house summaries, just like employee summaries, and application summaries, and visa status summaries)
+
+			Each house: {
+					Address
+					Landlord {
+						legal full name
+						phone
+						email
+					}
+					Number of Residents
+			}
+
+			If click on a house's summary view, show more details for that house: 
+			(more details of house: Facility Info, and Employee Info): {
+					Facility info {
+							beds,
+							mattresses,
+							chairs
+							FacilityReports: [{
+								display 3-5 reports per page, sorted by date/time created
+								each should display: {
+									title,
+									description,
+									createdBy,
+									timestamp,
+									status (open, in progress, closed)
+									list of comments [{
+										description,
+										createdBy
+										timestamp
+									}]
+									
+								}
+								Need a way to add OR update comments in a facility report
+							}]
+					}
+					Employee Info {
+							(preferred | legal) full name
+									=> Links to their Employee Profile
+							phone
+							email
+							carInfo
+					}
+			}
