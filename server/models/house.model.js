@@ -14,7 +14,7 @@ const HouseSchema = new Schema({
     },
     landlord: {
         legalFullName: { type: String, required: true },
-        phone: { type: Number, required: true },
+        phone: { type: String, required: true },
         email: { type: String, required: true }
     },
     numResidents: { type: Number }, // array of roommates
@@ -26,7 +26,7 @@ const HouseSchema = new Schema({
         chairCount: { type: Number, required: true },
     },
     facilityReports: [{ type: refType, ref: 'Facility' }]
-}, { timestamp: true });
+}, { timestamps: true });
 
 /**
  * Check if email is taken

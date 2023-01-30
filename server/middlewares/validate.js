@@ -10,6 +10,8 @@ const validate = (schema) => (req, res, next) => {
 		.prefs({ errors: { label: 'key' }, abortEarly: false })
 		.validate(objectToValidate);
 
+	console.log('value',value, 'error',error);
+
 	if (error) {
 		const errorMessage = error.details.map((detail) => detail.message).join(', ');
 		throw { statusCode: 400, message: errorMessage };
