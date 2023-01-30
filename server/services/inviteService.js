@@ -64,7 +64,7 @@ const createInvite = async (
 };
 
 const putIsRegisteredToInviteId = async (id) => {
-	const invite = getInviteById(id);
+	const invite = await getInviteById(id);
 	invite.isRegistered = true;
 	await invite.save();
 	return invite;
