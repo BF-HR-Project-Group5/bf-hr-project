@@ -37,6 +37,9 @@ const putEditInfo = catchAsync(async (req, res) => {
 });
 
 // const putDocumentToUserId
+// const putDocumentToUserId = catchAsync(async (req, res) => {
+// 	console.log('put docId to userId', { reqUser: req.user, body: req.body });
+// })
 
 
 module.exports = {
