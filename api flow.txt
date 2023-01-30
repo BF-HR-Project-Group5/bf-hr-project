@@ -12,7 +12,7 @@ log in page, when coming back
 
 Sends you to Onboarding Application page
 (fill out application and submit first documents)
-=> /document/upload (POST)
+=> /documents/create (POST) (create)
 	(uploads a document, i.e. work auth and/or license)
 => /profile/create (after document is uploaded)
 	(creates a profile, with ALL the user data that they submit)
