@@ -8,7 +8,7 @@ router.get('/', controllers.getFacilityReports);
 router.get('/:facilityId/comment', controllers.getFacilityReportsComments);
 router.post('/', controllers.postFacility);
 router.post('/:facilityId/comment', controllers.postComment);
-// router.delete('/:commentId/comment', controllers.deleteComment);
+router.delete('/:commentId/comment', controllers.deleteComment);
 router.put('/:commentId/comment',controllers.putComment);
 
 module.exports = router;

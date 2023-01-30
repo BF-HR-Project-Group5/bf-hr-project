@@ -61,7 +61,7 @@ const putComment = catchAsync((async (req, res)=>{
     const commentId = req.params.commentId
    
     const comment = await facilitySerice.updateCommentByID(commentId, req.body);
-    //  const data = await Comment.find();
+
 
     res.status(200).json({comment})
     
@@ -69,15 +69,15 @@ const putComment = catchAsync((async (req, res)=>{
 
 // delete comment by comment_id
 // comment2 63d81dafc3761cf57adad194
-// const deleteComment = catchAsync((async (req, res)=>{
-//     // get comment by ID
-//     const commentId = req.params.commentId
-//     console.log(commentId)
-//    const deleteComment = await facilitySerice.deleteCommentById(commentId)
-//     res.status(200).json({deleteComment})
+const deleteComment = catchAsync((async (req, res)=>{
+    // get comment by ID
+    const commentId = req.params.commentId
+    console.log(commentId)
+   const deleteComment = await facilitySerice.deleteCommentById(commentId)
+    res.status(200).json({deleteComment})
     
 
-// }))
+}))
 
 module.exports ={
     getTest,
@@ -85,7 +85,7 @@ module.exports ={
     getFacilityReportsComments,
     postFacility,
     postComment,
-    // deleteComment,
+    deleteComment,
     putComment
     
 }
