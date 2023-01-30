@@ -22,7 +22,7 @@ app.use('/', (req, res, next) => {
 	next();
 });
 // routes
-console.log('server router')
+// console.log('server router')
 app.use('/', routes.authRouter);
 app.use('/', routes.artistsRouter);
 app.use('/', routes.songsRouter);

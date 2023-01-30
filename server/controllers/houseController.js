@@ -2,7 +2,7 @@ const houseService = require('../services/houseService')
 const catchAsync = require( '../utils/catchAsync' );
 // const pick = require('../utils/pick' );
 
-console.log('house controller')
+// console.log('house controller')
 
 const index = (req, res) => {
     console.log('res', res)
