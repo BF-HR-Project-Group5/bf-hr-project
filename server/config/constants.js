@@ -7,25 +7,37 @@ exports.users = [
 	'error',
 ];
 
+const status = ['PENDING', 'APPROVED', 'REJECTED'];
+
 exports.config = {
 	tokenExpirationMinutes: 10,
 	invite: {
 		expiresAfterMinutes: 180,
 	},
 
-	statusTypes: [
-		'OPT_RECEIPT',
-		'OPT_RECEIPT_APPROVED',
-		'OPT_EAD',
-		'OPT_EAD_APPROVED',
-		'I-983',
-		'I-983_APPROVED',
-		'I-20',
-		'I-20_APPROVED',
-	],
+	// document model: status, doctype
+	document: {
+		status: status,
+		type: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'],
+	},
+	// profile or application: status, steps
+	application: {
+		status: status,
+		// for "Next Step"
+		steps: [
+			'OPT_RECEIPT',
+			'OPT_RECEIPT_APPROVED',
+			'OPT_EAD',
+			'OPT_EAD_APPROVED',
+			'I-983',
+			'I-983_APPROVED',
+			'I-20',
+			'I-20_APPROVED',
+		],
+	},
 
-	documentStatus: ['PENDING', 'APPROVED', 'REJECTED'],
-	documentTypes: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'], // ...all document types
+	// visaStatus: ,
 
+	// set whatever port we need
 	frontendBaseUrl: `http://localhost:3001`, // for the react origin/port
 };

@@ -26,7 +26,7 @@ const HouseSchema = new Schema({
         chairCount: { type: Number, required: true },
     },
     facilityReports: [{ type: refType, ref: 'Facility' }]
-}, { timestamp: true });
+}, { timestamps: true });
 
 /**
  * Check if email is taken
