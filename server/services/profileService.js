@@ -51,25 +51,25 @@ const addLicenseIdToProfileId = async (licenseId, profileId) => {
 
 
 
-// no need to export this one
-const changeStatusOfProfileId = async (profileId, status) => {
-	const profile = await getProfileById(profileId);
-	if (!profile) {
-		throw { statusCode: 404, message: 'changeStatusOfProfileId: Profile not found' };
-	}
+// // no need to export this one
+// const changeStatusOfProfileId = async (profileId, status) => {
+// 	const profile = await getProfileById(profileId);
+// 	if (!profile) {
+// 		throw { statusCode: 404, message: 'changeStatusOfProfileId: Profile not found' };
+// 	}
 
-	profile.status = status;
-	await profile.save();
-	return profile;
-}
+// 	profile.status = status;
+// 	await profile.save();
+// 	return profile;
+// }
 
-const approveProfileId = async (profileId) => changeStatusOfProfileId(profileId, 'APPROVED');
-const rejectProfileId = async (profileId) => changeStatusOfProfileId(profileId, 'REJECTED');
+const approveProfileId = async (profileId) => updateProfileById(profileId, {status: 'APPROVED'});
+const rejectProfileId = async (profileId) => updateProfileById(profileId, {status: 'REJECTED'});
+const rejectProfileIdWithFeedback = async (profileId, feedback) => updateProfileById(profileId, {status:'REJECTED', feedback});
 
 
 
 
-// fields === string[] of fieldNames
 // can get user and populate 'Documents', etc.
 const getProfileByIdAndPopulate = async (profileId) => {
 	const profile = await getProfileById(profileId);
@@ -85,6 +85,20 @@ const getProfileByIdAndPopulate = async (profileId) => {
 	return profile;
 };
 
+
+// // figure out what the "next step" is for documents
+// const getNextStepForProfileId = async (profileId) => {
+// 	const profile = await getProfileByIdAndPopulate(profileId);
+// 	if (!profile) {
+// 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
+// 	}
+
+// 	// need to populate the documents
+// 	const documents = profile.documents;
+
+// }
+
+
 module.exports = {
 	getProfileById,
 	getProfileByIdAndPopulate,
@@ -94,4 +108,5 @@ module.exports = {
 	addDocumentIdToProfileId,
 	approveProfileId,
 	rejectProfileId,
+	rejectProfileIdWithFeedback,
 };
