@@ -1,6 +1,6 @@
-const userService = require('../services/userService');
-const artistService = require('../services/artistService');
-const songService = require('../services/songService');
+const userService = require('./userService');
+const artistService = require('./_old_artistService');
+const songService = require('./_old_/_old_songService');
 
 // not really "transactions", I could rebuild these with mongoose transactions
 

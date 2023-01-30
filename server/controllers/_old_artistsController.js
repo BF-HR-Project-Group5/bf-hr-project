@@ -1,4 +1,4 @@
-const transactionService = require('../services/transactionService');
+const transactionService = require('../services/_old_transactionService');
 const catchAsync = require('../utils/catchAsync');
 
 // handles toggle follow/unfollow on artist and user

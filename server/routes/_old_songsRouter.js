@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const controllers = require('../controllers/songsController');
+const controllers = require('../controllers/_old_songsController');
 const auth = require('../middlewares/auth');
 
 router.get('/songs/all', controllers.getAllSongs);

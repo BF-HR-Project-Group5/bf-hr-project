@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const routes = require('./routes');
-const cors = require('cors')
+// const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const { errorHandler } = require('./middlewares/error');
 const connection = require('./config/db');
@@ -21,13 +21,15 @@ app.use('/', (req, res, next) => {
 	console.log('new request:', req.url, req.body, req.method);
 	next();
 });
+
 // routes
 // console.log('server router')
 app.use('/', routes.authRouter);
-app.use('/', routes.artistsRouter);
-app.use('/', routes.songsRouter);
-app.use('/', routes.userRouter);
 app.use('/', routes.houseRouter);
+app.use('/', routes.inviteRouter);
+// app.use('/', routes.userRouter);
+// app.use('/', routes.facilityRouter);
+// app.use('/', routes.documentRouter);
 
 
 // 404 handler

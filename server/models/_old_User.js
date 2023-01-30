@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const refType = Schema.Types.ObjectId;
-const Song = require('./Song');
-const Artist = require('./Artist');
+const Song = require('./_old_Song');
+const Artist = require('./_old_Artist');
 const bcrypt = require('../utils/bcrypt');
 
 const UserSchema = new Schema(
