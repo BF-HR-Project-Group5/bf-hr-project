@@ -14,16 +14,17 @@ const register = catchAsync(async (req, res) => {
 	// check if req.headers.token exists
 	const headers = req.headers;
 	const { invite } = await inviteService.getInviteFromHeaders(headers);
-	if (!invite) throw { status: 400, message: 'Token is required' };
+	if (!invite) throw { statusCode: 400, message: 'Token is required' };
 
 	// check if invite is expired
 	if (await invite.isTokenExpired()) throw { status: 400, message: 'Token is expired' };
 
 	// check if invite matches the register email
 	const isDifferentEmail = invite.email !== req.body.email;
-	if (isDifferentEmail) throw { status: 400, message: 'Email does not match the invite' };
+	if (isDifferentEmail) throw { statusCode: 400, message: 'Email does not match the invite' };
 
 	// create user, create token
+	req.body.invite = invite;
 	const user = await userService.createUser(req.body);
 	const jwt = tokenService.createJwt(user);
 	// mark registered
