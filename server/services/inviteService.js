@@ -41,11 +41,9 @@ const getInvitesByFullName = async (fullName) => {
 // when an HR person creates an invite, the email should be unique.
 // (Afterwards, when the user registers using the link, they need to use (this email or ) a unique email, and also a unique username)
 // const createFacilityReport = async (data) => {
-// 	// 
+// 	//
 // 	return FacilityReport.create(data);
 // }
-
-
 
 const createInvite = async (
 	data = {
@@ -70,6 +68,14 @@ const putIsRegisteredToInviteId = async (id) => {
 	return invite;
 };
 
+const updateInviteById = async (id, updateBody) => {
+	const invite = await getInviteById(id);
+	if (!invite) throw { statusCode: 404, message: 'updateInviteById: Invite not found' };
+	Object.assign(invite, updateBody);
+	await invite.save();
+	return invite;
+};
+
 // returns boolean
 const isExpiredByToken = async (token) => Invite.isTokenExpired(token);
 
@@ -78,17 +84,17 @@ const getInviteFromHeaders = async (headers) => {
 	if (!headers || !headers?.token) return {};
 
 	const token = headers.token;
-	const invite = await  getInviteByToken(token)
-	return {invite}; // look up invite
-}
+	const invite = await getInviteByToken(token);
+	return { invite }; // look up invite
+};
 
 const getInviteFromParams = async (params) => {
 	// if no headers, return empty
 	if (!params || !params?.token) return {};
 
-	const invite = await getInviteByToken(params.token)
-	return {invite}; // look up invite
-}
+	const invite = await getInviteByToken(params.token);
+	return { invite }; // look up invite
+};
 
 module.exports = {
 	getInviteById,
@@ -107,5 +113,6 @@ module.exports = {
 	putIsRegisteredToInviteId,
 	isExpiredByToken,
 	getInviteFromHeaders,
-getInviteFromParams,
+	getInviteFromParams,
+	updateInviteById,
 };

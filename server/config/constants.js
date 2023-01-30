@@ -7,25 +7,46 @@ exports.users = [
 	'error',
 ];
 
+const allStatuses = {
+	PENDING: 'PENDING',
+	APPROVED: 'APPROVED',
+	REJECTED: 'REJECTED',
+}
+// exports.allStatuses = allStatuses;
+const statusEnum = Object.keys(allStatuses);
+// exports.statusEnum = statusEnum;
+
 exports.config = {
 	tokenExpirationMinutes: 10,
 	invite: {
 		expiresAfterMinutes: 180,
 	},
 
-	statusTypes: [
-		'OPT_RECEIPT',
-		'OPT_RECEIPT_APPROVED',
-		'OPT_EAD',
-		'OPT_EAD_APPROVED',
-		'I-983',
-		'I-983_APPROVED',
-		'I-20',
-		'I-20_APPROVED',
-	],
+	// document model: status, doctype
+	document: {
+		statuses: statusEnum,
+		types: [ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER', 'LICENSE'],
+	},
 
-	documentStatus: ['PENDING', 'APPROVED', 'REJECTED'],
-	documentTypes: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'OTHER', 'LICENSE'], // ...all document types
+	// profile or application: status, steps
+	application: {
+		statuses: statusEnum,
 
+		// for "Next Step"
+		steps: [
+			'OPT_RECEIPT',
+			'OPT_RECEIPT_APPROVED',
+			'OPT_EAD',
+			'OPT_EAD_APPROVED',
+			'I-983',
+			'I-983_APPROVED',
+			'I-20',
+			'I-20_APPROVED',
+		],
+	},
+
+	// visaStatus: ,
+
+	// set whatever port we need
 	frontendBaseUrl: `http://localhost:3001`, // for the react origin/port
 };

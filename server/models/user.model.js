@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const refType = Schema.Types.ObjectId;
-// const House = require('./house.model');
 const bcrypt = require('../utils/bcrypt');
 const { config } = require('../config/constants');
 const { roles } = require( '../config/roles' );
@@ -10,55 +9,22 @@ const { roles } = require( '../config/roles' );
 // When created, token will automatically create the expiresAt date
 const UserSchema = new Schema(
 	{
+		username: { type: String, required: true },
+		email: { type: String, required: true },
+		password: { type: String, required: true },
+
+		// need name here so we can search by name when getting profiles
+		// not required because we initialize this with ONLY username, password, email
 		name: {
-			first: { type: String, required: true },
-			last: { type: String, required: true },
+			first: { type: String},
+			last: { type: String},
 			middle: { type: String},
 			preferred: { type: String },
 		},
 
-
-
-		username: { type: String, required: true },
-		email: { type: String, required: true },
-		password: { type: String, required: true },
-		// profile
-		// invite
-		// house
-		// role
-
-
-
-		
-		ssn: { type: Number, required: true },
-		address: {
-			line1: { type: String, required: true },
-			line2: { type: String },
-			city: { type: String, required: true },
-			state: { type: String, required: true },
-			zipcode: { type: String, required: true },
-		},
-		workAuth: {
-			title: { type: String},
-			startDate: { type: Number},
-			endDate: { type: Number},
-			daysRemaining: { type: Number}, // could also use -1 for infinite if needed
-		},
-		license: {
-			number: {type: String},
-			expiration: {type: Date},
-			link: {type: refType, ref: 'Document'},
-		},
-		phone: {
-			mobile: { type: Number, required: true },
-			work: { type: Number },
-		},
 		role: {type: String, enum: roles, default: 'user', required: true},
 
-		documents: [{type: refType, ref: 'Document'}],
-
-		applicationStatus: { type: String, enum: config.documentStatus, default: 'PENDING' },
-
+		profile: {type: refType, ref: 'Profile'},
 		invite: { type: refType, ref: 'Invite' },
 		house: { type: refType, ref: 'House' },
 	},
@@ -81,6 +47,7 @@ UserSchema.pre('save', async function (next) {
 		// save the password
 		user.password = hashResult;
 		next();
+
 	} catch (error) {
 		console.log('hashPassword error:', { error });
 		return next(error);
