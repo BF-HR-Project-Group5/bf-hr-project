@@ -105,7 +105,7 @@ const seedProfiles = async (count, documents) => {
 				zipcode: `55555(-5555)${i}`,
 			},
 			workAuth: {
-				title: '',
+				title: (i % 2 === 0) ? 'VISA' : 'CITIZEN',
 				startDate: '',
 				endDate: '',
 				daysRemaining: 99,

@@ -17,7 +17,7 @@ const ProfileSchema = new Schema(
 			zipcode: { type: String, required: true },
 		},
 		workAuth: {
-			title: { type: String},
+			title: { type: String}, // CITIZEN | "GREEN CARD" | "VISA" ???
 			startDate: { type: Number},
 			endDate: { type: Number},
 			daysRemaining: { type: Number}, // could also use -1 for infinite if needed

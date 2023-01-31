@@ -86,17 +86,17 @@ const getProfileByIdAndPopulate = async (profileId) => {
 };
 
 
-// // figure out what the "next step" is for documents
-// const getNextStepForProfileId = async (profileId) => {
-// 	const profile = await getProfileByIdAndPopulate(profileId);
-// 	if (!profile) {
-// 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
-// 	}
+// figure out what the "next step" is for documents
+const getNextStepForProfileId = async (profileId) => {
+	const profile = await getProfileByIdAndPopulate(profileId);
+	if (!profile) {
+		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
+	}
 
-// 	// need to populate the documents
-// 	const documents = profile.documents;
+	// need to populate the documents
+	const documents = profile.documents;
 
-// }
+}
 
 
 module.exports = {

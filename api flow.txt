@@ -43,7 +43,7 @@ Visa Status Management page {
 		(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 
 	need to be able to add next document if needed:
-	=> /documents/upload (POST) (duplicate)
+	=> /documents/create (POST) (duplicate)
 }
 
 
@@ -79,35 +79,35 @@ Housing page: {
 HR users:
 
 Employee Profiles Page: {
-	=> /profile/all (GET) 
+	=> /profiles/all (GET) 
 	( get all users, and populate profiles, and send everything)
 		(get each profile "summary")
 
 	Link to their profile page
-	=> /profile/${user._id} (GET)
+	=> /profiles/${user._id} (GET)
 		(get one profile)
 		(using user._id rather than profile._id because User schema is the base)
 
-	=> /profile?search="some name search" (GET)
+	=> /profiles?search="some name search" (GET)
 		(return ALL user profiles filtered by search query)
 }
 
 
 Visa Status Management page: {
-	=> /profile/visa (GET)
+	=> /profiles/visa (GET)
 		(get all user profiles with visa status)
 
-	=> /profile/visa?search="some name search" (GET)
+	=> /profiles/visa?search="some name search" (GET)
 		(return visa status user profiles filtered by query)
 		(can filter IN PROGRESS vs ALL on the client side ??)
 
-	=> /profile/${user._id}/sendReminder (GET or POST ?)
+	=> /profiles/${user._id}/sendReminder (GET or POST ?)
 		(send a reminder to that user._id of their next step)
 
-	=> /document/${document._id}/approve (GET or POST ?)
+	=> /documents/${document._id}/approve (GET or POST ?)
 		(tell server to approve the document._id)
 
-	=> /document/${document._id}/reject (POST)
+	=> /documents/${document._id}/reject (POST)
 		(takes body: {feedback} in the post request)
 }
 
@@ -116,13 +116,13 @@ Visa Status Management page: {
 
 Hiring Management Page:{
 	(onboarding application review) {
-		=> /profile/all (GET) (duplicate)
+		=> /profiles/all (GET) (duplicate)
 			(get all profiles, display 3 tabs for the different statuses)
 			(PENDING | REJECTED | APPROVED)
 			(shows a summary by default)
 			(client-side filter by status)
 
-		=> /profile/${user._id} (GET)
+		=> /profiles/${user._id} (GET)
 			(for opening the profile in a new tab)
 	}
 
