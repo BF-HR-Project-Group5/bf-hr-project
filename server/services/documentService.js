@@ -1,6 +1,6 @@
 // handles saving Document objects to Mongoose
 const Document = require('../models/document.model');
-const { default: removeEmptyFields } = require( '../utils/removeEmptyFields' );
+const removeEmptyFields = require( '../utils/removeEmptyFields' );
 
 // find one
 const getDocumentById = async (id) => Document.findById(id);

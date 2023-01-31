@@ -1,9 +1,6 @@
-// const { pruneDataForPutInfo, validatePasswordsMatch, isOldPasswordExists } = require('../utils/validate');
 const userService = require('../services/userService');
 const profileService = require('../services/profileService');
-const inviteService = require('../services/inviteService');
 const documentService = require('../services/documentService');
-// const tokenService = require('../services/tokenService');
 const catchAsync = require( '../utils/catchAsync' );
 
 

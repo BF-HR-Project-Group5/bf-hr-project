@@ -39,6 +39,6 @@ HouseSchema.statics.isAddressTaken = async function (address, excludeUserId) {
     return !!house;
 }
 
-const House = mongoose.model("House", HouseSchema);
+const House = mongoose.model("House", HouseSchema, 'House');
 
 module.exports = House;

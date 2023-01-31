@@ -19,6 +19,8 @@ const getInvitesByPreferredName = (preferredName) =>
 
 const queryInvites = (filter) => Invite.find(filter);
 
+const getAllInvites = () => Invite.find();
+
 // get invites that are registered; or can pass in `false` to get unregistered invites
 const getInvitesByIsRegistered = (isRegistered = true) =>
 	Invite.find({ isRegistered: isRegistered });
@@ -53,6 +55,7 @@ const createInvite = async (
 	}
 ) => {
 	// check for email taken
+	// DISABLED FOR TESTING ONLY
 	// if (await Invite.isEmailTaken(data.email)) {
 	// 	throw { statusCode: 409, message: 'Email is already taken' };
 	// }
@@ -115,4 +118,5 @@ module.exports = {
 	getInviteFromHeaders,
 	getInviteFromParams,
 	updateInviteById,
+	getAllInvites,
 };

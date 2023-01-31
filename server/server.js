@@ -30,6 +30,7 @@ app.use('/', routes.inviteRouter);
 // app.use('/', routes.userRouter);
 app.use('/', routes.facilityRouter);
 // app.use('/', routes.documentRouter);
+app.use('/', routes.profileRouter);
 
 
 // 404 handler

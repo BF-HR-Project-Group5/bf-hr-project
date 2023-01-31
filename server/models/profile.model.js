@@ -17,7 +17,7 @@ const ProfileSchema = new Schema(
 			zipcode: { type: String, required: true },
 		},
 		workAuth: {
-			title: { type: String},
+			title: { type: String}, // CITIZEN | "GREEN CARD" | "VISA" ???
 			startDate: { type: Number},
 			endDate: { type: Number},
 			daysRemaining: { type: Number}, // could also use -1 for infinite if needed
@@ -30,7 +30,7 @@ const ProfileSchema = new Schema(
 		license: {
 			number: {type: String},
 			expiration: {type: Date},
-			link: {type: refType, ref: 'Document'},
+			document: {type: refType, ref: 'Document'},
 		},
 		phone: {
 			mobile: { type: Number, required: true },
@@ -38,6 +38,16 @@ const ProfileSchema = new Schema(
 		},
 		documents: [{type: refType, ref: 'Document'}],
 		feedback: {type: String},
+		emergencyContact: [{
+			name: {
+				first: {type: String, required: true},
+				last: {type: String, required: true},
+				middle: {type: String},
+			},
+			phone: {type: String},
+			email: {type: String},
+			relationship: {type: String},
+		}],
 
 		// overall application status
 		status: { type: String, enum: config.document.statuses, default: 'PENDING' },
