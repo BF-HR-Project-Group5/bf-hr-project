@@ -20,10 +20,10 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 	const inviteData = {
 		email: req.body.email,
 		name: {
-			first: req.body.firstName,
-			middle: req.body.middleName,
-			last: req.body.lastName,
-			preferred: req.body.preferredName,
+			first: req.body.name.first,
+			middle: req.body.name.middle,
+			last: req.body.name.last,
+			preferred: req.body.name.preferred,
 		},
 	};
 
@@ -33,8 +33,8 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 	const data = {
 		link: invite.link,
 		name: {
-			first: req.body.firstName,
-			last: req.body.lastName,
+			first: req.body.name.first,
+			last: req.body.name.first,
 		},
 		email: req.body.email
 	}
