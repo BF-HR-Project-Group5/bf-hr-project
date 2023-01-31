@@ -19,12 +19,12 @@ router.put(
 	controllers.putUpdateProfile
 	);
 
-	// not needed? just get the profile and look inside for the status?
-router.get(
-	'/profile/status',
-	// auth // require user
-	controllers.getProfileStatus
-)
+// 	// not needed? just get the profile and look inside for the status?
+// router.get(
+// 	'/profile/status',
+// 	// auth // require user
+// 	controllers.getProfileStatus
+// )
 
 
 router.get(
