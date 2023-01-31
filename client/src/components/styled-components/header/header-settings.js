@@ -9,7 +9,7 @@ export const Logout = styled.a`
   width: 250px;
   position: fixed;
   right: 1px;
-  top: 113px;
+  top: 154px;
   padding: 10px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(26, 26, 29, 0.08);
   &:hover {

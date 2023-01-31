@@ -9,6 +9,13 @@
 .row .col-3 {
   width: 25%;
   margin-bottom: 20px;
+  display: inline-block;
+}
+.row .col-3 a {
+  display: none;
+}
+.row .col-3:hover a {
+  display: block;
 }
 .row .title {
   display: flex;

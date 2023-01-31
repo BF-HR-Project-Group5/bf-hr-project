@@ -21,6 +21,11 @@ function NavSettings(props) {
   return (
     <>
       <Link 
+        className='onboardingLink'
+        to={{ pathname : '/onboardingApp' , state : props.data}}>
+        Onboarding Application
+      </Link>
+      <Link 
         className='profileLink'
         to={{ pathname : '/personalInfor' , state : props.data}}>
         Profile
