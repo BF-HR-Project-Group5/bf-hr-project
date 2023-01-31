@@ -2,9 +2,9 @@ import { Paper, ButtonGroup, Button } from '@material-ui/core';
 import React from "react";
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
-import Editable from 'react-bootstrap-editable'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
+// import Editable from 'react-bootstrap-editable'
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../layout/Personal-Information.css';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';

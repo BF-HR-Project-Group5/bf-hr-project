@@ -95,23 +95,23 @@ const LoginForm = (props) => {
   const { submitLogin } = props;
 
   useEffect(() => {
-    async function signIn() {
+    (async function signIn() {
       if (formData) {
         try {
           //login API called
           const response = await submitLogin(formData);
-          // if application is APPROVED, Redirect to "personal info page", else Onboarding Application page
-          if(response.auth.user.applicationStatus == 'APPROVED'){
-            props.history.push({pathname: '/PersonalInfor'})
+
+          //If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
+          if(response.user.applicationStatus == 'APPROVED'){
+            props.history.push({pathname: '/personalInfor'})
           }else{
-            props.history.push({pathname: '/OnboardingApp'})
+            props.history.push({pathname: '/onboardingApp'})
           }
         } catch (err) {
           console.log(err);
         }
       }
-    }
-    signIn();
+    })()
   }, [formData]);
 
   const {
