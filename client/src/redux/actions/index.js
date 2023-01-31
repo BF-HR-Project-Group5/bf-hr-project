@@ -23,6 +23,13 @@ export const submitLogin = values => async dispatch => {
   return data
 };
 
+export const submitSignup = values => async dispatch => {
+  console.log('values',values)
+  const { data } = await axios.post('/user/register', values);
+  dispatch({ type: FETCH_USER, payload: data });
+  return data
+};
+
 export const submitLogout = values => async dispatch => {
   const { data } = await axios.post('/user/logout', values);
   return data

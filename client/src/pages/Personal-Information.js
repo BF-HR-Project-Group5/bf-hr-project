@@ -2,8 +2,8 @@ import { Paper, ButtonGroup, Button } from '@material-ui/core';
 import React from "react";
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
-// import Editable from 'react-bootstrap-editable'
-// import 'bootstrap/dist/css/bootstrap.css';
+import Editable from 'react-bootstrap-editable'
+import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../layout/Personal-Information.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -96,7 +96,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>middle name:</label>
+                        <label>Middle name:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -120,7 +120,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>preferred name:</label>
+                        <label>Preferred name:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -192,7 +192,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>date of birth:</label>
+                        <label>Date of birth:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -216,7 +216,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>gender:</label>
+                        <label>Gender:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -271,7 +271,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>street name:</label>
+                    <label>Street name:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -295,7 +295,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>city:</label>
+                    <label>City:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -319,7 +319,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>state:</label>
+                    <label>State:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -343,7 +343,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>zip:</label>
+                    <label>Zip:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -398,7 +398,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>work phone number:</label>
+                    <label>Work phone number:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -435,9 +435,9 @@ const PersonalInformation = (props) => {
                         alwaysEditing={false}
                         className={null}
                         disabled={false}
-                        editText="H1B"
+                        editText="Edit"
                         id={null}
-                        initialValue="31272451787"
+                        initialValue="H1B"
                         isValueClickable={false}
                         label={null}
                         mode="inline"
@@ -453,7 +453,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>start date:</label>
+                    <label>Start date:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -477,7 +477,7 @@ const PersonalInformation = (props) => {
                     />
                 </div>
                 <div className="col-3 mx-auto">
-                    <label>end date:</label>
+                    <label>End date:</label>
                     <Editable
                         ajax={null}
                         alwaysEditing={false}
@@ -556,7 +556,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>middle name:</label>
+                        <label>Middle name:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -580,7 +580,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>phone:</label>
+                        <label>Phone:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -604,7 +604,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>email:</label>
+                        <label>Email:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -628,7 +628,7 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                        <label>relationship:</label>
+                        <label>Relationship:</label>
                         <Editable
                             ajax={null}
                             alwaysEditing={false}
@@ -661,17 +661,17 @@ const PersonalInformation = (props) => {
                     <div className={classes.root}>
                         <List component="nav" aria-label="secondary mailbox folders">
                             <ListItem button>
-                                <ListItemText primary="driver's license" />
+                                <ListItemText primary="Driver's license" />
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    <Button>download</Button>
-                                    <Button>preview</Button>
+                                    <Button>Download</Button>
+                                    <Button>Preview</Button>
                                 </ButtonGroup>
                             </ListItem>
                             <ListItemLink href="#simple-list">
-                                <ListItemText primary="work authorization" />
+                                <ListItemText primary="Work authorization" />
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    <Button>download</Button>
-                                    <Button>preview</Button>
+                                    <Button>Download</Button>
+                                    <Button>Preview</Button>
                                 </ButtonGroup>
                             </ListItemLink>
                         </List>

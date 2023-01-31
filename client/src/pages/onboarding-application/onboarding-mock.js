@@ -176,7 +176,8 @@ export const json = {
       "name": "driver-license-upload",
       "visibleIf": "{have-driver-license} = true",
       "title": "Upload your driver license document",
-      "acceptedTypes": "application/pdf"
+      "acceptedTypes": "application/pdf",
+      "isRequired": true,
     },
     {
       "type": "panel",

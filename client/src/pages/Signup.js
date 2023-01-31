@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import styled from "styled-components";
 import * as yup from "yup";
 import { TextField, Button } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import { submitLogin } from '../redux/actions/index';
+import { submitSignup } from '../redux/actions/index';
 import { StyledSection, StyledForm, StyledStack, StyledA } from '../components/styled-components/login-register/login-register'
 
 const schema = yup.object({
@@ -28,31 +27,34 @@ const schema = yup.object({
       /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
       "Min 6 and Max 12 characters atleast one letter,one number and no special character"
     ),
+  confirmPassword: yup
+    .string()
+    .required("Confirm Password is Required")
+    .oneOf([yup.ref("password"), null], "Password doesn't match"),
 });
 
-const LoginForm = (props) => {
+const SignUpForm = (props) => {
   const [formData, setFormData] = useState(null);
   const [isCheck, setIsCheck] = useState(false);
-  const { submitLogin } = props;
+  console.log('props',props)
+  // const { name, email, password } = props.data;
+  const { submitSignup } = props;
 
   useEffect(() => {
-    (async function signIn() {
+    async function signUp() {
       if (formData) {
+        //Sigup API called
         try {
-          //login API called
-          const response = await submitLogin(formData);
-
-          //If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
-          // if(response.user.applicationStatus == 'APPROVED'){
-            props.history.push({pathname: '/personalInfor'})
-          // }else{
-            // props.history.push({pathname: '/onboardingApp'})
-          // }
+          const response = await submitSignup(formData);
+          console.log('response',response);
+          let { history } = props
+          history.push({pathname: '/Login'})
         } catch (err) {
           console.log(err);
         }
       }
-    })()
+    }
+    signUp();
   }, [formData]);
 
   const {
@@ -73,7 +75,7 @@ const LoginForm = (props) => {
 
   return (
     <StyledSection>
-      <h2>Login</h2>
+      <h2>Signup Page</h2>
       <StyledForm autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <StyledStack>
           <TextField
@@ -98,21 +100,28 @@ const LoginForm = (props) => {
             helperText={errors.password && errors.password.message}
             {...register("password")}
           />
-          {errors.checkbox && <p>{errors.checkbox.message}</p>}
+          <TextField
+            type="password"
+            error={!!errors.confirmPassword}
+            label="Confirm Password"
+            variant="outlined"
+            helperText={errors.confirmPassword && errors.confirmPassword.message}
+            {...register("confirmPassword")}
+          />
           <Button type="submit" variant="contained" fullWidth>
             Submit
           </Button>
         </StyledStack>
       </StyledForm>
       <h5>
-        <StyledA href="/signup">Click here to SignUp page</StyledA>
+          <StyledA href="/login">Click here to Login page</StyledA>
       </h5>
     </StyledSection>
   );
 };
 
-// export default Login;
+// export default SignUp;
 export default connect(
   null,
-  { submitLogin }
-)(LoginForm);
+  { submitSignup }
+)(SignUpForm);
