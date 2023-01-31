@@ -20,6 +20,7 @@ export const fetchEmployee = () => async dispatch => {
 export const submitLogin = values => async dispatch => {
   const { data } = await axios.post('/user/login', values);
   dispatch({ type: FETCH_EMPLOYEE, payload: data });
+  return data
 };
 
 export const submitLogout = values => async dispatch => {
