@@ -1,18 +1,19 @@
 const router = require('express').Router();
 const controllers = require('../controllers/inviteController');
 
+// HR will submit user data to this path
 router.post(
-	'/sendInvite',
+	'/invites/send',
 	// auth, // require user
 	// authHr, // require user.role === 'hr'
 	controllers.inviteNewEmployee
 );
 
-// router.post(
-	// '/sendNotification/:user',
-// 	// auth, // require user
-// 	// authHr, // require user.role === 'hr'
-// 	controllers.sendNot
-// );
+router.get(
+	'/invites/all',
+	// auth, // require user
+	// authHr, // require user.role === 'hr'
+	controllers.getAllInvites
+);
 
 module.exports = router;

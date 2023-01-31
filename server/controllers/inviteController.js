@@ -10,7 +10,7 @@ What do we need to do?
 		else:
 			create an Invite (with unique token), and send off the registration email
 
-  req.body === {email, firstName, middleName, lastName, preferredName}
+  req.body === {email, name: {firstName, middleName?, lastName, preferredName?}}
  */
 const inviteNewEmployee = catchAsync(async (req, res) => {
 	console.log('invite new employee: (requires auth and authHr)');
@@ -36,23 +36,21 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 			first: req.body.name.first,
 			last: req.body.name.first,
 		},
-		email: req.body.email
-	}
+		email: req.body.email,
+	};
 
 	// send the email to the req.body.email
-	const response = await emailService.sendEmail(data)
+	const response = await emailService.sendEmail(data);
 
 	return res.status(201).send({ invite, response });
 });
 
 
-
-//
-// 
-const sendNotification = catchAsync(async (req, res) => {
-
+const getAllInvites = catchAsync((req, res) => {
+	console.log('getting all invites');
+	// get all invites
+	const invites = inviteService.getAllInvites();
+	return res.status(200).send({invites});
 })
 
-
-
-module.exports = { inviteNewEmployee };
+module.exports = { inviteNewEmployee, getAllInvites };

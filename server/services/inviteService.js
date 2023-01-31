@@ -19,6 +19,8 @@ const getInvitesByPreferredName = (preferredName) =>
 
 const queryInvites = (filter) => Invite.find(filter);
 
+const getAllInvites = () => Invite.find();
+
 // get invites that are registered; or can pass in `false` to get unregistered invites
 const getInvitesByIsRegistered = (isRegistered = true) =>
 	Invite.find({ isRegistered: isRegistered });
@@ -115,4 +117,5 @@ module.exports = {
 	getInviteFromHeaders,
 	getInviteFromParams,
 	updateInviteById,
+	getAllInvites,
 };
