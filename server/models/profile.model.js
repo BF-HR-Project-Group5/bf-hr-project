@@ -38,6 +38,16 @@ const ProfileSchema = new Schema(
 		},
 		documents: [{type: refType, ref: 'Document'}],
 		feedback: {type: String},
+		emergencyContact: [{
+			name: {
+				first: {type: String, required: true},
+				last: {type: String, required: true},
+				middle: {type: String},
+			},
+			phone: {type: String},
+			email: {type: String},
+			relationship: {type: String},
+		}],
 
 		// overall application status
 		status: { type: String, enum: config.document.statuses, default: 'PENDING' },

@@ -13,8 +13,12 @@ const getUsersByMiddleName = async (middleName) =>
 const getUsersByPreferredName = async (preferredName) =>
 	User.find({ name: { preferred: caseInsensitiveRegex(preferredName) } });
 
-const queryUsers = async (filter) => User.find(filter);
-
+const queryUsers = async (filter) => {
+	return User.find(filter);
+	// const users = await User.find(filter);
+	// const unique = [... new Set(users)];
+	// return unique;
+}
 // searches first and last name? Assumes fullName === 'john doe'?
 // would be nice to filter first, middle, last, and preferred
 // so would need to build a big filter:
@@ -180,4 +184,5 @@ module.exports = {
 	getUserByIdAndPopulate,
 	putDocumentIdToUserId,
 	putHouseIdToUserId,
+	queryUsers,
 };

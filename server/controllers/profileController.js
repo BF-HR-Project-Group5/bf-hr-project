@@ -78,8 +78,30 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 // })
 
 
+const getAllProfiles = catchAsync(async (req, res) => {
+	console.log('getAllProfiles');
+
+	const users = await userService.queryUsers();
+	const populated = users.map(user => user.populate(['profile', 'invite', 'house']));
+	const results = (await Promise.allSettled(populated)).map(promise => promise.value);
+
+	console.log('should have everything populated in all users?:', {users, results});
+	return res.status(200).json({users: results})
+})
+
+
+
+const sendReminder = catchAsync(async (req, res) => {
+	console.log('sendReminder to userId');
+
+	return res.status(202).json({message: 'Success sending notification'});
+})
+
+
 module.exports = {
 	createProfile,
 	getProfile,
 	putUpdateProfile,
+	getAllProfiles,
+	sendReminder,
 };
