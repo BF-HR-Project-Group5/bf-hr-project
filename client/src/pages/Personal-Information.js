@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Navigation from '../components/navigation/navigation';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,6 +28,7 @@ const PersonalInformation = (props) => {
   const classes = useStyles();
   return (
     <>
+    <Navigation />
     <div className="container">
         <div className="row mt-3">
             <div className="col-12 mx-auto text-center">

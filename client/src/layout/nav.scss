@@ -1,0 +1,22 @@
+.profileLink{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
+    // background: white;
+    background-color: #282828;
+    width: 250px;
+    position: fixed;
+    right: 1px;
+    top: 113px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 10%), 0 2px 6px rgb(26 26 29 / 8%);
+    // color: #333;
+    color: #fff;
+  }
+
+.profileLink:hover{
+    background-color: #3E3E3E;
+}
