@@ -37,34 +37,34 @@ UserSchema.pre('save', async function (next) {
 
 	//only hash password if it's modified/new
 	if (!user.isModified('password')) return next();
-	console.log('middleware to hash password');
+	// console.log('middleware to hash password');
 
 	// hash password
 	try {
 		const hashResult = await bcrypt.hashPassword(user.password);
-		console.log('just before saving the password:', { hashResult });
+		// console.log('just before saving the password:', { hashResult });
 
 		// save the password
 		user.password = hashResult;
 		next();
 
 	} catch (error) {
-		console.log('hashPassword error:', { error });
+		// console.log('hashPassword error:', { error });
 		return next(error);
 	}
 });
 
 // used on the document, i.e. foundUser.isPasswordMatch(inputPassword)
 UserSchema.methods.isPasswordMatch = async function (password) {
-	console.log('~~running isPasswordMatch function:', {
-		currentPass: this.password,
-		submittedPass: password,
-	});
+	// console.log('~~running isPasswordMatch function:', {
+	// 	currentPass: this.password,
+	// 	submittedPass: password,
+	// });
 
 	try {
 		// compare old password with hashed submitted password:
 		const isMatching = await bcrypt.comparePassword(this.password, password);
-		console.log({ isMatching });
+		// console.log({ isMatching });
 		return Promise.resolve(isMatching);
 	} catch (error) {
 		console.log('Error comparing hashes:', { error });

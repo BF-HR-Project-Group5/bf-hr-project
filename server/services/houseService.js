@@ -12,7 +12,7 @@ const createHouse = async (houseBody) => {
 	}
 
 	const results = await Promise.all(promises);
-	console.log({ results });
+	// console.log({ results });
 
 	results.forEach((isTaken, index) => {
 		if (isTaken == true) {
@@ -71,6 +71,8 @@ const updateHouse = async (houseId, updateBody) => {
 		new: true,
 		runValidators: true,
 	});
+	// console.log({ house });
+
 	if (!house) {
 		throw { statusCode: 404, message: 'updateHouse: House not found' };
 	}
@@ -92,7 +94,7 @@ const deleteHouseById = async (houseId) => {
 	return house;
 };
 
-const addUserIdToHouseId = (houseId, userId) =>
+const addUserIdToHouseId = (userId, houseId) =>
 	updateHouse(houseId, {
 		$push: { roommates: userId },
 		$inc: { numResidents: 1 },
@@ -129,7 +131,7 @@ const assignUserIdToHouse = async (userId) => {
 	const foundHouse = await getHouseById(randomId);
 	console.log('foundHouse', foundHouse);
 
-	return addUserIdToHouseId(foundHouse._id, userId);
+	return addUserIdToHouseId(userId, foundHouse._id);
 };
 
 module.exports = {

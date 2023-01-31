@@ -78,7 +78,7 @@ const updateUserById = async (userId, updateBody) => {
 	}
 
 	const results = await Promise.allSettled(promises);
-	console.log({ results });
+	// console.log({ results });
 
 	results.forEach((promise, index) => {
 		console.log('this promise:', promise);

@@ -28,12 +28,11 @@ const InviteSchema = new Schema(
 );
 
 InviteSchema.pre('save', async function(next) {
-	console.log('inviteSchema pre-save: generate token');
 
 	// generate token and link
 	const token = crypto.randomBytes(16).toString('hex');
 	const link = `${config.frontendBaseUrl}/register/${token}`;
-	console.log('randomHex token:', token);
+	console.log('inviteSchema generated randomHex token:', token);
 
 	// save token and link
 	this.token = token;
