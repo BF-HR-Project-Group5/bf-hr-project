@@ -1,59 +1,75 @@
 First time registering/viewing webpage
 
-Receives invite email, Register page
-=> /user/register/{hexToken} (POST)
-	(creates user with {username, email, password})
-	(now logged in)
+Receives invite email, Register page {
+	=> /user/register/{hexToken} (POST)
+		(creates user with {username, email, password})
+		(now logged in)
+}
 
-log in page, when coming back
-=> /user/login (POST)
-	(username and/or email? + password)
-
-
-Sends you to Onboarding Application page
-(fill out application and submit first documents)
-=> /documents/create (POST) (create)
-	(uploads a document, i.e. work auth and/or license)
-=> /profile/create (after document is uploaded)
-	(creates a profile, with ALL the user data that they submit)
-
-(once submitted, show review status, prevent editing unless REJECTED)
-=> /profile/get? (after profile is saved/uploaded)
-	(get the profile, feedback, documents?)
+log in page, when coming back {
+	=> /user/login (POST)
+		(username and/or email? + password)
+}
 
 
-Can go to Personal Info page
-=> /profile/update (PUT)
-	(can update parts of the profile created earlier)
-=> /documents (GET)
-	(get all documents from the logged-in user, display with preview and download links)
+Sends you to Onboarding Application page {
+	(fill out application and submit first documents) {
+		=> /documents/create (POST) (create)
+			(uploads a document, i.e. work auth and/or license)
+			
+		=> /profile/create (after document is uploaded)
+			(creates a profile, with ALL the user data that they submit)
+	}
+
+	(once submitted, show review status, prevent editing unless REJECTED) {
+		=> /profile/get? (after profile is saved/uploaded)
+			(get the profile, feedback, documents?)
+	}
+}
 
 
-Visa Status Management page
-=> /profile/status ? (GET) ?? 
-or just get the profile with documents populated, and use frontend logic to figure out what's next
-	(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
+Can go to Personal Info page {
+	=> /profile/update (PUT)
+		(can update parts of the profile created earlier)
 
-need to be able to add next document if needed:
-=> /documents/upload (POST) (duplicate)
+	=> /documents (GET)
+		(get all documents from the logged-in user, display with preview and download links)
+}
 
 
-Housing page
-=> /house/get ? (GET)
-	(get details of the house the user is in)
-	(also gets facilityReports of that house, etc.)
+Visa Status Management page {
+	=> /profile/status ? (GET) ?? 
+	or just get the profile with documents populated, and use frontend logic to figure out what's next
+		(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 
-=> /house/report/create (POST)
-	(create a report for the house the user is in)
-=> /house/report/{report._id}/edit (PUT)
-=> /report/{report._id}/edit (PUT) (alternate)
-	(edit the base report)
-=> /house/report/{report._id}/comment (POST)
-=> /report/{report._id}/comment (POST) (alternate)
-	(add comment to the given report)
-=> /house/report/{report._id}/comment/edit (PUT)
-=> /report/{report._id}/comment/edit (PUT) (alternate)
-	(edit comments from the user?)
+	need to be able to add next document if needed:
+	=> /documents/upload (POST) (duplicate)
+}
+
+
+Housing page: {
+	=> /house/get ? (GET)
+		(get details of the house the user is in)
+		(also gets facilityReports of that house, etc.)
+
+	=> /house/report/create (POST)
+		(create a report for the house the user is in)
+
+	=> /house/report/{report._id}/edit (PUT)
+
+	=> /report/{report._id}/edit (PUT) (alternate)
+		(edit the base report)
+
+	=> /house/report/{report._id}/comment (POST)
+
+	=> /report/{report._id}/comment (POST) (alternate)
+		(add comment to the given report)
+
+	=> /house/report/{report._id}/comment/edit (PUT)
+
+	=> /report/{report._id}/comment/edit (PUT) (alternate)
+		(edit comments from the user?)
+}
 
 
 
@@ -62,66 +78,86 @@ Housing page
 
 HR users:
 
-Employee Profiles Page: 
-=> /profile/all (GET) 
-( get all users, and populate profiles, and send everything)
-	(get each profile "summary")
-Link to their profile page
-=> /profile/${user._id} (GET)
-	(get one profile)
-	(using user._id rather than profile._id because User schema is the base)
-=> /profile?search="some name search" (GET)
-	(return ALL user profiles filtered by search query)
+Employee Profiles Page: {
+	=> /profile/all (GET) 
+	( get all users, and populate profiles, and send everything)
+		(get each profile "summary")
+
+	Link to their profile page
+	=> /profile/${user._id} (GET)
+		(get one profile)
+		(using user._id rather than profile._id because User schema is the base)
+
+	=> /profile?search="some name search" (GET)
+		(return ALL user profiles filtered by search query)
+}
 
 
-Visa Status Management page:
-=> /profile/visa (GET)
-	(get all user profiles with visa status)
-=> /profile/visa?search="some name search" (GET)
-	(return visa status user profiles filtered by query)
-	(can filter IN PROGRESS vs ALL on the client side ??)
-=> /profile/${user._id}/sendReminder (GET or POST ?)
-	(send a reminder to that user._id of their next step)
-=> /document/${document._id}/approve (GET or POST ?)
-	(tell server to approve the document._id)
-=> /document/${document._id}/reject (POST)
-	(takes body: {feedback} in the post request)
+Visa Status Management page: {
+	=> /profile/visa (GET)
+		(get all user profiles with visa status)
+
+	=> /profile/visa?search="some name search" (GET)
+		(return visa status user profiles filtered by query)
+		(can filter IN PROGRESS vs ALL on the client side ??)
+
+	=> /profile/${user._id}/sendReminder (GET or POST ?)
+		(send a reminder to that user._id of their next step)
+
+	=> /document/${document._id}/approve (GET or POST ?)
+		(tell server to approve the document._id)
+
+	=> /document/${document._id}/reject (POST)
+		(takes body: {feedback} in the post request)
+}
 
 
 
-Hiring Management Page:
-(onboarding application review)
-=> /profile/all (GET) (duplicate)
-	(get all profiles, display 3 tabs for the different statuses)
-	(PENDING | REJECTED | APPROVED)
-	(shows a summary by default)
-	(client-side filter by status)
-=> /profile/${user._id} (GET)
-	(for opening the profile in a new tab)
 
-(registration tokens)
-=> /invites/all (GET)
-	(get all invites)
-=> /invites/{user._id}/send (POST) 
-	(send an invite with the data)
-	({email, firstName, lastName, middleName?, preferredName?})
+Hiring Management Page:{
+	(onboarding application review) {
+		=> /profile/all (GET) (duplicate)
+			(get all profiles, display 3 tabs for the different statuses)
+			(PENDING | REJECTED | APPROVED)
+			(shows a summary by default)
+			(client-side filter by status)
 
+		=> /profile/${user._id} (GET)
+			(for opening the profile in a new tab)
+	}
 
-Housing Management Page:
-=> /house/all (GET)
-=> /house/{house._id} (GET)
-	(get house, populate facility reports, populate employees/roommates)
-=> /house/create (POST)
-=> /house/{house._id}/edit (PUT)
-=> /house/{house._id}/delete (DELETE)
+	(registration tokens) {
+		=> /invites (GET)
+			(get all invites)
 
-=> /facilityReport/{facilityReport._id}/edit (PUT)
-	(changing the status)
+		=> /invites/send (POST) 
+			(send an invite with the data)
+			({email, name: {first, last, middle?, preferred?}})
+	}
+}
 
-=> facilityReport/{facilityReport._id}/comment/add (POST)
-=> /facilityReport/{facilityReport._id}/comment/{comment._id}/edit (PUT)
-=> /facilityReport/{facilityReport._id}/comment/{comment._id}/delete (DELETE)
+Housing Management Page: {
+	=> /house/all (GET)
 
-might not need this, HR cannot add report to a house, they can only comment on existing report
-=> /house/{house._id}/facilityReport/{facilityReport._id}/comment/add (POST) 
-	(needs house id ? )
+	=> /house/{house._id} (GET)
+		(get house, populate facility reports, populate employees/roommates)
+
+	=> /house/create (POST)
+	
+	=> /house/{house._id}/edit (PUT)
+
+	=> /house/{house._id}/delete (DELETE)
+
+	=> /facilityReport/{facilityReport._id}/edit (PUT)
+		(changing the status)
+
+	=> facilityReport/{facilityReport._id}/comment/add (POST)
+
+	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/edit (PUT)
+
+	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/delete (DELETE)
+
+	might not need this, HR cannot add report to a house, they can only comment on existing report
+	=> /house/{house._id}/facilityReport/{facilityReport._id}/comment/add (POST) 
+		(needs house id ? )
+}
