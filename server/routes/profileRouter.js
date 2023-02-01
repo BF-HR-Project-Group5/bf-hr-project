@@ -8,7 +8,7 @@ router.get(
 	// auth // require user
 	controllers.getProfile
 	);
-router.post(
+router.post( // checked
 	'/profile/create',
 	// auth // require user
 	controllers.createProfile

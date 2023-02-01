@@ -3,14 +3,14 @@ const controllers = require('../controllers/documentController');
 
 // user routes
 // user create document
-router.post(
-	'/documents/create',
+router.post(  // checked
+	'/document/create',
 	// auth // require user
 	controllers.createDocument
 	);
 	// user get their documents
-router.get(
-	'/documents',
+router.get( // 
+	'/document',
 	// auth // require user
 	controllers.getAllDocumentsFromUser
 	);

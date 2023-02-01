@@ -20,6 +20,10 @@ const createProfile = catchAsync(async (req, res) => {
 	const userId = req.user._id;
 	const name = req.body.name; // grab name object from body
 
+	// maybe need to save document here!
+	// s3Service.upload...
+	// documentService.create...
+
 	// create profile
 	const profile = await profileService.createProfile(req.body);
 
