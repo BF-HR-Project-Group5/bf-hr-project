@@ -7,12 +7,13 @@ const { createHouse } = require('../validations/house.validation');
 // console.log("house router")
 
 // router.get('/house', controllers.index);
-router.post('/house/createHouse', 
+router.post('/house/create', 
 // validate(createHouse), 
 controllers.createHouse);
-router.get('/house/allHouses', controllers.getAllHouses);
+router.get('/house/all', controllers.getAllHouses);
 router.get('/house/:id', controllers.getHouse);
-router.put('/house/:id',controllers.updateHouse);
-router.delete('/house/:id',controllers.deleteHouse);
-router.use('/house/:houseId/facility', facilityRouter)
+router.put('/house/:id/edit',controllers.updateHouse);
+router.delete('/house/:id/delete',controllers.deleteHouse);
+// NOT TESTED
+router.use('/house/:houseId/facilityReport._id', facilityRouter);
 module.exports = router;

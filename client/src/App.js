@@ -8,14 +8,16 @@ const PersonalInfor = lazy(() => import('./pages/Personal-Information'));
 
 function App(props) {
   return (
-    <BrowserRouter>
+  
+      <BrowserRouter>
         <Suspense fallback={null}>
           <Switch>
-              <Route path="/login" exact component={Login} />
-              <Route path="/PersonalInfor" exact component={PersonalInfor} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/PersonalInfor" exact component={PersonalInfor} />
           </Switch>
         </Suspense>
-    </BrowserRouter>
+      </BrowserRouter>
+
   );
 }
 
