@@ -1,11 +1,11 @@
-const { config } = require( '../config/constants' );
+const { config } = require('../config/constants');
 const Profile = require('../models/profile.model');
 const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
-	const isNotVisa = profileBody.workAuth.title !== 'VISA'
+	const isNotVisa = profileBody.workAuth.title !== 'VISA';
 	if (isNotVisa) {
 		// is citizen or green card
 		// complete with documents
@@ -22,7 +22,6 @@ const createProfile = async (profileBody) => {
 			const stepString = config.application.steps[nextStepInt];
 			profileBody.currentStepInt = stepInt;
 			profileBody.currentStep = stepString;
-
 		} else {
 			// they uploaded an OPT receipt
 			profileBody.currentStepInt = 0;
@@ -31,7 +30,6 @@ const createProfile = async (profileBody) => {
 	}
 	return Profile.create(profileBody);
 };
-
 
 // can update the entire body, including adding a license or document.
 const updateProfileById = async (profileId, updateBody) => {
@@ -55,7 +53,7 @@ const addDocumentIdToProfileId = async (docId, profileId) => {
 	profile.documents.push(docId);
 	await profile.save();
 	return profile;
-}
+};
 
 // not really needed? can happen in the updateProfileById or createProfile
 const addLicenseIdToProfileId = async (licenseId, profileId) => {
@@ -67,15 +65,12 @@ const addLicenseIdToProfileId = async (licenseId, profileId) => {
 	profile.license.link = licenseId;
 	await profile.save();
 	return profile;
-}
+};
 
-
-const approveProfileId = async (profileId) => updateProfileById(profileId, {status: 'APPROVED'});
-const rejectProfileId = async (profileId) => updateProfileById(profileId, {status: 'REJECTED'});
-const rejectProfileIdWithFeedback = async (profileId, feedback) => updateProfileById(profileId, {status:'REJECTED', feedback});
-
-
-
+const approveProfileId = async (profileId) => updateProfileById(profileId, { status: 'APPROVED' });
+const rejectProfileId = async (profileId) => updateProfileById(profileId, { status: 'REJECTED' });
+const rejectProfileIdWithFeedback = async (profileId, feedback) =>
+	updateProfileById(profileId, { status: 'REJECTED', feedback });
 
 // can get user and populate 'Documents', etc.
 const getProfileByIdAndPopulate = async (profileId) => {
@@ -92,25 +87,27 @@ const getProfileByIdAndPopulate = async (profileId) => {
 	return profile;
 };
 
-
 // figure out what the "next step" is for documents
 const getNextStepForProfileId = async (profileId) => {
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
 	}
-	
+
 	// return the nextStep for the profile.currentStep
 	const currentStep = profile.currentStep;
 	return config.application.nextSteps[currentStep];
-}
+};
 
 const putStepToNextForProfileId = async (profileId) => {
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'putStepToNextForProfileId: Profile not found' };
 	}
-	
+	const isAlreadyComplete = profile.currentStepInt === config.application.steps.length - 1;
+	if (isAlreadyComplete) return profile;
+
+	// if NOT already complete...
 	// get int of current (previous) step
 	const currentStepInt = profile.currentStepInt;
 	// get next int, get next step string
@@ -122,8 +119,7 @@ const putStepToNextForProfileId = async (profileId) => {
 	profile.currentStepInt = nextStepInt;
 	await profile.save();
 	return profile;
-}
-
+};
 
 module.exports = {
 	getProfileById,
