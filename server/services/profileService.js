@@ -1,11 +1,37 @@
+const { config } = require( '../config/constants' );
 const Profile = require('../models/profile.model');
 const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
+	const isNotVisa = profileBody.workAuth.title !== 'VISA'
+	if (isNotVisa) {
+		// is citizen or green card
+		// complete with documents
+		const stepInt = config.application.steps.length - 1;
+		const stepString = config.application.steps[nextStepInt];
+		profileBody.currentStepInt = stepInt;
+		profileBody.currentStep = stepString;
+	} else {
+		const isNotOPT = profileBody?.document?.type === config.document.types[0];
+		if (isNotOPT) {
+			// they uploaded something other than OPT receipt
+			// complete with documents
+			const stepInt = config.application.steps.length - 1;
+			const stepString = config.application.steps[nextStepInt];
+			profileBody.currentStepInt = stepInt;
+			profileBody.currentStep = stepString;
+
+		} else {
+			// they uploaded an OPT receipt
+			profileBody.currentStepInt = 0;
+			profileBody.currentStep = config.application.steps[0];
+		}
+	}
 	return Profile.create(profileBody);
 };
+
 
 // can update the entire body, including adding a license or document.
 const updateProfileById = async (profileId, updateBody) => {
@@ -95,6 +121,19 @@ const getNextStepForProfileId = async (profileId) => {
 
 	// need to populate the documents
 	const documents = profile.documents;
+
+	// documents on the profile
+	// should be one of config.document.types
+	console.log({documents});
+
+	// if  workAuth.title is CITIZEN || GREEN CARD:
+	// then the next step is all complete
+	const isNotVisaStatus = profile.workAuth.title !== 'VISA';
+	if (isNotVisaStatus) {
+		profile.nextStep = config.document.types[8];
+	}
+
+	//
 
 }
 
