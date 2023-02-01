@@ -9,7 +9,7 @@ const inviteService = require('../services/inviteService');
 // const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
-const { objectValuesToRegex } = require( '../utils/regexHelpers' );
+const { objectValuesToRegex } = require('../utils/regexHelpers');
 
 // already logged in, so we have req.user
 // this needs to update the profile, and update the user.name
@@ -80,12 +80,14 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 	return res.status(200).json({ user, profile });
 });
 
-// // what to return...
-// // just get the profile and use frontend logic to check the documents and statuses
-const getProfileStatus = catchAsync(async (req, res) => {
+// the user gets their profile status AKA next step
+const getProfileNextStep = catchAsync(async (req, res) => {
 	// get the profile, get the user
-	// const thisProfile = 
-})
+	const userId = req.user._id;
+	const user = await userService.getUserById(userId);
+	const nextStep = await profileService.getNextStepForProfileId(user.profile._id);
+	return res.status(200).json({nextStep});
+});
 
 // should be auth and authHr protected
 const getAllProfiles = catchAsync(async (req, res) => {
@@ -108,7 +110,7 @@ const getProfileById = catchAsync(async (req, res) => {
 
 	// return early if no profile
 	if (!user.profile) {
-		return res.status(200).json({user });
+		return res.status(200).json({ user });
 	}
 
 	// find profile and populate documents
@@ -119,15 +121,14 @@ const getProfileById = catchAsync(async (req, res) => {
 	return res.status(200).json({ user });
 });
 
-
-const getAllVisaProfiles = catchAsync( async (req, res) => {
+const getAllVisaProfiles = catchAsync(async (req, res) => {
 	console.log('get all Visa profiles');
 
-	const foundUsers = await userService.getAllVisaUsers()
-	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-})
+	const foundUsers = await userService.getAllVisaUsers();
+	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
+});
 
-// // use search query 
+// // use search query
 // const queryProfiles = catchAsync(async (req, res) => {
 // 	console.log('querying profiles:', { query: req.query });
 // 	const filter = pick(req.query, ['search']);
@@ -135,13 +136,11 @@ const getAllVisaProfiles = catchAsync( async (req, res) => {
 // 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
 // });
 
-
 // // req.query.search === 'some full name'
 // const queryVisaProfiles = catchAsync( async (req, res) => {
 // 	console.log('querying Visa profiles:', { query: req.query });
 // 	const picked = pick(req.query, ['search']);
 // 	// const filter = objectValuesToRegex(picked);
-	
 
 // 	// get users based on name filter, and populate fields
 // 	const foundUsers = await userService.queryVisaUsers(picked);
@@ -153,16 +152,27 @@ const getAllVisaProfiles = catchAsync( async (req, res) => {
 // get the next step
 // send the email
 const sendReminderToProfile = catchAsync(async (req, res) => {
-	console.log('sendReminder to userId:', {reqBody: req.body});
+	console.log('sendReminder to userId:', { reqBody: req.body });
 	const userId = req.params.userId;
+	// get user, and profile id
+	const user = await userService.getUserById(userId);
 
 	// TODO:
 	// get next step for this user
+	const nextSteps = profileService.getNextStepForProfileId(user?.profile);
+	console.log({ nextSteps });
+	// example:
+	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
 
 	// TODO:
-	// emailService.sendNotification(user.email, nextStep)
+	const data = {
+		name: { first: user.name.first, last: user.name.last },
+		email: user.email,
+		nextStep: nextSteps.user,
+	};
+	emailService.sendReminder(data);
 	return res.status(202).json({ message: `Notification sent to ${user.email}` });
-})
+});
 
 module.exports = {
 	createProfile,
@@ -174,4 +184,5 @@ module.exports = {
 	// queryProfiles,
 	// queryVisaProfiles,
 	sendReminderToProfile,
+	getProfileNextStep,
 };
