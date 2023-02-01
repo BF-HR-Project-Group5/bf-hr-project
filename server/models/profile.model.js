@@ -10,7 +10,7 @@ const ProfileSchema = new Schema(
 	{
 		ssn: { type: Number, required: true },
 		dateOfBirth: {type: Date},
-		gender: {type: String, enum: ['MALE' | 'FEMALE' | 'NO_RESPONSE']},
+		gender: {type: String, enum: config.application.genders},
 		address: {
 			line1: { type: String, required: true },
 			line2: { type: String },
@@ -41,7 +41,7 @@ const ProfileSchema = new Schema(
 		documents: [{type: refType, ref: 'Document'}],
 		feedback: {type: String},
 		currentStepInt: {type: Number, default: 0},
-		currentStep: {type: String},
+		currentStep: {type: String, enum: config.application.steps, default: config.application.steps[0]},
 		emergencyContact: [{
 			name: {
 				first: {type: String, required: true},

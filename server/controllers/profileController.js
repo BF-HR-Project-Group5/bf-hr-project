@@ -133,19 +133,43 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 
-// // use search query
-// const queryProfiles = catchAsync(async (req, res) => {
-// 	console.log('querying profiles:', { query: req.query });
-// 	const filter = pick(req.query, ['search']);
-// 	const foundUsers = await userService.queryUsersAndPopulate(filter);
-// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-// });
 
-// // req.query.search === 'some full name'
+	// what do I want to do?
+	// Maybe something like this:
+	// return any result where:
+	// 	queryString.includes name.first
+	// 	queryString.includes name.last
+	// etc
+
+	// more complex:
+	// return any results where:
+	// queryString.split(' ') each word regex
+	// check each name field against each regex word
+
+	// so I could make different queries for each word regex
+	//or for every option
+	// User.find({name: {first: {$regex: regexWords[0]}}})
+	// User.find({name: {first: {$regex: regexWords[1]}}})
+	// User.find({name: {first: {$regex: regexWords[2]}}})
+	// User.find({name: {last: {$regex: regexWords[0]}}})
+	// ...
+
+// // use search query
+const queryProfiles = catchAsync(async (req, res) => {
+	console.log('querying profiles:', { query: req.query });
+	const {search: nameString} = pick(req.query, ['search']);
+	console.log({nameString});
+	const foundUsers = await userService.queryUsersAndPopulate(nameString);
+	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+});
+
+// req.query.search === 'some full name'
 // const queryVisaProfiles = catchAsync( async (req, res) => {
 // 	console.log('querying Visa profiles:', { query: req.query });
 // 	const picked = pick(req.query, ['search']);
 // 	// const filter = objectValuesToRegex(picked);
+// 	console.log({picked});
+
 
 // 	// get users based on name filter, and populate fields
 // 	const foundUsers = await userService.queryVisaUsers(picked);
@@ -183,7 +207,7 @@ module.exports = {
 	putUpdateProfile,
 	getAllProfiles,
 	getAllVisaProfiles,
-	// queryProfiles,
+	queryProfiles,
 	// queryVisaProfiles,
 	sendReminderToProfile,
 	getProfileNextStep,

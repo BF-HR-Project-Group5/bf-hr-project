@@ -10,7 +10,7 @@ const createProfile = async (profileBody) => {
 		// is citizen or green card
 		// complete with documents
 		const stepInt = config.application.steps.length - 1;
-		const stepString = config.application.steps[nextStepInt];
+		const stepString = config.application.steps[stepInt];
 		profileBody.currentStepInt = stepInt;
 		profileBody.currentStep = stepString;
 	} else {
@@ -19,7 +19,7 @@ const createProfile = async (profileBody) => {
 			// they uploaded something other than OPT receipt
 			// complete with documents
 			const stepInt = config.application.steps.length - 1;
-			const stepString = config.application.steps[nextStepInt];
+			const stepString = config.application.steps[stepInt];
 			profileBody.currentStepInt = stepInt;
 			profileBody.currentStep = stepString;
 		} else {

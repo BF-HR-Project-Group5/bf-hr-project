@@ -92,11 +92,16 @@ const seedHouses = async (count) => {
 	return results;
 };
 
+const GENDERS = ['MALE', 'FEMALE', 'NO_RESPONSE'];
+const WORK_AUTH_TITLES = ['CITIZEN', 'GREEN_CARD', 'VISA'];
+
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
 	for (let i = 0; i < count; i++) {
 		const data = {
 			ssn: Number(`99999999${i}`),
+			dateOfBirth: new Date(),
+			gender: GENDERS[i % 3],
 			address: {
 				line1: `addressLine1_${i}`,
 				line2: `addressLine2_${i}`,
@@ -105,9 +110,9 @@ const seedProfiles = async (count, documents) => {
 				zipcode: `55555(-5555)${i}`,
 			},
 			workAuth: {
-				title: (i % 2 === 0) ? 'VISA' : 'CITIZEN',
-				startDate: '',
-				endDate: '',
+				title: WORK_AUTH_TITLES[i%3],
+				startDate: new Date(),
+				endDate: new Date(),
 				daysRemaining: 99,
 			},
 			car: {

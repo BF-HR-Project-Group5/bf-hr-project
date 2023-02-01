@@ -59,11 +59,11 @@ router.get( // checked
 );
 
 // query profiles
-// router.get( // checked
-// 	'/profiles/',
-// 	// auth, authHr,
-// 	controllers.queryProfiles
-// );
+router.get( // checked
+	'/profiles/',
+	// auth, authHr,
+	controllers.queryProfiles
+);
 
 
 

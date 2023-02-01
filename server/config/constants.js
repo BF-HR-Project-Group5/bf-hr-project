@@ -32,6 +32,8 @@ exports.config = {
 	application: {
 		statuses: statusEnum,
 
+		genders: ['MALE' , 'FEMALE' , 'NO_RESPONSE'],
+
 		// for "Next Step"
 		steps: [
 			'OPT_RECEIPT_WAITING', // uploaded, next step is wait for approval

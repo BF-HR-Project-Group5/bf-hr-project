@@ -169,34 +169,49 @@ const getAllVisaUsers = async () => {
 // };
 
 
-const queryUsersAndPopulate = async (filter) => { 
-	const names = filter.search.split(' ').map(each => caseInsensitiveRegex(each));
+const queryUsersAndPopulate = async (nameString) => { 
+	const names = nameString.split(' ').map(word => caseInsensitiveRegex(word));
+	console.log({names});
 	// array of regex strings
 	const promises = [];
-	names.forEach(name => {
-		console.log({name});
+	names.forEach(regexName => {
+		console.log({regexName});
 		promises.push(
-			User.find({
-				$or: [
-					// {name: {first: {$regex: name}}},
-					// {name: {middle: {$regex: name}}},
+			User.find(
+					{name: {first: regexName}},
+			).populate(['profile, invite, house'])
+		);
+		promises.push(
+			User.find(
 					// {name: {last: {$regex: name}}},
-					// {name: {preferred: {$regex: name}}},
-
-					{'name.first': {$regex: name}},
-					{'name.middle': {$regex: name}},
-					{'name.last': {$regex: name}},
-					{'name.preferred':{$regex: name}},
-				]
-			}).populate(['profile, invite, house'])
-		)
+					{name: {last: regexName}},
+			).populate(['profile, invite, house'])
+		);
+		promises.push(
+			User.find(
+					{name: {middle: regexName}},
+			).populate(['profile, invite, house'])
+		);
+		promises.push(
+			User.find(
+					{name: {preferred: regexName}},
+			).populate(['profile, invite, house'])
+		);
 	})
-	const results = (await Promise.allSettled(promises)).map(each => each.value);
-	console.log({results});
+	const promiseResults = await Promise.allSettled(promises);
+	console.log({promiseResults});
+	const results = promiseResults.map(each => each.value);
+	console.log('resolved promises:', {results});
+
+	// take the results array (which is an array of userResultsArrays)
+	// and concat them all into one new array
 	const all = results.reduce((accum, current) => {
 		accum.concat(current);
 	}, []);
+	console.log({all});
+	// turn into a set and back into an array, so now all items are unique
 	const unique = [...new Set(all)];
+	console.log({unique})
 	return unique;
 }
 
