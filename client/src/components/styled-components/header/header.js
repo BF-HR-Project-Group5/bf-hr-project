@@ -5,7 +5,7 @@ export const HeaderWrapper = styled.header`
   box-shadow: 0 2px 9px rgba(0, 0, 0, 0.05);
 `;
 export const Nav = styled.nav`
-  width: 80%;
+  // width: 80%;
   margin: auto;
   padding: 14px;
   display: flex;
