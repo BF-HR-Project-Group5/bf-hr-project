@@ -10,7 +10,8 @@ const VisaStatus = lazy(() => import('./pages/Visa-Status'));
 
 function App(props) {
   return (
-    <BrowserRouter>
+  
+      <BrowserRouter>
         <Suspense fallback={null}>
           <Switch>
               <Route path="/signup" exact component={SignUp} />
@@ -20,7 +21,8 @@ function App(props) {
               <Route path="/visaStatus" exact component={VisaStatus} />
           </Switch>
         </Suspense>
-    </BrowserRouter>
+      </BrowserRouter>
+
   );
 }
 

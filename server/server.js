@@ -12,6 +12,7 @@ require('dotenv').config();
 // use cors
 // app.use(cors({origin: true, credentials: true }))
 
+
 app.use(cookieParser());
 app.use('/', express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +31,7 @@ app.use('/', routes.inviteRouter);
 // app.use('/', routes.userRouter);
 app.use('/', routes.facilityRouter);
 // app.use('/', routes.documentRouter);
+app.use('/', routes.s3Router);
 app.use('/', routes.profileRouter);
 
 
