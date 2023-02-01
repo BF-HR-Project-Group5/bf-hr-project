@@ -155,26 +155,30 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 	// ...
 
 // // use search query
+// const queryProfiles = catchAsync(async (req, res) => {
+// 	console.log('querying profiles:', { query: req.query });
+// 	const {search: nameString} = pick(req.query, ['search']);
+// 	console.log({nameString});
+// 	const foundUsers = await userService.queryUsersAndPopulate(nameString);
+// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+// });
+
 const queryProfiles = catchAsync(async (req, res) => {
 	console.log('querying profiles:', { query: req.query });
 	const {search: nameString} = pick(req.query, ['search']);
 	console.log({nameString});
-	const foundUsers = await userService.queryUsersAndPopulate(nameString);
+	const foundUsers = await userService.queryUsersByFullNameAndPopulate(nameString);
 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
 });
 
 // req.query.search === 'some full name'
-// const queryVisaProfiles = catchAsync( async (req, res) => {
-// 	console.log('querying Visa profiles:', { query: req.query });
-// 	const picked = pick(req.query, ['search']);
-// 	// const filter = objectValuesToRegex(picked);
-// 	console.log({picked});
-
-
-// 	// get users based on name filter, and populate fields
-// 	const foundUsers = await userService.queryVisaUsers(picked);
-// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-// })
+const queryVisaProfiles = catchAsync(async (req, res) => {
+	console.log('querying profiles:', { query: req.query });
+	const {search: nameString} = pick(req.query, ['search']);
+	console.log({nameString});
+	const foundUsers = await userService.queryVisaUsersByFullNameAndPopulate(nameString);
+	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+});
 
 // take param for profile
 // get the user
@@ -208,7 +212,7 @@ module.exports = {
 	getAllProfiles,
 	getAllVisaProfiles,
 	queryProfiles,
-	// queryVisaProfiles,
+	queryVisaProfiles,
 	sendReminderToProfile,
 	getProfileNextStep,
 };
