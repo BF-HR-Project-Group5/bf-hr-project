@@ -6,6 +6,7 @@ const {
 const userService = require('../services/userService');
 const profileService = require('../services/profileService');
 const inviteService = require('../services/inviteService');
+const emailService = require('../services/emailService');
 // const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
@@ -156,19 +157,16 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 // get the next step
 // send the email
 const sendReminderToProfile = catchAsync(async (req, res) => {
-	console.log('sendReminder to userId:', { reqBody: req.body });
+	console.log('sendReminder to userId:', { reqParam: req.params });
 	const userId = req.params.userId;
 	// get user, and profile id
 	const user = await userService.getUserById(userId);
 
-	// TODO:
-	// get next step for this user
-	const nextSteps = profileService.getNextStepForProfileId(user?.profile);
+	let nextSteps = await profileService.getNextStepForProfileId(user?.profile);
 	console.log({ nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
-
-	// TODO:
+	
 	const data = {
 		name: { first: user.name.first, last: user.name.last },
 		email: user.email,
