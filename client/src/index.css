@@ -16,3 +16,7 @@ body {
 a {
   text-decoration: none;
 }
+
+.container{
+  padding: 20px;
+}

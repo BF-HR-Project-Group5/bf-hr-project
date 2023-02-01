@@ -121,7 +121,6 @@ const VisaStatus = (props) => {
     );
 }
 
-// export default PersonalInformation;
 const mapStateToProps = ({ auth }) => ({
     auth
 });

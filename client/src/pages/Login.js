@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import styled from "styled-components";
 import * as yup from "yup";
 import { TextField, Button } from '@material-ui/core';
 import React, { useState, useEffect } from "react";
@@ -44,7 +43,7 @@ const LoginForm = (props) => {
 
           //If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
           // if(response.user.applicationStatus == 'APPROVED'){
-            props.history.push({pathname: '/visaStatus'})
+            props.history.push({pathname: '/housing'})
           // }else{
             // props.history.push({pathname: '/onboardingApp'})
           // }

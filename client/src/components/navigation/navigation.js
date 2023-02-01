@@ -27,7 +27,7 @@ function Navigation({ auth }) {
           <Nav>
             <Link to="/">
               <Title>
-                <Logo src="assets/logo.png"/>
+                <Logo src="/assets/logo.png"/>
               </Title>
             </Link>
             <>
