@@ -132,4 +132,5 @@ module.exports = {
 	rejectProfileId,
 	rejectProfileIdWithFeedback,
 	getNextStepForProfileId,
+	putStepToNextForProfileId,
 };
