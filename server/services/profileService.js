@@ -45,12 +45,6 @@ const updateProfileById = async (profileId, updateBody) => {
 	return profile;
 };
 
-
-// add documentId to profileId
-// add license document
-// remove documentId from profileId??
-// change status
-
 // for when visa status employees need to add more documents later on
 const addDocumentIdToProfileId = async (docId, profileId) => {
 	const profile = await getProfileById(profileId);
@@ -118,23 +112,10 @@ const getNextStepForProfileId = async (profileId) => {
 	if (!profile) {
 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
 	}
-
-	// need to populate the documents
-	const documents = profile.documents;
-
-	// documents on the profile
-	// should be one of config.document.types
-	console.log({documents});
-
-	// if  workAuth.title is CITIZEN || GREEN CARD:
-	// then the next step is all complete
-	const isNotVisaStatus = profile.workAuth.title !== 'VISA';
-	if (isNotVisaStatus) {
-		profile.nextStep = config.document.types[8];
-	}
-
-	//
-
+	
+	// return the nextStep for the profile.currentStep
+	const currentStep = profile.currentStep;
+	return config.application.nextSteps[currentStep];
 }
 
 
