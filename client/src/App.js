@@ -1,12 +1,12 @@
-import React, { Suspense, lazy, Fragment } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { browserHistory, Router } from 'react-router'
 
 const Login = lazy(() => import('./pages/Login'));
 const SignUp = lazy(() => import('./pages/Signup'));
 const PersonalInfor = lazy(() => import('./pages/Personal-Information'));
 const OnboardingApp = lazy(() => import('./pages/onboarding-application/onboarding-index'));
+const VisaStatus = lazy(() => import('./pages/Visa-Status'));
 
 function App(props) {
   return (
@@ -17,6 +17,7 @@ function App(props) {
               <Route path="/login" exact component={Login} />
               <Route path="/personalInfor" exact component={PersonalInfor} />
               <Route path="/onboardingApp" exact component={OnboardingApp} />
+              <Route path="/visaStatus" exact component={VisaStatus} />
           </Switch>
         </Suspense>
     </BrowserRouter>

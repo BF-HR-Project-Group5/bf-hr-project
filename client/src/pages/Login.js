@@ -44,7 +44,7 @@ const LoginForm = (props) => {
 
           //If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
           // if(response.user.applicationStatus == 'APPROVED'){
-            props.history.push({pathname: '/personalInfor'})
+            props.history.push({pathname: '/visaStatus'})
           // }else{
             // props.history.push({pathname: '/onboardingApp'})
           // }
@@ -104,9 +104,6 @@ const LoginForm = (props) => {
           </Button>
         </StyledStack>
       </StyledForm>
-      <h5>
-        <StyledA href="/signup">Click here to SignUp page</StyledA>
-      </h5>
     </StyledSection>
   );
 };
