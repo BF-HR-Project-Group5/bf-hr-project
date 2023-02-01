@@ -70,19 +70,6 @@ const addLicenseIdToProfileId = async (licenseId, profileId) => {
 }
 
 
-
-// // no need to export this one
-// const changeStatusOfProfileId = async (profileId, status) => {
-// 	const profile = await getProfileById(profileId);
-// 	if (!profile) {
-// 		throw { statusCode: 404, message: 'changeStatusOfProfileId: Profile not found' };
-// 	}
-
-// 	profile.status = status;
-// 	await profile.save();
-// 	return profile;
-// }
-
 const approveProfileId = async (profileId) => updateProfileById(profileId, {status: 'APPROVED'});
 const rejectProfileId = async (profileId) => updateProfileById(profileId, {status: 'REJECTED'});
 const rejectProfileIdWithFeedback = async (profileId, feedback) => updateProfileById(profileId, {status:'REJECTED', feedback});
@@ -108,7 +95,7 @@ const getProfileByIdAndPopulate = async (profileId) => {
 
 // figure out what the "next step" is for documents
 const getNextStepForProfileId = async (profileId) => {
-	const profile = await getProfileByIdAndPopulate(profileId);
+	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
 	}
@@ -116,6 +103,25 @@ const getNextStepForProfileId = async (profileId) => {
 	// return the nextStep for the profile.currentStep
 	const currentStep = profile.currentStep;
 	return config.application.nextSteps[currentStep];
+}
+
+const putStepToNextForProfileId = async (profileId) => {
+	const profile = await getProfileById(profileId);
+	if (!profile) {
+		throw { statusCode: 404, message: 'putStepToNextForProfileId: Profile not found' };
+	}
+	
+	// get int of current (previous) step
+	const currentStepInt = profile.currentStepInt;
+	// get next int, get next step string
+	const nextStepInt = currentStepInt++;
+	const nextStep = config.application.steps[nextStepInt];
+
+	// save next int and string
+	profile.currentStep = nextStep;
+	profile.currentStepInt = nextStepInt;
+	await profile.save();
+	return profile;
 }
 
 
@@ -129,4 +135,5 @@ module.exports = {
 	approveProfileId,
 	rejectProfileId,
 	rejectProfileIdWithFeedback,
+	getNextStepForProfileId,
 };
