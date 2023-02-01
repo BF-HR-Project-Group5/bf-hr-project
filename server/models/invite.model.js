@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { config } = require('../config/constants');
-// const crypto = require('node:crypto');
+const crypto = require('node:crypto');
 
 // created upon HR sending an invite email
 // minimum amount of data for inviting a potential employee

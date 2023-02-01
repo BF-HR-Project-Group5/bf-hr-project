@@ -1,34 +1,60 @@
 const nodemailer = require("nodemailer");
 
+// const noReplyEmailTransporter = nodemailer.createTransport({
+// 	service:"gmail",
+// 	host: "smtp.gmail.com",
+// 	// defaults to 587 if is secure is false or 465 if true
+// 	// port: process.env.EMAIL_PORT,
+// 	secure: false,
+// 	auth: {
+// 		user: "testbeaconfilre@gmail.com",
+// 		pass: "jgrpynznzqjtwkdv",
+// 	},
+// 	tls:{
+// 		rejectUnauthorized: false
+// 	}
+// });
+
 const noReplyEmailTransporter = nodemailer.createTransport({
-	host: process.env.EMAIL_HOST,
-	port: process.env.EMAIL_PORT,
-	//secure: false, // true for port 465, false for other ports?
-	secure: true,
+	service:"gmail",
+	host:  process.env.EMAIL_HOST,
+	// defaults to 587 if is secure is false or 465 if true
+	// port: process.env.EMAIL_PORT,
+	secure: false,
 	auth: {
 		user: process.env.NOREPLY_EMAIL_USERNAME,
 		pass: process.env.NOREPLY_EMAIL_PASSWORD,
 	},
+	tls:{
+		rejectUnauthorized: false
+	}
 });
 
 // data === {name: {first, last}, email, link} ?
-const sendInvite = async ({name: {first, last}, email, link}) => {
-	await noReplyEmailTransporter.sendMail({
+const sendInvite = async (data) => {
+	 await noReplyEmailTransporter.sendMail( {
 		from: process.env.NOREPLY_EMAIL_USERNAME, // sender address
-		to: email, // string list of receiver(s)
-		replyTo: process.env.NOREPLY_EMAIL_USERNAME,
+		to: data.email, // string list of receiver(s)
 		// subject line
-		subject: ``,
+		subject: `Testing`,
 		// plain text body
-		text: `${link}`,
+		text: `cilck this link to acess your registration page, ${data.link}`,
 		//html version of the message
-		html: ``,
+		// html: `<h1>Please click the link to register, ${data.link}</h1>`,
 	
-		// html example: `<h1>Hello, Northport Butcher Shoppe,</h1><br><h3>You received a new message from ${null}:</h3><p><i>"</i><br>${null}<br><i>"</i></p><br><i>(Replies get sent to ${null} at ${null})</i>`,
-	});
+	}
+	, function(err, success){
+		if(err){
+			return err
+		
+		}else{
+			console.log("Message sent: %s", success.messageId)
+		}
 
-	console.log('invite sent!');
-	return data; // ? not sure what to return
+	});
+	
+	return "Email has been sent"
+	
 };
 
 // send the reminder message:

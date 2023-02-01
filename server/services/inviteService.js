@@ -46,11 +46,7 @@ const getInvitesByFullName = async (fullName) => {
 // }
 
 const createInvite = async (
-	data = {
-		email: '',
-		name: { first: '', last: '', middle: '', preferred: '' },
-		isRegistered: false,
-	}
+	data
 ) => {
 	// check for email taken
 	// if (await Invite.isEmailTaken(data.email)) {
