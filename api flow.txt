@@ -155,12 +155,12 @@ Visa Status Management page {
 			(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 
 	(need to be able to add next document if needed:)
-		(=> /documents/create (POST) (duplicate, see onboarding application page))
+		(=> /document/create (POST) (duplicate, see onboarding application page))
 }
 
 
 Housing page: {
-	=> /house/get ? (GET)
+	=> /house (GET)
 		(get details of the house the user is in)
 		(also gets facilityReports of that house, etc.)
 
@@ -182,8 +182,8 @@ Housing page: {
 			
 		}
 
-	=> /report/{report._id}/comment/edit (PUT)
-		(edit comments from the user?)
+	=> /comment/{comment._id}/edit (PUT)
+		(edit particular comment from the user?)
 		body = {
 			
 		}
@@ -230,7 +230,6 @@ Visa Status Management page: {
 		body = {
 			feedback: string
 		}
-		(takes body: {feedback} in the post request)
 }
 
 
@@ -277,28 +276,34 @@ Housing Management Page: {
 
 		}
 	
-	=> /houses/{house._id}/edit (PUT)
+	=> /houses/{house._id} (PUT)
 		body = {
 
 		}
 
-	=> /houses/{house._id}/delete (DELETE)
+	=> /houses/{house._id} (DELETE)
 
-	=> /facilityReport/{facilityReport._id}/edit (PUT)
+	=> /report/{facilityReport._id} (PUT)
 		(changing the status)
+		(edit the report)
 		body = {
 			
 		}
 
-	=> facilityReport/{facilityReport._id}/comment/add (POST)
+	=> /report/:facilityId/comments (GET)
+		(gets the comments from this report)
+
+	=> /report/:facilityId/comments (POST)
 		body = {
 
 		}
 
-	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/edit (PUT)
+	=> /comments/{comment._id} (PUT)
+		(edit the comment)
 		body = {
 
 		}
 
-	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/delete (DELETE)
+	=> /comments/{comment._id} (DELETE)
+	(delete a comment)
 }

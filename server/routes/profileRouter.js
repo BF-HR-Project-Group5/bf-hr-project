@@ -3,7 +3,7 @@ const controllers = require('../controllers/profileController');
 
 
 // user routes
-router.get(
+router.get( // checked
 	'/profile',
 	// auth // require user
 	controllers.getProfile
@@ -13,39 +13,40 @@ router.post( // checked
 	// auth // require user
 	controllers.createProfile
 	);
-router.put(
+router.put( // checked
 	'/profile/update',
 	// auth // require user
 	controllers.putUpdateProfile
 	);
 
 // 	// not needed? just get the profile and look inside for the status?
-router.get(
+router.get( // checked
 	'/profile/nextStep',
 	// auth // require user
 	controllers.getProfileNextStep
 )
 
 
-router.get(
-	'/profiles/visa/all',
+router.get( // checked
+	'/profiles/visa',
 	// auth, // require user
 	// authHr, // require user.role === 'hr'
 	controllers.getAllVisaProfiles
 );
-// router.get(
+// router.get( // checked
 // 	'/profiles/visa/',
 // 	// auth, // require user
 // 	// authHr, // require user.role === 'hr'
 // 	controllers.queryVisaProfiles
 // );
 // no data needs to be sent through body, so doing GET
-router.get(
+router.get( // checked
 	'/profiles/:userId/sendReminder',
 	controllers.sendReminderToProfile
 )
 
-router.get(
+// get all users, populate profiles, send users with profiles
+router.get( // checked
 	'/profiles/all',
 	// auth, // require user
 	// authHr, // require user.role === 'hr'
@@ -53,7 +54,7 @@ router.get(
 );
 
 // HR will submit user data to this path
-router.get(
+router.get( // checked
 	'/profiles/:userId',
 	// auth, // require user
 	// authHr, // require user.role === 'hr'
@@ -61,7 +62,7 @@ router.get(
 );
 
 // query profiles
-// router.get(
+// router.get( // checked
 // 	'/profiles/',
 // 	// auth, // require user
 // 	// authHr, // require user.role === 'hr'

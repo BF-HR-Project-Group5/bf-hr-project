@@ -9,7 +9,7 @@ router.post(  // checked
 	controllers.createDocument
 	);
 	// user get their documents
-router.get( // 
+router.get( // checked
 	'/document',
 	// auth // require user
 	controllers.getAllDocumentsFromUser
@@ -25,12 +25,12 @@ router.get( //
 // 	// auth // require user
 // 	controllers.putUpdateProfile
 // 	);
-router.get(
+router.get( // checked
 	'/documents/:documentId/approve',
 	// auth // require user
 	controllers.approveDocument
 	);
-router.post(
+router.post( // checked
 	'/documents/:documentId/reject',
 	// auth // require user
 	controllers.rejectDocument
