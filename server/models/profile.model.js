@@ -38,6 +38,8 @@ const ProfileSchema = new Schema(
 		},
 		documents: [{type: refType, ref: 'Document'}],
 		feedback: {type: String},
+		currentStepInt: {type: Number, default: 0},
+		currentStep: {type: String},
 		emergencyContact: [{
 			name: {
 				first: {type: String, required: true},
