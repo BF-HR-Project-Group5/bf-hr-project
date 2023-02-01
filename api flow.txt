@@ -307,3 +307,21 @@ Housing Management Page: {
 	=> /comments/{comment._id} (DELETE)
 	(delete a comment)
 }
+
+
+
+
+
+
+Ok, now pushed up the checked routes.
+I need to finish some profile routes, and other than that:
+for house:
+- get house (from current req.user.house, get the house of the logged-in user)
+
+and we need 3 facilityReport routes (maybe 4):
+- put edit facilityId (from hr) (edit given facilityId)
+- post comment to facilityId (from hr) ( add comment to given facilityId)
+- put comment to commentId (from hr) ( edit given commentId)
+
+And might be extra: need the user to be able to edit facility report:
+- put edit to facilityId (from user) (edit given facilityId)

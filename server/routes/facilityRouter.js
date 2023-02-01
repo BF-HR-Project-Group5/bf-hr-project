@@ -3,20 +3,21 @@ const router = require('express').Router({ mergeParams: true });
 const controllers = require('../controllers/facilityController');
 const auth = require('../middlewares/auth');
 
-// user routes (for current req.user or req.user.house._id)
-// all user routes assume we are getting the house and reports from req.user
 // router.get( // don't think we need this, because we're always getting from a house or from a user
 // 	'/', 
 // 	auth,
 // 	controllers.getFacilityReports
 // );
+
+// user routes (for current req.user or req.user.house._id)
+// all user routes assume we are getting the house and reports from req.user
 router.post( // checked // for current user, for current house, create a report in that house
 	'/report/create', 
 	// auth,
 	controllers.postFacility
 );
 // router.put( // not needed?? // for current user, for current house, for given facilityId, edit the facility report
-	// '/report/:facilityId/edit', 
+	// '/report/:facilityId', 
 	//auth,
 	// controllers.putEditFacilityReport
 // )
@@ -36,17 +37,17 @@ router.put( // checked // for current user, for current house, for given comment
 // HR routes
 // hr routes: the facility id and house depends on which house they've clicked on or which report they've clicked on
 // router.put( // checked // edit the report 
-// 	'/report/:facilityId', 
+// 	'/reports/:facilityId', 
 	// auth, authHr,
 // 	controllers.putEditFacilityReport
 // );
 router.get( // checked // get comments of a report
-	'/report/:facilityId/comments', 
+	'/reports/:facilityId/comments', 
 	// auth, authHr,
 	controllers.getFacilityReportsComments
 );
 // router.post( // checked // post a comment to a report
-	// '/report/:facilityId/comments', 
+	// '/reports/:facilityId/comments', 
 	// auth, authHr,
 	// controllers.addCommentToReportId
 // );
