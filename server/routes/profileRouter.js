@@ -21,7 +21,7 @@ router.put(
 
 // 	// not needed? just get the profile and look inside for the status?
 router.get(
-	'/profile/next',
+	'/profile/nextStep',
 	// auth // require user
 	controllers.getProfileNextStep
 )
