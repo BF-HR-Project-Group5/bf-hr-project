@@ -13,7 +13,7 @@ const facilityReportSchema = new Schema({
     description: {type: String, required:true},
     createdBy: {type:refType, ref: 'User'},
     status: {type: String, enum: config.facilityStatus, default: 'IN_PROGRESS'},
-    comment: [{type: refType, ref:'Comment'}]
+    comments: [{type: refType, ref:'Comment'}]
     
 }, { timestamps: true });
 

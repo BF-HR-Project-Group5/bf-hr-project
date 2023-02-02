@@ -22,7 +22,7 @@ const createProfile = catchAsync(async (req, res) => {
 	const name = req.body.name; // grab name object from body
 
 	// maybe need to save document here!
-	// s3Service.upload...
+	// const thisFileLink = s3Service.upload([1])...
 	// documentService.create...
 
 	// create profile
@@ -132,36 +132,6 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 	const foundUsers = await userService.getAllVisaUsers();
 	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
-
-
-	// what do I want to do?
-	// Maybe something like this:
-	// return any result where:
-	// 	queryString.includes name.first
-	// 	queryString.includes name.last
-	// etc
-
-	// more complex:
-	// return any results where:
-	// queryString.split(' ') each word regex
-	// check each name field against each regex word
-
-	// so I could make different queries for each word regex
-	//or for every option
-	// User.find({name: {first: {$regex: regexWords[0]}}})
-	// User.find({name: {first: {$regex: regexWords[1]}}})
-	// User.find({name: {first: {$regex: regexWords[2]}}})
-	// User.find({name: {last: {$regex: regexWords[0]}}})
-	// ...
-
-// // use search query
-// const queryProfiles = catchAsync(async (req, res) => {
-// 	console.log('querying profiles:', { query: req.query });
-// 	const {search: nameString} = pick(req.query, ['search']);
-// 	console.log({nameString});
-// 	const foundUsers = await userService.queryUsersAndPopulate(nameString);
-// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-// });
 
 const queryProfiles = catchAsync(async (req, res) => {
 	console.log('querying profiles:', { query: req.query });

@@ -5,7 +5,7 @@ const auth = require('../middlewares/auth');
 
 // router.get( // don't think we need this, because we're always getting from a house or from a user
 // 	'/', 
-// 	auth,
+// //	auth,
 // 	controllers.getFacilityReports
 // );
 
@@ -16,46 +16,46 @@ router.post( // checked // for current user, for current house, create a report 
 	// auth,
 	controllers.postFacility
 );
-// router.put( // not needed?? // for current user, for current house, for given facilityId, edit the facility report
-	// '/report/:facilityId', 
-	//auth,
-	// controllers.putEditFacilityReport
-// )
+router.put( // not needed?? // for current user, for current house, for given facilityId, edit the facility report
+	'/report/:facilityId', 
+	// auth,
+	controllers.putUpdateToFacilityId
+)
 router.post( // checked // for current user, for current house, for given facilityId, post a comment
 	'/report/:facilityId/comment', 
 	// auth,
 	controllers.postComment
 );
 router.put( // checked // for current user, for current house, for given commentId, edit the comment // should check that the owner of the comment is the current user
-	'/comment/:commentId/edit', 
+	'/comment/:commentId', 
 	// auth,
-	controllers.putComment
+	controllers.putEditToComment
 );
 
 
 
 // HR routes
 // hr routes: the facility id and house depends on which house they've clicked on or which report they've clicked on
-// router.put( // checked // edit the report 
-// 	'/reports/:facilityId', 
+router.put( // checked // edit the report 
+	'/reports/:facilityId', 
 	// auth, authHr,
-// 	controllers.putEditFacilityReport
-// );
+	controllers.putUpdateToFacilityId
+);
 router.get( // checked // get comments of a report
 	'/reports/:facilityId/comments', 
 	// auth, authHr,
 	controllers.getFacilityReportsComments
 );
-// router.post( // checked // post a comment to a report
-	// '/reports/:facilityId/comments', 
+router.post( // checked // post a comment to a report
+	'/reports/:facilityId/comments', 
 	// auth, authHr,
-	// controllers.addCommentToReportId
-// );
-// router.put( // checked // edit a comment
-	// 'comments/:commentId',
+	controllers.postCommentToFacilityReport,
+);
+router.put( // checked // edit a comment
+	'comments/:commentId',
 	// auth, authHr,
-	// controllers.putEditCommentToReportId
-// );
+	controllers.putEditToComment
+);
 router.delete( // checked // delete a comment
 	'/comments/:commentId', 
 	// auth, authHr,
