@@ -385,6 +385,7 @@ Housing Management Page: {
 		params: {
 			reportId,
 		}
+		returns:
 
 	=> /report/:reportId/comments (POST)
 		params: {
@@ -393,6 +394,7 @@ Housing Management Page: {
 		body = {
 			description: string,
 		}
+		returns:
 
 	=> /comments/:commentId (PUT)
 		(edit the comment)
@@ -402,10 +404,12 @@ Housing Management Page: {
 		body = {
 			description: string,
 		}
+		returns:
 
 	=> /comments/:commentId (DELETE)
 		(delete a comment)
 		params: {
 			commentId,
 		}
+		returns:
 }
