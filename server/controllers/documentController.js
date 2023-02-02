@@ -24,11 +24,12 @@ const createDocument = catchAsync(async (req, res) => {
 	if (!profile) throw {statusCode: 404, message: 'Profile not found'};
 
 	// const link = s3Service.uploadDocument(req.body.document);
-	// if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
+	const link = 'some link'
+	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 
 	// save document
 	const document = await documentService.createDocument({
-		// link, // link to the s3 url for this document
+		link, // link to the s3 url for this document
 		feedback: '',
 		type: req.body.type,
 	});

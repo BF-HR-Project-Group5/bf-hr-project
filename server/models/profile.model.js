@@ -9,6 +9,9 @@ const { roles } = require( '../config/roles' );
 const ProfileSchema = new Schema(
 	{
 		ssn: { type: Number, required: true },
+		dateOfBirth: {type: Date},
+		gender: {type: String, enum: config.application.genders},
+		photo: {type: String,},
 		address: {
 			line1: { type: String, required: true },
 			line2: { type: String },
@@ -18,8 +21,8 @@ const ProfileSchema = new Schema(
 		},
 		workAuth: {
 			title: { type: String}, // CITIZEN | "GREEN CARD" | "VISA" ???
-			startDate: { type: Number},
-			endDate: { type: Number},
+			startDate: { type: Date},
+			endDate: { type: Date},
 			daysRemaining: { type: Number}, // could also use -1 for infinite if needed
 		},
 		car: {
@@ -39,7 +42,7 @@ const ProfileSchema = new Schema(
 		documents: [{type: refType, ref: 'Document'}],
 		feedback: {type: String},
 		currentStepInt: {type: Number, default: 0},
-		currentStep: {type: String},
+		currentStep: {type: String, enum: config.application.steps, default: config.application.steps[0]},
 		emergencyContact: [{
 			name: {
 				first: {type: String, required: true},

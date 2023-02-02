@@ -17,15 +17,15 @@ const HouseSchema = new Schema({
         phone: { type: String, required: true },
         email: { type: String, required: true }
     },
-    numResidents: { type: Number }, // array of roommates
-    roommates: [{ type: refType, ref: "User" }],
+    numResidents: { type: Number, default: 0 },
+    roommates: [{ type: refType, ref: "User" }], // array of roommates
     houseInfo: {
         bedCount: { type: Number, required: true },
         mattressCount: { type: Number, required: true },
         tableCount: { type: Number, required: true },
         chairCount: { type: Number, required: true },
     },
-    facilityReports: [{ type: refType, ref: 'Facility' }]
+    reports: [{ type: refType, ref: 'Report' }]
 }, { timestamps: true });
 
 /**

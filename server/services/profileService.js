@@ -10,7 +10,7 @@ const createProfile = async (profileBody) => {
 		// is citizen or green card
 		// complete with documents
 		const stepInt = config.application.steps.length - 1;
-		const stepString = config.application.steps[nextStepInt];
+		const stepString = config.application.steps[stepInt];
 		profileBody.currentStepInt = stepInt;
 		profileBody.currentStep = stepString;
 	} else {
@@ -19,7 +19,7 @@ const createProfile = async (profileBody) => {
 			// they uploaded something other than OPT receipt
 			// complete with documents
 			const stepInt = config.application.steps.length - 1;
-			const stepString = config.application.steps[nextStepInt];
+			const stepString = config.application.steps[stepInt];
 			profileBody.currentStepInt = stepInt;
 			profileBody.currentStep = stepString;
 		} else {
@@ -79,12 +79,24 @@ const getProfileByIdAndPopulate = async (profileId) => {
 		throw { statusCode: 404, message: 'getProfileByIdAndPopulate: Profile not found' };
 	}
 
-	const promises = [];
-	promises.push(profile.populate('documents'));
-	promises.push(profile.license.populate('link'));
-
-	await Promise.allSettled(promises);
+	await profile.promise([
+		{
+			path: 'documents',
+			model: 'Document',
+		},
+		{
+			path: 'license.link',
+			model: 'Document',
+		}
+	]);
 	return profile;
+	
+	// const promises = [];
+	// promises.push(profile.populate('documents'));
+	// promises.push(profile.license.populate('link'));
+
+	// await Promise.allSettled(promises);
+	// return profile;
 };
 
 // figure out what the "next step" is for documents

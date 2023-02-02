@@ -18,8 +18,8 @@ const register = catchAsync(async (req, res) => {
 	if (await invite.isTokenExpired()) throw { status: 400, message: 'Token is expired' };
 
 	// check if invite matches the register email
-	const isDifferentEmail = invite.email !== req.body.email;
-	if (isDifferentEmail) throw { statusCode: 400, message: 'Email does not match the invite' };
+	if (invite.email !== req.body.email)
+		throw { statusCode: 400, message: 'Email does not match the invite' };
 
 	// add this to the body so it's added into the user
 	req.body.invite = invite;
@@ -45,14 +45,14 @@ const login = catchAsync(async (req, res) => {
 	const { username, email, password } = req.body;
 
 	const user = await authService.loginUserWithUsernameOrEmail(username, email, password);
-	const token = tokenService.createJwt(user);
+	const jwt = tokenService.createJwt(user);
 	// if HR, maybe create a secondary token? or some identifier?
 	// Or, the user already has a 'role' key so the client will know whether or not the user is 'hr' or 'employee'
 	// user has role: hr | employee
 	console.log('login:', { user });
 
-	res.set('Set-Cookie', `jwt=${token}; Path=/;`);
-	return res.status(200).send({ user });
+	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`);
+	return res.status(200).send({ user, jwt });
 });
 
 const logout = catchAsync(async (req, res) => {

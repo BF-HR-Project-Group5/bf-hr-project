@@ -1,4 +1,5 @@
 const inviteService = require('../services/inviteService');
+const emailService = require('../services/emailService');
 const catchAsync = require('../utils/catchAsync');
 const { config } = require('../config/constants');
 
@@ -21,8 +22,8 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 		email: req.body.email,
 		name: {
 			first: req.body.name.first,
-			middle: req.body.name.middle,
 			last: req.body.name.last,
+			middle: req.body.name.middle,
 			preferred: req.body.name.preferred,
 		},
 	};
@@ -34,13 +35,13 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 		link: invite.link,
 		name: {
 			first: req.body.name.first,
-			last: req.body.name.first,
+			last: req.body.name.last,
 		},
 		email: req.body.email,
 	};
 
 	// send the email to the req.body.email
-	const response = await emailService.sendEmail(data);
+	const response = await emailService.sendInvite(data);
 
 	return res.status(201).send({ invite, response });
 });

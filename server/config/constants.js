@@ -17,10 +17,11 @@ const statusEnum = Object.keys(allStatuses);
 // exports.statusEnum = statusEnum;
 
 exports.config = {
-	tokenExpirationMinutes: 10,
+	tokenExpirationMinutes: 10, // login token
 	invite: {
 		expiresAfterMinutes: 180,
 	},
+	reportStatus: ['OPEN', 'IN_PROGRESS', 'CLOSED'],
 
 	// document model: status, doctype
 	document: {
@@ -31,6 +32,8 @@ exports.config = {
 	// profile or application: status, steps
 	application: {
 		statuses: statusEnum,
+
+		genders: ['MALE' , 'FEMALE' , 'NO_RESPONSE'],
 
 		// for "Next Step"
 		steps: [

@@ -1,15 +1,7 @@
 const houseService = require('../services/houseService')
+const userService = require('../services/userService')
 const catchAsync = require( '../utils/catchAsync' );
 // const pick = require('../utils/pick' );
-
-// console.log('house controller')
-
-const index = (req, res) => {
-    console.log('res', res)
-    res.json({
-        message: "Hello"
-    });
-}
 
 // CREATE house
 const createHouse = catchAsync(async (req, res) => {
@@ -33,7 +25,7 @@ const getHouse = catchAsync(async (req, res) => {
     console.log('get one house controller:', { reqUser: req.user }, { _id: req.params.id });
     //get house ids
     const houseId = req.params.id;
-    const house = await houseService.getHouseByIdAndPopulateFields(houseId,  ['facilityReports', 'roommates']);
+    const house = await houseService.getHouseByIdAndPopulateFields(houseId );
     console.log('house', house);
     
     res.status(200).json({house});
@@ -57,12 +49,21 @@ const deleteHouse = catchAsync(async (req, res) => {
     res.status(200).json({ house });
 })
 
+const getHouseForUser = catchAsync(async(req, res) => {
+		const userId = req.user._id;
+		const user = await userService.getUserById(userId);
+		const house = await houseService.getHouseByIdAndPopulateUsers(user.house._id);
+		res.status(200).json({ house });
+})
+
+
+
 
 module.exports = {
-    index,
     createHouse,
     getAllHouses,
     getHouse, 
     updateHouse,
-    deleteHouse
+    deleteHouse,
+		getHouseForUser,
 }

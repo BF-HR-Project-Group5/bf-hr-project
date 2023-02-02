@@ -1,74 +1,243 @@
 First time registering/viewing webpage
 
 Receives invite email, Register page {
-	=> /user/register/{hexToken} (POST)
+	=> /user/register/{hexToken (from route param)} (POST)
 		(creates user with {username, email, password})
 		(now logged in)
+		body = {
+			username, 
+			email, 
+			password
+		}
+		returns: {
+			user: UserSchema,
+			jwt: string
+		}
 }
 
 log in page, when coming back {
 	=> /user/login (POST)
 		(username and/or email? + password)
+		body = {
+			username?, 
+			email?, 
+			password
+		}
+		returns: {
+			user: UserSchema,
+			jwt: string
+		}
 }
 
+requires AUTH (req.user):
 
 Sends you to Onboarding Application page {
 	(fill out application and submit first documents) {
-		=> /documents/create (POST) (create)
+		=> /document/create (POST) (create)
+		if s3 happens on frontend:
+			body = {
+				link, 
+				type
+			}
+		if s3 happens on backend:
+			body = {
+				document, 
+				type
+			}
 			(uploads a document, i.e. work auth and/or license)
+		returns: {
+			document,
+			profile,
+			user,
+		}
 			
 		=> /profile/create (after document is uploaded)
 			(creates a profile, with ALL the user data that they submit)
+			body = {
+				ssn: number,
+				dateOfBirth: Date,
+				gender: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
+				photo?: file? if sending file from backend,
+				address: {
+					line1: string,
+					line2: string,
+					city: string,
+					state: string,
+					zipcode: string,
+				},
+				workAuth: {
+					title: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+					startDate?: Date,
+					endDate?: Date,
+					daysRemaining?: number,
+				},
+				car: {
+					make: string,
+					model: string,
+					color: string,
+				},
+				license: {
+					number: string,
+					expiration: Date,
+					document: file? if sending file from backend,
+				},
+				phone: {
+					mobile: number? string?
+					work?: number? string?
+				},
+				document?: file? if sending file from backend, if workAuth is not 'CITIZEN' | 'GREEN_CARD',
+				emergencyContacts: [
+					{
+						name: {
+							first: string,
+							last: string,
+							middle?: string,
+						},
+						phone: number? string?
+						email: string,
+						relationship: string,
+					}
+				],
+			}
+			returns: {
+				user, 
+				profile,
+				invite
+			}
 	}
 
 	(once submitted, show review status, prevent editing unless REJECTED) {
-		=> /profile/get? (after profile is saved/uploaded)
+		=> /profile (GET)
+			(after profile is saved/uploaded)
 			(get the profile, feedback, documents?)
+		returns: {
+			user,
+			profile,
+		}
 	}
 }
 
 
 Can go to Personal Info page {
-	=> /profile/update (PUT)
-		(can update parts of the profile created earlier)
+		=> /profile/update (PUT)
+			(can update parts of the profile created earlier)
+			body = {
+				name: {
+					first?: string,
+					last?: string,
+					middle?: string,
+					preferred?: string,
+				},
+				ssn?: number,
+				dateOfBirth?: Date,
+				gender?: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
+				photo?: file,
+				address?: {
+					line1?: string,
+					line2?: string,
+					city?: string,
+					state?: string,
+					zipcode?: string,
+				},
+				dateOfBirth?: Date,
+				workAuth?: {
+					title?: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+					startDate?: Date,
+					endDate?: Date,
+					daysRemaining?: number,
+				},
+				car?: {
+					make?: string,
+					model?: string,
+					color?: string,
+				},
+				license?: {
+					number?: string,
+					expiration?: Date,
+					document?: file? if sending file from backend
+				},
+				phone?: {
+					mobile?: number? string?
+					work?: number? string?
+				},
+				document?: file? if sending file from backend, if workAuth is not 'CITIZEN' | 'GREEN_CARD',
+				emergencyContacts?: [
+					{
+						name?: {
+							first?: string,
+							last?: string,
+							middle?: string,
+						},
+						phone?: number? string?
+						email?: string,
+						relationship?: string,
+					}
+				],
+			}
+			returns: {
+				user,
+				profile,
+			}
 
-	=> /documents (GET)
-		(get all documents from the logged-in user, display with preview and download links)
+		=> /document (GET)
+			(get all documents from the logged-in user, display with preview and download links)
+			returns: {
+				user,
+				profile,
+				documents,
+			}
 }
 
 
 Visa Status Management page {
-	=> /profile/nextStep ? (GET) ?? 
-	or just get the profile with documents populated, and use frontend logic to figure out what's next
-		(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
+		=> /profile/nextStep ? (GET) ?? 
+			(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 
-	need to be able to add next document if needed:
-	=> /documents/create (POST) (duplicate)
+	(need to be able to add next document if needed:)
+		(=> /document/create (POST) (duplicate, see onboarding application page))
 }
 
 
 Housing page: {
-	=> /house/get ? (GET)
+	=> /house (GET)
 		(get details of the house the user is in)
 		(also gets facilityReports of that house, etc.)
 
-	=> /house/report/create (POST)
+	=> /report/create (POST)
 		(create a report for the house the user is in)
+		body = {
+			title: string,
+			description: string,
+		}
 
-	=> /house/report/{report._id}/edit (PUT)
-
-	=> /report/{report._id}/edit (PUT) (alternate)
+	=> /report/:reportId (PUT)
 		(edit the base report)
+		params: {
+			reportId,
+		}
+		body = {
+			title: string,
+			description: string,
+			status: string: enum: config.reportStatus,
+		}
 
-	=> /house/report/{report._id}/comment (POST)
-
-	=> /report/{report._id}/comment (POST) (alternate)
+	=> /report/:reportId/comment (POST)
 		(add comment to the given report)
+		params: {
+			reportId,
+		}
+		body = {
+			description: string,
+		}
 
-	=> /house/report/{report._id}/comment/edit (PUT)
-
-	=> /report/{report._id}/comment/edit (PUT) (alternate)
-		(edit comments from the user?)
+	=> /comment/:commentId (PUT)
+		(edit particular comment from the user?)
+		params: {
+			commentId,
+		}
+		body = {
+			description: string,
+		}
 }
 
 
@@ -78,18 +247,25 @@ Housing page: {
 
 HR users:
 
+requires auth, authHr
 Employee Profiles Page: {
 	=> /profiles/all (GET) 
-	( get all users, and populate profiles, and send everything)
+		(get all users, and populate profiles, and send everything)
 		(get each profile "summary")
 
 	Link to their profile page
-	=> /profiles/${user._id} (GET)
+	=> /profiles/:userId (GET)
 		(get one profile)
 		(using user._id rather than profile._id because User schema is the base)
+		params: {
+			userId,
+		}
 
 	=> /profiles?search="some name search" (GET)
 		(return ALL user profiles filtered by search query)
+		query: {
+			search: 'some name search',
+		}
 }
 
 
@@ -100,15 +276,29 @@ Visa Status Management page: {
 	=> /profiles/visa?search="some name search" (GET)
 		(return visa status user profiles filtered by query)
 		(can filter IN PROGRESS vs ALL on the client side ??)
+		query: {
+			search: 'some name search',
+		}
 
-	=> /profiles/${user._id}/sendReminder (GET or POST ?)
+	=> /profiles/:userId/sendReminder (GET)
 		(send a reminder to that user._id of their next step)
+		params: {
+			userId,
+		}
 
-	=> /documents/${document._id}/approve (GET or POST ?)
+	=> /documents/:documentId/approve (GET)
 		(tell server to approve the document._id)
+		params: {
+			documentId,
+		}
 
-	=> /documents/${document._id}/reject (POST)
-		(takes body: {feedback} in the post request)
+	=> /documents/:documentId/reject (POST)
+		params: {
+			documentId,
+		}
+		body = {
+			feedback: string
+		}
 }
 
 
@@ -117,13 +307,16 @@ Visa Status Management page: {
 Hiring Management Page:{
 	(onboarding application review) {
 		=> /profiles/all (GET) (duplicate)
-			(get all profiles, display 3 tabs for the different statuses)
+			(get all profiles, display 3 tabs for the different statuses?)
 			(PENDING | REJECTED | APPROVED)
 			(shows a summary by default)
 			(client-side filter by status)
 
-		=> /profiles/${user._id} (GET)
+		=> /profiles/:userId (GET)
 			(for opening the profile in a new tab)
+			params: {
+				userId,
+			}
 	}
 
 	(registration tokens) {
@@ -132,32 +325,122 @@ Hiring Management Page:{
 
 		=> /invites/send (POST) 
 			(send an invite with the data)
-			({email, name: {first, last, middle?, preferred?}})
+			body = {
+				email: string, 
+				name: {
+					first: string, 
+					last: string, 
+					middle?: string, 
+					preferred?: string,
+				}
+			}
 	}
 }
 
 Housing Management Page: {
-	=> /house/all (GET)
+	=> /houses/all (GET)
 
-	=> /house/{house._id} (GET)
+	=> /houses/:houseId (GET)
 		(get house, populate facility reports, populate employees/roommates)
+		params: {
+			houseId,
+		}
 
-	=> /house/create (POST)
+	=> /houses/create (POST)
+		body = {
+			address: {
+				line1: string,
+				line2: string,
+				city: string,
+				state: string,
+				zipcode: string,
+			},
+			landlord: {
+				legalFullName: string,
+				phone: string,
+				email: string,
+			},
+			numResidents: number,
+			houseInfo: {
+				bedCount: number,
+				mattressCount: number,
+				tableCount: number,
+				chairCount: number,
+			},
+		}
 	
-	=> /house/{house._id}/edit (PUT)
+	=> /houses/houseId (PUT)
+		body = {
+			address: {
+				line1: string,
+				line2: string,
+				city: string,
+				state: string,
+				zipcode: string,
+			},
+			landlord: {
+				legalFullName: string,
+				phone: string,
+				email: string,
+			},
+			numResidents: number,
+			houseInfo: {
+				bedCount: number,
+				mattressCount: number,
+				tableCount: number,
+				chairCount: number,
+			},
+			roommates?: [],
+			reports?: [],
+		}
 
-	=> /house/{house._id}/delete (DELETE)
+	=> /houses/:houseId (DELETE)
+		params: {
+			houseId,
+		}
 
-	=> /facilityReport/{facilityReport._id}/edit (PUT)
+	=> /report/:reportId (PUT)
 		(changing the status)
+		(edit the report)
+		params: {
+			reportId,
+		}
+		body = {
+			status: string: enum: config.reportStatus,
+			title: string,
+			description: string,
+		}
 
-	=> facilityReport/{facilityReport._id}/comment/add (POST)
+	=> /report/:reportId/comments (GET)
+		(gets the comments from this report)
+		params: {
+			reportId,
+		}
+		returns:
 
-	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/edit (PUT)
+	=> /report/:reportId/comments (POST)
+		params: {
+			reportId,
+		}
+		body = {
+			description: string,
+		}
+		returns:
 
-	=> /facilityReport/{facilityReport._id}/comment/{comment._id}/delete (DELETE)
+	=> /comments/:commentId (PUT)
+		(edit the comment)
+		params: {
+			commentId,
+		}
+		body = {
+			description: string,
+		}
+		returns:
 
-	might not need this, HR cannot add report to a house, they can only comment on existing report
-	=> /house/{house._id}/facilityReport/{facilityReport._id}/comment/add (POST) 
-		(needs house id ? )
+	=> /comments/:commentId (DELETE)
+		(delete a comment)
+		params: {
+			commentId,
+		}
+		returns:
 }

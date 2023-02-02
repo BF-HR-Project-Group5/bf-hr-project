@@ -24,7 +24,7 @@ const OnboardingApplication = (props) => {
                     </h3>
                     <h5 className="sd-description">
                         <span className="sv-string-viewer">Current status: </span>
-                        <Chip size="small" label={props.auth.user.applicationStatus} />
+                        {/* <Chip size="small" label={props.auth.user.applicationStatus} /> */}
                     </h5>
                 </div>
                 <div className="sd-hidden"></div>

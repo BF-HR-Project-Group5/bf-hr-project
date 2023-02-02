@@ -2,17 +2,15 @@ const router = require('express').Router();
 const controllers = require('../controllers/inviteController');
 
 // HR will submit user data to this path
-router.post(
+router.post( // checked
 	'/invites/send',
-	// auth, // require user
-	// authHr, // require user.role === 'hr'
+	// auth, authHr,
 	controllers.inviteNewEmployee
 );
 
-router.get(
-	'/invites/all',
-	// auth, // require user
-	// authHr, // require user.role === 'hr'
+router.get( // checked
+	'/invites',
+	// auth, authHr,
 	controllers.getAllInvites
 );
 
