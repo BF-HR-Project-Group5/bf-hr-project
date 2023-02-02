@@ -25,7 +25,7 @@ const getHouse = catchAsync(async (req, res) => {
     console.log('get one house controller:', { reqUser: req.user }, { _id: req.params.id });
     //get house ids
     const houseId = req.params.id;
-    const house = await houseService.getHouseByIdAndPopulateFields(houseId,  ['facilityReports', 'roommates']);
+    const house = await houseService.getHouseByIdAndPopulateFields(houseId );
     console.log('house', house);
     
     res.status(200).json({house});

@@ -47,19 +47,23 @@ const queryHouses = async () => {
 // GET ONE house
 const getHouseById = (id) => House.findById(id);
 
-const getHouseByIdAndPopulateFields = async (houseId, fieldNames) => {
+const getHouseByIdAndPopulateFields = async (houseId) => {
 	const house = await getHouseById(houseId);
 	if (!house) {
 		throw { statusCode: 404, message: 'getUserByIdAndPopulateFields: House not found' };
 	}
-	const promises = [];
-	for (let i = 0; i < fieldNames.length; i++) {
-		promises.push(house.populate(fieldNames[i]));
-		// populate roommates, facility
-		// console.log('getHouseByIdAndPopulate', promises);
-	}
-	await Promise.allSettled(promises);
-	// house.roommates.forEach(user => )
+
+	await house.populate([
+		{
+			path: 'roommates',
+			model: 'User',
+		},
+		{
+			path: 'reports',
+			model: 'Report',
+		},
+	]);
+
 	return house;
 };
 
@@ -68,26 +72,38 @@ const getHouseByIdAndPopulateUsers = async (houseId) => {
 	if (!house) {
 		throw { statusCode: 404, message: 'getUserByIdAndPopulateFields: House not found' };
 	}
-	const promises = [];
-	promises.push(
-		house.populate({
+	// populate EVERYTHING
+	await house.populate([
+		{
+			path: 'roommates',
+			model: 'User',
+			populate: [
+				{
+					path: 'profile',
+					model: 'Profile',
+					populate: [
+						{
+							path: 'documents',
+							model: 'Document',
+						},
+						{
+							path: 'license.document',
+							model: 'Document',
+						},
+					],
+				},
+				{ path: 'invite', model: 'Invite' },
+			],
+		},
+		{
 			path: 'reports',
 			populate: {
 				path: 'comments',
 				model: 'Comment',
 			},
-		})
-	);
-	promises.push(
-		house.populate({
-			path: 'roommates',
-			populate: [
-				{ path: 'profile', model: 'Profile' },
-				{ path: 'invite', model: 'Invite' },
-			],
-		})
-	);
-	await Promise.allSettled(promises);
+		},
+	]);
+
 	return house;
 };
 
@@ -145,18 +161,9 @@ const assignUserIdToHouse = async (userId) => {
 	}
 
 	// if there are more than 4 residents find another house.
-	// if(roommatesArr.length < 4) {
 	// randomly assign house by id
 	const randomId = randomNumber(houses[min], houses[max]);
 	console.log('randomId', randomId);
-
-	// const houseId = getHouseById(randomId);
-	// console.log('houseId', houseId);
-
-	// const roommatesArr = House.findOne({ _id: houseId }).populate(roommates);
-	// console.log('roommatesArr', roommatesArr)
-	// const house = await updateHouse(houseId, { roommates: roommatesArr.push(userId), numResidents: roommatesArr.length })
-	// }
 
 	const foundHouse = await getHouseById(randomId);
 	console.log('foundHouse', foundHouse);
