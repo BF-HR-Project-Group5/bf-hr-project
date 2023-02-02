@@ -35,3 +35,21 @@ export const submitLogout = values => async dispatch => {
   return data
   // dispatch({ type: FETCH_USER, payload: data });
 };
+
+export const fetchHouse = values => async dispatch => {
+  console.log('values',values)
+  const { data } = await axios.get('/house' );
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const fetchUser = values => async dispatch => {
+  console.log('values',values)
+  const { data } = await axios.get('/user',{params:{userId:values}} );
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+
+
+
