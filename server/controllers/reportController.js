@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const reportService = require('../services/reportService');
+const userService = require('../services/userService');
 const houseService = require('../services/houseService');
+const { useResource$ } = require( '@builder.io/qwik' );
 
 //get all facilityReport by houseid // only show comment_id, not full information
 const getReports = catchAsync(async (req, res) => {
@@ -21,14 +23,15 @@ const getReportsComments = catchAsync(async (req, res) => {
 });
 
 // create a facility report // done
-const postReport = catchAsync(async (req, res) => {
-	const houseId = req.params.houseId;
+const postCreateReport = catchAsync(async (req, res) => {
+	const userId = req.user._id;
+	const user = userService.getUserByIdAndPopulate(userId);
 	const report = await reportService.createReport(req.body);
 	// //push the new report to the house
-	const house = await reportService.getHouseById(houseId);
+	const house = await houseService.getHouseById(user.house._id);
 	house.reports.push(report._id);
 	house.save();
-	res.status(200).json({ house });
+	res.status(200).json({ report, house });
 });
 
 // create comment //done
@@ -84,7 +87,7 @@ const postCommentToReport = catchAsync(async(req, res) => {
 module.exports = {
 	getReports,
 	getReportsComments,
-	postReport,
+	postCreateReport,
 	postComment,
 	deleteComment,
 	putEditToComment,

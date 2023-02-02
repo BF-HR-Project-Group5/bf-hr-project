@@ -79,13 +79,13 @@ const getProfileByIdAndPopulate = async (profileId) => {
 		throw { statusCode: 404, message: 'getProfileByIdAndPopulate: Profile not found' };
 	}
 
-	await profile.promise([
+	await profile.populate([
 		{
 			path: 'documents',
 			model: 'Document',
 		},
 		{
-			path: 'license.link',
+			path: 'license.document',
 			model: 'Document',
 		}
 	]);
@@ -100,7 +100,7 @@ const getProfileByIdAndPopulate = async (profileId) => {
 };
 
 // figure out what the "next step" is for documents
-const getNextStepForProfileId = async (profileId) => {
+const getUserNextStepForProfileId = async (profileId) => {
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
@@ -108,7 +108,7 @@ const getNextStepForProfileId = async (profileId) => {
 
 	// return the nextStep for the profile.currentStep
 	const currentStep = profile.currentStep;
-	return config.application.nextSteps[currentStep];
+	return config.application.nextSteps[currentStep].user;
 };
 
 const putStepToNextForProfileId = async (profileId) => {
@@ -143,6 +143,6 @@ module.exports = {
 	approveProfileId,
 	rejectProfileId,
 	rejectProfileIdWithFeedback,
-	getNextStepForProfileId,
+	getUserNextStepForProfileId,
 	putStepToNextForProfileId,
 };

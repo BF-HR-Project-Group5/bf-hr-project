@@ -1,6 +1,5 @@
 const Report = require('../models/report.model');
 const Comment = require('../models/comment.model');
-const House = require('../models/house.model');
 
 //create report
 const createReport = async (data) => {
@@ -16,7 +15,6 @@ const getReportById = async (id) => Report.findById(id);
 // const getFacilityByDescription = async(description) => report.find({description})
 // const getFacilityByTitle = async(title) => report.find({title})
 const getCommentById = async (id) => Comment.findById(id);
-const getHouseById = async (id) => House.findById(id);
 
 // get report and populate fields of comments
 //first report 63d80ed7cbe3476841d3ea35
@@ -71,7 +69,6 @@ module.exports = {
 	// getFacilityByTitle,
 	// getFacilityByDescription,
 	getCommentById,
-	getHouseById,
 	getReportByIdAndPopulateFields,
 	updateReportById,
 	updateCommentById,

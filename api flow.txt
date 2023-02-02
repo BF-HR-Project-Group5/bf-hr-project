@@ -34,22 +34,16 @@ requires AUTH (req.user):
 Sends you to Onboarding Application page {
 	(fill out application and submit first documents) {
 		=> /document/create (POST) (create)
-		if s3 happens on frontend:
-			body = {
-				link, 
-				type
-			}
-		if s3 happens on backend:
+			(uploads a document, i.e. work auth and/or license)
 			body = {
 				document, 
 				type
 			}
-			(uploads a document, i.e. work auth and/or license)
-		returns: {
-			document,
-			profile,
-			user,
-		}
+			returns: {
+				document,
+				profile,
+				user,
+			}
 			
 		=> /profile/create (after document is uploaded)
 			(creates a profile, with ALL the user data that they submit)
@@ -110,10 +104,10 @@ Sends you to Onboarding Application page {
 		=> /profile (GET)
 			(after profile is saved/uploaded)
 			(get the profile, feedback, documents?)
-		returns: {
-			user,
-			profile,
-		}
+			returns: {
+				user,
+				profile,
+			}
 	}
 }
 
@@ -192,22 +186,33 @@ Can go to Personal Info page {
 Visa Status Management page {
 		=> /profile/nextStep ? (GET) ?? 
 			(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
+			returns: {
+				nextStep: string (message from: config.application.nextSteps[theirNextStep].user)
+			}
 
 	(need to be able to add next document if needed:)
 		(=> /document/create (POST) (duplicate, see onboarding application page))
+
 }
 
 
 Housing page: {
 	=> /house (GET)
 		(get details of the house the user is in)
-		(also gets facilityReports of that house, etc.)
+		(also gets reports of that house, etc.)
+		returns: {
+			house: HouseDocument and deeply populated
+		}
 
 	=> /report/create (POST)
 		(create a report for the house the user is in)
 		body = {
 			title: string,
 			description: string,
+		}
+		returns: {
+			report: ReportSchema,
+			house: HouseSchema
 		}
 
 	=> /report/:reportId (PUT)
@@ -220,6 +225,10 @@ Housing page: {
 			description: string,
 			status: string: enum: config.reportStatus,
 		}
+		returns: {
+			report,
+		}
+
 
 	=> /report/:reportId/comment (POST)
 		(add comment to the given report)
@@ -228,6 +237,10 @@ Housing page: {
 		}
 		body = {
 			description: string,
+		}
+		returns: {
+			report,
+			comment,
 		}
 
 	=> /comment/:commentId (PUT)

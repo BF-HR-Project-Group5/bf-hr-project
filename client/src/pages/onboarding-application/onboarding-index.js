@@ -14,6 +14,8 @@ const OnboardingApplication = (props) => {
     const survey = new Model(json);
     survey.onComplete.add((sender, options) => {
         console.log(JSON.stringify(sender.data, null, 3));
+				// send fetch post request to backend profile/create
+				// maybe redirect to personalInfo
     });
     return (
         <>

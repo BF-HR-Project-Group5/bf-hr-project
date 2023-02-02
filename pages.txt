@@ -90,7 +90,7 @@ Visa Status Management Page:
 	(manage their work auth documents)
 
 	if NOT chose OPT during onboarding application:
-	OR if ALL documents  are ACCEPTED:
+	OR if ALL documents are ACCEPTED:
 			"You're all set! Your documents have been approved."
 
 	else, we need more documents:

@@ -3,6 +3,7 @@ const tokenService = require( '../services/tokenService' );
 // middleware to check for cookie header
 const auth = (req, res, next) => {
 	const cookies = req.cookies;
+	console.log({cookies});
 	
 	const {user} = tokenService.verifySessionCookie(cookies);
 	console.log('got token:', {user});

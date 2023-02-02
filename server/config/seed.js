@@ -34,6 +34,7 @@ const seedInvites = async (count) => {
 	return results;
 };
 
+const roles = ['user', 'hr'];
 const seedInvitedUsers = async (count, invites, houses, profiles, role = 'user') => {
 	const users = [];
 	for (let i = 0; i < count; i++) {
@@ -50,7 +51,7 @@ const seedInvitedUsers = async (count, invites, houses, profiles, role = 'user')
 				preferred: `preferred${i}`,
 			},
 
-			role,
+			role: roles[i%2],
 			invite: invites[i]._id, // add the created invite
 			profile: profiles[i]._id,
 			house: houses[i]._id,

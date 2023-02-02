@@ -1,17 +1,19 @@
 const router = require('express').Router();
 const controllers = require('../controllers/documentController');
+const authHr = require('../middlewares/authHr');
+const auth= require('../middlewares/auth');
 
 // user routes
 // user create document
 router.post(  // checked
 	'/document/create',
-	// auth // require user
+	auth, // require user
 	controllers.createDocument
 	);
 	// user get their documents
 router.get( // checked
 	'/document',
-	// auth // require user
+	auth, // require user
 	controllers.getAllDocumentsFromUser
 	);
 
@@ -27,12 +29,12 @@ router.get( // checked
 // 	);
 router.get( // checked
 	'/documents/:documentId/approve',
-	// auth // require user
+	auth, authHr,
 	controllers.approveDocument
 	);
 router.post( // checked
 	'/documents/:documentId/reject',
-	// auth // require user
+	auth, authHr,
 	controllers.rejectDocument
 	);
 

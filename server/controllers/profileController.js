@@ -90,8 +90,8 @@ const getProfileNextStep = catchAsync(async (req, res) => {
 	// get the profile, get the user
 	const userId = req.user._id;
 	const user = await userService.getUserById(userId);
-	const nextStep = await profileService.getNextStepForProfileId(user.profile._id);
-	return res.status(200).json({nextStep});
+	const nextStepForUser = await profileService.getUserNextStepForProfileId(user.profile._id);
+	return res.status(200).json({ nextStep: nextStepForUser });
 });
 
 // should be auth and authHr protected
@@ -135,19 +135,19 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 
 const queryProfiles = catchAsync(async (req, res) => {
 	console.log('querying profiles:', { query: req.query });
-	const {search: nameString} = pick(req.query, ['search']);
-	console.log({nameString});
+	const { search: nameString } = pick(req.query, ['search']);
+	console.log({ nameString });
 	const foundUsers = await userService.queryUsersByFullNameAndPopulate(nameString);
-	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 
 // req.query.search === 'some full name'
 const queryVisaProfiles = catchAsync(async (req, res) => {
 	console.log('querying profiles:', { query: req.query });
-	const {search: nameString} = pick(req.query, ['search']);
-	console.log({nameString});
+	const { search: nameString } = pick(req.query, ['search']);
+	console.log({ nameString });
 	const foundUsers = await userService.queryVisaUsersByFullNameAndPopulate(nameString);
-	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 
 // take param for profile
@@ -164,7 +164,7 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	console.log({ nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
-	
+
 	const data = {
 		name: { first: user.name.first, last: user.name.last },
 		email: user.email,
