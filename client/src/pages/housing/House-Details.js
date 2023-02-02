@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import '../../layout/House.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { connect } from 'react-redux';
@@ -10,6 +10,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { fetchHouse } from '../../redux/actions/index';
+import { fetchUser } from '../../redux/actions/index';
 
 const useStyles = makeStyles({
     table: {
@@ -29,8 +31,23 @@ createData('Justin', "Tao Yang", 312222225),
 ];
 
 const HouseDetails = (props) => {
-    const classes = useStyles();
     console.log('props',props)
+    const [data,setData] = useState()
+
+    useEffect(() => {
+        try {
+            const promise = fetchHouse()
+            promise().then((res)=>{
+                console.log('res',res)
+                setData(res.house)
+            })
+          } catch (err) {
+            console.log(err);
+          }
+      }, []);
+
+    const classes = useStyles();
+
     return (
         <>
             <div className="row my-5">
@@ -38,7 +55,13 @@ const HouseDetails = (props) => {
                     <h2>Address</h2>
                 </div>
                 <Paper variant="outlined" className="address-container">
-                    3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616
+                    {/* 3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616 */}
+                    {data?.address.line1 + ', ' +
+                     data?.address.line2 + ', ' + 
+                     data?.address.city + ', ' + 
+                     data?.address.state + ', ' + 
+                     data?.address.zipcode 
+                    }
                 </Paper>
             </div>
             <div className="row my-5">
@@ -55,13 +78,13 @@ const HouseDetails = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.name}>
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
+                        {data?.roommates.map((row,index) => (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+                                    {row.name.preferred}
+                                </TableCell>
+                                <TableCell align="right">{row.name.last + ' ' + row.name.first}</TableCell>
+                                <TableCell align="right">{row.profile.phone.mobile}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
