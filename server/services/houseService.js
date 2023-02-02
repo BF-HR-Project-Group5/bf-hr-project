@@ -55,7 +55,7 @@ const getHouseByIdAndPopulateFields = async (houseId, fieldNames) => {
 	const promises = [];
 	for (let i = 0; i < fieldNames.length; i++) {
 		promises.push(house.populate(fieldNames[i]));
-		console.log('getHouseByIdAndPopulate', promises);
+		// console.log('getHouseByIdAndPopulate', promises);
 	}
 	await Promise.allSettled(promises);
 	return house;

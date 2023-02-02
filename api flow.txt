@@ -9,6 +9,10 @@ Receives invite email, Register page {
 			email, 
 			password
 		}
+		returns: {
+			user: UserSchema,
+			jwt: string
+		}
 }
 
 log in page, when coming back {
@@ -18,6 +22,10 @@ log in page, when coming back {
 			username?, 
 			email?, 
 			password
+		}
+		returns: {
+			user: UserSchema,
+			jwt: string
 		}
 }
 
@@ -37,8 +45,14 @@ Sends you to Onboarding Application page {
 				type
 			}
 			(uploads a document, i.e. work auth and/or license)
+		returns: {
+			document,
+			profile,
+			user,
+		}
 			
 		=> /profile/create (after document is uploaded)
+			(creates a profile, with ALL the user data that they submit)
 			body = {
 				ssn: number,
 				dateOfBirth: Date,
@@ -85,19 +99,28 @@ Sends you to Onboarding Application page {
 					}
 				],
 			}
-			(creates a profile, with ALL the user data that they submit)
+			returns: {
+				user, 
+				profile,
+				invite
+			}
 	}
 
 	(once submitted, show review status, prevent editing unless REJECTED) {
 		=> /profile (GET)
 			(after profile is saved/uploaded)
 			(get the profile, feedback, documents?)
+		returns: {
+			user,
+			profile,
+		}
 	}
 }
 
 
 Can go to Personal Info page {
 		=> /profile/update (PUT)
+			(can update parts of the profile created earlier)
 			body = {
 				name: {
 					first?: string,
@@ -151,10 +174,18 @@ Can go to Personal Info page {
 					}
 				],
 			}
-			(can update parts of the profile created earlier)
+			returns: {
+				user,
+				profile,
+			}
 
 		=> /document (GET)
 			(get all documents from the logged-in user, display with preview and download links)
+			returns: {
+				user,
+				profile,
+				documents,
+			}
 }
 
 

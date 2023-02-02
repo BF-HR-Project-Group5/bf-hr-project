@@ -84,7 +84,7 @@ const seedHouses = async (count) => {
 				tableCount: 1,
 				chairCount: 4,
 			},
-			facilityReports: [],
+			reports: [],
 		};
 		houses.push(houseService.createHouse(data));
 	}
