@@ -55,8 +55,38 @@ const getHouseByIdAndPopulateFields = async (houseId, fieldNames) => {
 	const promises = [];
 	for (let i = 0; i < fieldNames.length; i++) {
 		promises.push(house.populate(fieldNames[i]));
+		// populate roommates, facility
 		// console.log('getHouseByIdAndPopulate', promises);
 	}
+	await Promise.allSettled(promises);
+	// house.roommates.forEach(user => )
+	return house;
+};
+
+const getHouseByIdAndPopulateUsers = async (houseId) => {
+	const house = await getHouseById(houseId);
+	if (!house) {
+		throw { statusCode: 404, message: 'getUserByIdAndPopulateFields: House not found' };
+	}
+	const promises = [];
+	promises.push(
+		house.populate({
+			path: 'reports',
+			populate: {
+				path: 'comments',
+				model: 'Comment',
+			},
+		})
+	);
+	promises.push(
+		house.populate({
+			path: 'roommates',
+			populate: [
+				{ path: 'profile', model: 'Profile' },
+				{ path: 'invite', model: 'Invite' },
+			],
+		})
+	);
 	await Promise.allSettled(promises);
 	return house;
 };
@@ -144,4 +174,5 @@ module.exports = {
 	deleteHouseById,
 	assignUserIdToHouse,
 	addUserIdToHouseId,
+	getHouseByIdAndPopulateUsers,
 };
