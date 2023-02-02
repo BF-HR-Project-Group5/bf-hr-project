@@ -11,6 +11,7 @@ const ProfileSchema = new Schema(
 		ssn: { type: Number, required: true },
 		dateOfBirth: {type: Date},
 		gender: {type: String, enum: config.application.genders},
+		photo: {type: String,},
 		address: {
 			line1: { type: String, required: true },
 			line2: { type: String },
