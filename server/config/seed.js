@@ -92,11 +92,19 @@ const seedHouses = async (count) => {
 	return results;
 };
 
+const GENDERS = ['MALE', 'FEMALE', 'NO_RESPONSE'];
+const WORK_AUTH_TITLES = ['CITIZEN', 'GREEN_CARD', 'VISA'];
+
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
 	for (let i = 0; i < count; i++) {
+		const width = rng(300, 400);
+		const height = rng(300, 400);
 		const data = {
 			ssn: Number(`99999999${i}`),
+			dateOfBirth: new Date(),
+			gender: GENDERS[i % 3],
+			photo:  `http://placekitten.com/${width}/${height}`,
 			address: {
 				line1: `addressLine1_${i}`,
 				line2: `addressLine2_${i}`,
@@ -105,9 +113,9 @@ const seedProfiles = async (count, documents) => {
 				zipcode: `55555(-5555)${i}`,
 			},
 			workAuth: {
-				title: (i % 2 === 0) ? 'VISA' : 'CITIZEN',
-				startDate: '',
-				endDate: '',
+				title: WORK_AUTH_TITLES[i%3],
+				startDate: new Date(),
+				endDate: new Date(),
 				daysRemaining: 99,
 			},
 			car: {
@@ -146,14 +154,20 @@ const seedProfiles = async (count, documents) => {
 	return results;
 };
 
+const rng = (min, max) => min + Math.round((max - min) * Math.random());
+
 const seedDocuments = async (count) => {
 	const documents = [];
+	
 	for (let i = 0; i < count; i++) {
+		const width = rng(400, 600);
+		const height = rng(400, 600);
+		const isLicense = i >= (count / 2);
 		const data = {
-			link: `www.some.aws.link.com`,
+			link: `http://placekitten.com/${width}/${height}`,
 			feedback: 'feedback on document',
 			status: `PENDING`,
-			type: `F1(CPT/OPT)`,
+			type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
 		};
 		documents.push(documentService.createDocument(data));
 	}

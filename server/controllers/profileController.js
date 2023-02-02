@@ -6,6 +6,7 @@ const {
 const userService = require('../services/userService');
 const profileService = require('../services/profileService');
 const inviteService = require('../services/inviteService');
+const emailService = require('../services/emailService');
 // const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
@@ -21,7 +22,7 @@ const createProfile = catchAsync(async (req, res) => {
 	const name = req.body.name; // grab name object from body
 
 	// maybe need to save document here!
-	// s3Service.upload...
+	// const thisFileLink = s3Service.upload([1])...
 	// documentService.create...
 
 	// create profile
@@ -132,43 +133,38 @@ const getAllVisaProfiles = catchAsync(async (req, res) => {
 	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 
-// // use search query
-// const queryProfiles = catchAsync(async (req, res) => {
-// 	console.log('querying profiles:', { query: req.query });
-// 	const filter = pick(req.query, ['search']);
-// 	const foundUsers = await userService.queryUsersAndPopulate(filter);
-// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-// });
+const queryProfiles = catchAsync(async (req, res) => {
+	console.log('querying profiles:', { query: req.query });
+	const {search: nameString} = pick(req.query, ['search']);
+	console.log({nameString});
+	const foundUsers = await userService.queryUsersByFullNameAndPopulate(nameString);
+	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+});
 
-// // req.query.search === 'some full name'
-// const queryVisaProfiles = catchAsync( async (req, res) => {
-// 	console.log('querying Visa profiles:', { query: req.query });
-// 	const picked = pick(req.query, ['search']);
-// 	// const filter = objectValuesToRegex(picked);
-
-// 	// get users based on name filter, and populate fields
-// 	const foundUsers = await userService.queryVisaUsers(picked);
-// 	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
-// })
+// req.query.search === 'some full name'
+const queryVisaProfiles = catchAsync(async (req, res) => {
+	console.log('querying profiles:', { query: req.query });
+	const {search: nameString} = pick(req.query, ['search']);
+	console.log({nameString});
+	const foundUsers = await userService.queryVisaUsersByFullNameAndPopulate(nameString);
+	return res.status(200).json({users: foundUsers, totalResults: foundUsers.length});
+});
 
 // take param for profile
 // get the user
 // get the next step
 // send the email
 const sendReminderToProfile = catchAsync(async (req, res) => {
-	console.log('sendReminder to userId:', { reqBody: req.body });
+	console.log('sendReminder to userId:', { reqParam: req.params });
 	const userId = req.params.userId;
 	// get user, and profile id
 	const user = await userService.getUserById(userId);
 
-	// TODO:
-	// get next step for this user
-	const nextSteps = profileService.getNextStepForProfileId(user?.profile);
+	let nextSteps = await profileService.getNextStepForProfileId(user?.profile);
 	console.log({ nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
-
-	// TODO:
+	
 	const data = {
 		name: { first: user.name.first, last: user.name.last },
 		email: user.email,
@@ -185,8 +181,8 @@ module.exports = {
 	putUpdateProfile,
 	getAllProfiles,
 	getAllVisaProfiles,
-	// queryProfiles,
-	// queryVisaProfiles,
+	queryProfiles,
+	queryVisaProfiles,
 	sendReminderToProfile,
 	getProfileNextStep,
 };

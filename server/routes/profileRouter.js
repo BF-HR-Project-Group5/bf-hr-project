@@ -32,11 +32,11 @@ router.get( // checked
 // auth, authHr,
 	controllers.getAllVisaProfiles
 );
-// router.get( // checked
-// 	'/profiles/visa/',
-//	// auth, authHr,
-// 	controllers.queryVisaProfiles
-// );
+router.get( // checked
+	'/profiles/visa/',
+	// auth, authHr,
+	controllers.queryVisaProfiles
+);
 // no data needs to be sent through body, so doing GET
 router.get( // checked
 	'/profiles/:userId/sendReminder',
@@ -59,11 +59,11 @@ router.get( // checked
 );
 
 // query profiles
-// router.get( // checked
-// 	'/profiles/',
-// 	// auth, authHr,
-// 	controllers.queryProfiles
-// );
+router.get( // checked
+	'/profiles/',
+	// auth, authHr,
+	controllers.queryProfiles
+);
 
 
 

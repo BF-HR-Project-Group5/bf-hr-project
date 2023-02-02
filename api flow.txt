@@ -2,15 +2,23 @@ First time registering/viewing webpage
 
 Receives invite email, Register page {
 	=> /user/register/{hexToken (from route param)} (POST)
-		body = {username, email, password}
 		(creates user with {username, email, password})
 		(now logged in)
+		body = {
+			username, 
+			email, 
+			password
+		}
 }
 
 log in page, when coming back {
 	=> /user/login (POST)
-		body = {username?, email?, password}
 		(username and/or email? + password)
+		body = {
+			username?, 
+			email?, 
+			password
+		}
 }
 
 requires AUTH (req.user):
@@ -167,25 +175,37 @@ Housing page: {
 	=> /report/create (POST)
 		(create a report for the house the user is in)
 		body = {
-			
+			title: string,
+			description: string,
 		}
 
-	=> /report/{report._id}/edit (PUT)
+	=> /report/:reportId (PUT)
 		(edit the base report)
+		params: {
+			reportId,
+		}
 		body = {
-			
+			title: string,
+			description: string,
+			status: string: enum: config.reportStatus,
 		}
 
-	=> /report/{report._id}/comment (POST)
+	=> /report/:reportId/comment (POST)
 		(add comment to the given report)
+		params: {
+			reportId,
+		}
 		body = {
-			
+			description: string,
 		}
 
-	=> /comment/{comment._id}/edit (PUT)
+	=> /comment/:commentId (PUT)
 		(edit particular comment from the user?)
+		params: {
+			commentId,
+		}
 		body = {
-			
+			description: string,
 		}
 }
 
@@ -203,12 +223,18 @@ Employee Profiles Page: {
 		(get each profile "summary")
 
 	Link to their profile page
-	=> /profiles/${user._id} (GET)
+	=> /profiles/:userId (GET)
 		(get one profile)
 		(using user._id rather than profile._id because User schema is the base)
+		params: {
+			userId,
+		}
 
 	=> /profiles?search="some name search" (GET)
 		(return ALL user profiles filtered by search query)
+		query: {
+			search: 'some name search',
+		}
 }
 
 
@@ -219,14 +245,26 @@ Visa Status Management page: {
 	=> /profiles/visa?search="some name search" (GET)
 		(return visa status user profiles filtered by query)
 		(can filter IN PROGRESS vs ALL on the client side ??)
+		query: {
+			search: 'some name search',
+		}
 
-	=> /profiles/${user._id}/sendReminder (GET)
+	=> /profiles/:userId/sendReminder (GET)
 		(send a reminder to that user._id of their next step)
+		params: {
+			userId,
+		}
 
-	=> /documents/${document._id}/approve (GET)
+	=> /documents/:documentId/approve (GET)
 		(tell server to approve the document._id)
+		params: {
+			documentId,
+		}
 
-	=> /documents/${document._id}/reject (POST)
+	=> /documents/:documentId/reject (POST)
+		params: {
+			documentId,
+		}
 		body = {
 			feedback: string
 		}
@@ -238,13 +276,16 @@ Visa Status Management page: {
 Hiring Management Page:{
 	(onboarding application review) {
 		=> /profiles/all (GET) (duplicate)
-			(get all profiles, display 3 tabs for the different statuses)
+			(get all profiles, display 3 tabs for the different statuses?)
 			(PENDING | REJECTED | APPROVED)
 			(shows a summary by default)
 			(client-side filter by status)
 
-		=> /profiles/${user._id} (GET)
+		=> /profiles/:userId (GET)
 			(for opening the profile in a new tab)
+			params: {
+				userId,
+			}
 	}
 
 	(registration tokens) {
@@ -268,60 +309,107 @@ Hiring Management Page:{
 Housing Management Page: {
 	=> /houses/all (GET)
 
-	=> /houses/{house._id} (GET)
+	=> /houses/:houseId (GET)
 		(get house, populate facility reports, populate employees/roommates)
+		params: {
+			houseId,
+		}
 
 	=> /houses/create (POST)
 		body = {
-
+			address: {
+				line1: string,
+				line2: string,
+				city: string,
+				state: string,
+				zipcode: string,
+			},
+			landlord: {
+				legalFullName: string,
+				phone: string,
+				email: string,
+			},
+			numResidents: number,
+			houseInfo: {
+				bedCount: number,
+				mattressCount: number,
+				tableCount: number,
+				chairCount: number,
+			},
 		}
 	
-	=> /houses/{house._id} (PUT)
+	=> /houses/houseId (PUT)
 		body = {
-
+			address: {
+				line1: string,
+				line2: string,
+				city: string,
+				state: string,
+				zipcode: string,
+			},
+			landlord: {
+				legalFullName: string,
+				phone: string,
+				email: string,
+			},
+			numResidents: number,
+			houseInfo: {
+				bedCount: number,
+				mattressCount: number,
+				tableCount: number,
+				chairCount: number,
+			},
+			roommates?: [],
+			reports?: [],
 		}
 
-	=> /houses/{house._id} (DELETE)
+	=> /houses/:houseId (DELETE)
+		params: {
+			houseId,
+		}
 
-	=> /report/{facilityReport._id} (PUT)
+	=> /report/:reportId (PUT)
 		(changing the status)
 		(edit the report)
+		params: {
+			reportId,
+		}
 		body = {
-			
+			status: string: enum: config.reportStatus,
+			title: string,
+			description: string,
 		}
 
-	=> /report/:facilityId/comments (GET)
+	=> /report/:reportId/comments (GET)
 		(gets the comments from this report)
-
-	=> /report/:facilityId/comments (POST)
-		body = {
-
+		params: {
+			reportId,
 		}
+		returns:
 
-	=> /comments/{comment._id} (PUT)
+	=> /report/:reportId/comments (POST)
+		params: {
+			reportId,
+		}
+		body = {
+			description: string,
+		}
+		returns:
+
+	=> /comments/:commentId (PUT)
 		(edit the comment)
-		body = {
-
+		params: {
+			commentId,
 		}
+		body = {
+			description: string,
+		}
+		returns:
 
-	=> /comments/{comment._id} (DELETE)
-	(delete a comment)
+	=> /comments/:commentId (DELETE)
+		(delete a comment)
+		params: {
+			commentId,
+		}
+		returns:
 }
-
-
-
-
-
-
-Ok, now pushed up the checked routes.
-I need to finish some profile routes, and other than that:
-for house:
-- get house (from current req.user.house, get the house of the logged-in user)
-
-and we need 3 facilityReport routes (maybe 4):
-- put edit facilityId (from hr) (edit given facilityId)
-- post comment to facilityId (from hr) ( add comment to given facilityId)
-- put comment to commentId (from hr) ( edit given commentId)
-
-And might be extra: need the user to be able to edit facility report:
-- put edit to facilityId (from user) (edit given facilityId)

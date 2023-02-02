@@ -146,69 +146,37 @@ const getAllVisaUsers = async () => {
 	return filterVisaProfiles(users);
 };
 
-// const queryUsersAndPopulate = async (filter) => {
-// 	filter = generateFullNameFilter(filter.search);
-// 	console.log({filter});
-// 	const users = await User.find(filter).populate(['profile', 'invite', 'house']);
-// 	return users;
-// }
 
-// const queryUsersAndPopulate = async (filter) => {
-// 	const users = await getAllUsersAndPopulate();
-// 	const names = filter.search.split(' ');
-// 	console.log({ names, users });
-// 	const filtered = users.filter(
-// 		(user) =>
-// 			names.includes(user.name.first) ||
-// 			names.includes(user.name.last) ||
-// 			names.includes(user.name?.middle) ||
-// 			names.includes(user.name?.preferred)
-// 	);
-// 	console.log({filtered});
-// 	return filtered;
-// };
-
-
-const queryUsersAndPopulate = async (filter) => { 
-	const names = filter.search.split(' ').map(each => caseInsensitiveRegex(each));
+const queryUsersByFullNameAndPopulate = async (fullName) => {
+	const names = fullName.split(' ').map(word => caseInsensitiveRegex(word));
 	// array of regex strings
-	const promises = [];
-	names.forEach(name => {
-		console.log({name});
-		promises.push(
-			User.find({
-				$or: [
-					// {name: {first: {$regex: name}}},
-					// {name: {middle: {$regex: name}}},
-					// {name: {last: {$regex: name}}},
-					// {name: {preferred: {$regex: name}}},
 
-					{'name.first': {$regex: name}},
-					{'name.middle': {$regex: name}},
-					{'name.last': {$regex: name}},
-					{'name.preferred':{$regex: name}},
-				]
-			}).populate(['profile, invite, house'])
-		)
+	const promises = [];
+	names.forEach(regexName => {
+		promises.push(User.find({'name.first': regexName}).populate(['profile', 'invite', 'house']));
+		promises.push(User.find({'name.last': regexName}).populate(['profile', 'invite', 'house']));
+		promises.push(User.find({'name.middle': regexName}).populate(['profile', 'invite', 'house']));
+		promises.push(User.find({'name.preferred': regexName}).populate(['profile', 'invite', 'house']));
 	})
-	const results = (await Promise.allSettled(promises)).map(each => each.value);
-	console.log({results});
-	const all = results.reduce((accum, current) => {
-		accum.concat(current);
-	}, []);
-	const unique = [...new Set(all)];
-	return unique;
+	const promiseResults = await Promise.allSettled(promises);
+	const results = promiseResults.map(each => each.value);
+
+	// grab first users array from results and concat the rest onto it
+	const all = [...results.shift()];
+	results.forEach(arr => {
+		if (arr.length > 0 ) {
+			all.concat(arr);
+		}
+	});
+
+	// turn into a set and back into an array, so now all items are unique
+	return [...new Set(all)];
 }
 
-const queryVisaUsers = async (filter) => {
-	const fullName = filter.search;
-	const users = await queryUsersByFullName(fullName);
-	// const users = await queryUsersAndPopulate(filter);
-	await users.populate(['profile', 'invite', 'house']);
-	console.log('users after populate:', { users });
-	// console.log('queryVisaUsers service:', {users});
+const queryVisaUsersByFullNameAndPopulate = async (fullName) => {
+	const users = await queryUsersByFullNameAndPopulate(fullName);
 	return filterVisaProfiles(users);
-};
+}
 
 module.exports = {
 	getUserByEmail,
@@ -227,7 +195,7 @@ module.exports = {
 	putHouseIdToUserId,
 	queryUsers,
 	getAllUsersAndPopulate,
-	queryUsersAndPopulate,
 	getAllVisaUsers,
-	queryVisaUsers,
+	queryUsersByFullNameAndPopulate,
+	queryVisaUsersByFullNameAndPopulate,
 };

@@ -18,8 +18,8 @@ const register = catchAsync(async (req, res) => {
 	if (await invite.isTokenExpired()) throw { status: 400, message: 'Token is expired' };
 
 	// check if invite matches the register email
-	const isDifferentEmail = invite.email !== req.body.email;
-	if (isDifferentEmail) throw { statusCode: 400, message: 'Email does not match the invite' };
+	if (invite.email !== req.body.email)
+		throw { statusCode: 400, message: 'Email does not match the invite' };
 
 	// add this to the body so it's added into the user
 	req.body.invite = invite;
