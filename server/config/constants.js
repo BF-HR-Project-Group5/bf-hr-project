@@ -17,10 +17,11 @@ const statusEnum = Object.keys(allStatuses);
 // exports.statusEnum = statusEnum;
 
 exports.config = {
-	tokenExpirationMinutes: 10,
+	tokenExpirationMinutes: 10, // login token
 	invite: {
 		expiresAfterMinutes: 180,
 	},
+	reportStatus: ['OPEN', 'IN_PROGRESS', 'CLOSED'],
 
 	// document model: status, doctype
 	document: {

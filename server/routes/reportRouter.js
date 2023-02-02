@@ -1,6 +1,6 @@
 //pass {mergeParams: true} to the child router if you want to access the params from the parent router
 const router = require('express').Router({ mergeParams: true });
-const controllers = require('../controllers/facilityController');
+const controllers = require('../controllers/reportController');
 const auth = require('../middlewares/auth');
 
 // router.get( // don't think we need this, because we're always getting from a house or from a user
@@ -14,15 +14,15 @@ const auth = require('../middlewares/auth');
 router.post( // checked // for current user, for current house, create a report in that house
 	'/report/create', 
 	// auth,
-	controllers.postFacility
+	controllers.postReport
 );
 router.put( // not needed?? // for current user, for current house, for given facilityId, edit the facility report
-	'/report/:facilityId', 
+	'/report/:reportId', 
 	// auth,
-	controllers.putUpdateToFacilityId
+	controllers.putUpdateToReportId
 )
 router.post( // checked // for current user, for current house, for given facilityId, post a comment
-	'/report/:facilityId/comment', 
+	'/report/:reportId/comment', 
 	// auth,
 	controllers.postComment
 );
@@ -37,19 +37,19 @@ router.put( // checked // for current user, for current house, for given comment
 // HR routes
 // hr routes: the facility id and house depends on which house they've clicked on or which report they've clicked on
 router.put( // checked // edit the report 
-	'/reports/:facilityId', 
+	'/reports/:reportId', 
 	// auth, authHr,
-	controllers.putUpdateToFacilityId
+	controllers.putUpdateToReportId
 );
 router.get( // checked // get comments of a report
-	'/reports/:facilityId/comments', 
+	'/reports/:reportId/comments', 
 	// auth, authHr,
-	controllers.getFacilityReportsComments
+	controllers.getReportsComments
 );
 router.post( // checked // post a comment to a report
-	'/reports/:facilityId/comments', 
+	'/reports/:reportId/comments', 
 	// auth, authHr,
-	controllers.postCommentToFacilityReport,
+	controllers.postCommentToReport,
 );
 router.put( // checked // edit a comment
 	'comments/:commentId',

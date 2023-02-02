@@ -25,7 +25,7 @@ const HouseSchema = new Schema({
         tableCount: { type: Number, required: true },
         chairCount: { type: Number, required: true },
     },
-    facilityReports: [{ type: refType, ref: 'Facility' }]
+    reports: [{ type: refType, ref: 'Report' }]
 }, { timestamps: true });
 
 /**
