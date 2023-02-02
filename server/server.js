@@ -31,7 +31,7 @@ app.use('/', routes.inviteRouter);
 // app.use('/', routes.userRouter);
 app.use('/', routes.facilityRouter);
 // app.use('/', routes.documentRouter);
-app.use('/', routes.s3Router);
+// app.use('/', routes.s3Router);
 app.use('/', routes.profileRouter);
 
 
