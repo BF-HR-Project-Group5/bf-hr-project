@@ -50,7 +50,7 @@ const getHouseById = (id) => House.findById(id);
 const getHouseByIdAndPopulateFields = async (houseId) => {
 	const house = await getHouseById(houseId);
 	if (!house) {
-		throw { statusCode: 404, message: 'getUserByIdAndPopulateFields: House not found' };
+		throw { statusCode: 404, message: 'getHouseByIdAndPopulateFields: House not found' };
 	}
 
 	await house.populate([
@@ -61,6 +61,10 @@ const getHouseByIdAndPopulateFields = async (houseId) => {
 		{
 			path: 'reports',
 			model: 'Report',
+			populate: {
+				path: 'comments',
+				model: 'Comment',
+			}
 		},
 	]);
 
@@ -70,7 +74,7 @@ const getHouseByIdAndPopulateFields = async (houseId) => {
 const getHouseByIdAndPopulateUsers = async (houseId) => {
 	const house = await getHouseById(houseId);
 	if (!house) {
-		throw { statusCode: 404, message: 'getUserByIdAndPopulateFields: House not found' };
+		throw { statusCode: 404, message: 'getHouseByIdAndPopulateUsers: House not found' };
 	}
 	// populate EVERYTHING
 	await house.populate([

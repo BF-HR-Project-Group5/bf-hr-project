@@ -18,21 +18,11 @@ const getReportById = async (id) => Report.findById(id);
 const getCommentById = async (id) => Comment.findById(id);
 const getHouseById = async (id) => House.findById(id);
 
-// get house and populate fileds of facilityreports
-const getHouseByIdAndPopulateFields = async (houseId) => {
-	//get HouseById not write
-	const house = await House.findById(houseId)
-		.populate([{ path: 'reports', strictPopulate: false }])
-		.populate([{ path: 'comments', strictPopulate: false }]);
-	// const house = await House.findById(houseId).populate('facilityReports')
-	return house;
-};
-
 // get report and populate fields of comments
 //first report 63d80ed7cbe3476841d3ea35
 const getReportByIdAndPopulateFields = async (reportId) => {
 	//get HouseById not write
-	const report = await Report.findById(reportId).populate('comment');
+	const report = await Report.findById(reportId).populate('comments');
 
 	return report;
 };
@@ -82,7 +72,6 @@ module.exports = {
 	// getFacilityByDescription,
 	getCommentById,
 	getHouseById,
-	getHouseByIdAndPopulateFields,
 	getReportByIdAndPopulateFields,
 	updateReportById,
 	updateCommentById,

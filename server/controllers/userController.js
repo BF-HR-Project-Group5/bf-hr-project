@@ -3,18 +3,10 @@ const userService = require('../services/userService');
 const tokenService = require('../services/tokenService');
 const catchAsync = require( '../utils/catchAsync' );
 
-// // get songs liked by user
-// const getLikedSongs = catchAsync(async (req, res) => {
-// 	console.log('get liked songs controller:', { reqUser: req.user });
-// 	const userId = req.user._id;
-// 	const user = await userService.getUserByIdAndPopulateFields(userId, ['likedSongs']);
-// 	res.status(200).json({likedSongs: user.likedSongs});
-// });
-
 const getUser = catchAsync(async (req, res) => {
 	console.log('get user controller:', { reqUser: req.user });
 	const userId = req.user._id;
-	const user = await userService.getUserByIdAndPopulateFields(userId, ['facilityReports', 'houses']);
+	const user = await userService.getUserByIdAndPopulate(userId);
 	res.status(200).json({user});
 });
 
