@@ -17,7 +17,7 @@ const HouseSchema = new Schema({
         phone: { type: String, required: true },
         email: { type: String, required: true }
     },
-    numResidents: { type: Number }, // array of roommates
+    numResidents: { type: Number, default: 0 }, // array of roommates
     roommates: [{ type: refType, ref: "User" }],
     houseInfo: {
         bedCount: { type: Number, required: true },
