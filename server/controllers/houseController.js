@@ -1,15 +1,7 @@
 const houseService = require('../services/houseService')
+const userService = require('../services/userService')
 const catchAsync = require( '../utils/catchAsync' );
 // const pick = require('../utils/pick' );
-
-// console.log('house controller')
-
-const index = (req, res) => {
-    console.log('res', res)
-    res.json({
-        message: "Hello"
-    });
-}
 
 // CREATE house
 const createHouse = catchAsync(async (req, res) => {
@@ -57,12 +49,21 @@ const deleteHouse = catchAsync(async (req, res) => {
     res.status(200).json({ house });
 })
 
+const getHouseForUser = catchAsync(async(req, res) => {
+		const userId = req.user._id;
+		const user = await userService.getUserById(userId);
+		const house = await houseService.getHouseByIdAndPopulateFields(user.house._id, ['reports']);
+		res.status(200).json({ house });
+})
+
+
+
 
 module.exports = {
-    index,
     createHouse,
     getAllHouses,
     getHouse, 
     updateHouse,
-    deleteHouse
+    deleteHouse,
+		getHouseForUser,
 }

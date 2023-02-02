@@ -7,11 +7,11 @@ const { createHouse } = require('../validations/house.validation');
 
 // user routes (for req.user)
 // from req.user, get user by _id, get houseId, and fetch the houseId so it can be returned // checked
-// router.get( // should also get facility reports for this house (populate facilityReports)
-// '/house',
-// auth,
-// controllers.getHouseForUser
-// );
+router.get( // should also get facility reports for this house (populate facilityReports)
+	'/house',
+	// auth,
+	controllers.getHouseForUser
+);
 
 // HR routes
 router.post(

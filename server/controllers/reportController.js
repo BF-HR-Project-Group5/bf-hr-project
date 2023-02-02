@@ -1,7 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const reportService = require('../services/reportService');
 
-//get all facilityReport by houseid // only show comment_id, not full infomation
+//get all facilityReport by houseid // only show comment_id, not full information
 const getReports = catchAsync(async (req, res) => {
 	const houseId = req.params.houseId;
 	const house = await reportService.getHouseByIdAndPopulateFields(houseId);
