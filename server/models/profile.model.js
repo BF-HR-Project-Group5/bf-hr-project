@@ -33,7 +33,7 @@ const ProfileSchema = new Schema(
 		license: {
 			number: { type: String },
 			expiration: { type: Date },
-			document: { type: refType, ref: 'Document' },
+			link: { type: String, required: true},
 		},
 		phone: {
 			mobile: { type: Number, required: true },

@@ -51,7 +51,7 @@ Sends you to Onboarding Application page {
 				ssn: number,
 				dateOfBirth: Date,
 				gender: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
-				photoFile?: file? if sending file from backend,
+				photoFile?: file,
 				address: {
 					line1: string,
 					line2: string,

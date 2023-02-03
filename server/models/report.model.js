@@ -7,7 +7,7 @@ const ReportSchema = new Schema(
 	{
 		title: { type: String, required: true },
 		description: { type: String, required: true },
-		createdBy: { type: refType, ref: 'User' },
+		createdBy: { type: String, required: true},
 		status: { type: String, enum: config.reportStatus, default: 'OPEN' },
 		comments: [{ type: refType, ref: 'Comment' }],
 	},
