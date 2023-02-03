@@ -1,22 +1,25 @@
-import { useForm } from "react-hook-form";
-import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+import React from "react";
 import { connect } from 'react-redux';
 import { submitLogin } from '../../redux/actions/index';
 import { Model } from "survey-core";
 import { Survey } from "survey-react-ui";
 import "../../layout/survey-core/defaultV2.min.css";
 import { json } from "./onboarding-mock";
-import Chip from '@material-ui/core/Chip';
 import '../../layout/onboarding-app.css'
 
 const OnboardingApplication = (props) => {
     console.log('props',props)
+		const navigate = useNavigate();
     const survey = new Model(json);
     survey.onComplete.add((sender, options) => {
-        console.log(JSON.stringify(sender.data, null, 3));
+        // console.log(JSON.stringify(sender.data, null, 3));
+				console.log(JSON.stringify(sender.data));
 				// send fetch post request to backend profile/create
 				// maybe redirect to personalInfo
+				navigate('/personalInfo');
     });
+
     return (
         <>
             <div className="sd-title sd-container-modern__title container">

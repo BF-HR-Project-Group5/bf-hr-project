@@ -3,6 +3,7 @@ export const json = {
     "logoFit": "cover",
     "logoPosition": "right",
     "logoHeight": "100px",
+		"completedHtml": "<div><h1>Thank you for completing your application! </h1><p>Redirecting you to your profile...</p></div>", // the "completed" page
     "elements": [{
         "type": "panel",
         "name": "name",
@@ -295,3 +296,46 @@ export const json = {
     "widthMode": "static",
     "width": "864px"
   };
+
+
+
+		// "elements": [{
+    //     "type": "panel",
+    //     "name": "name",
+    //     "title": "Name",
+    //     "elements": [{
+    //       "type": "text",
+    //       "name": "first-name",
+    //       "title": "First Name",
+    //       "startWithNewLine": false,
+    //       "isRequired": true
+    //     },{
+    //       "type": "text",
+    //       "name": "last-name",
+    //       "title": "Last Name",
+    //       "startWithNewLine": false,
+    //       "isRequired": true
+    //     },{
+    //       "type": "text",
+    //       "name": "middle-name",
+    //       "title": "Middle Name",
+    //       "startWithNewLine": false,
+    //       "isRequired": false
+    //     },{
+    //       "type": "text",
+    //       "name": "preferred-name",
+    //       "title": "Preferred name",
+    //       "startWithNewLine": false,
+    //     }]
+    //   },],
+
+
+		/*
+		
+		notes:
+			move car info into under "Do you have a license?"
+			need to move DOB to somewhere else,
+			need SSN
+		
+		
+		*/

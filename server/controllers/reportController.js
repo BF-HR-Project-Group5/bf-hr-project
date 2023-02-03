@@ -63,7 +63,11 @@ const postComment = catchAsync(async (req, res) => {
 
 const putEditToComment = catchAsync(async (req, res) => {
 	const commentId = req.params.commentId;
-	const comment = await reportService.updateCommentById(commentId, req.body);
+	console.log({commentId});
+	const commentBody = {
+		description: req.body.description,
+	}
+	const comment = await reportService.updateCommentById(commentId, commentBody);
 	res.status(200).json({ comment });
 });
 

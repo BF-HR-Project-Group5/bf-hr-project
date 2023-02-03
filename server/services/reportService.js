@@ -57,7 +57,7 @@ const updateReportById = async (id, updateBody) => {
 //update the comment 63d8191e79b969073a624e0c
 //http://localhost:3000/house/63d7f0930f7ade2b7b6c5f68/report/63d8191e79b969073a624e0c/comment
 const updateCommentById = async (id, updateBody) => {
-	const comment = await Comment.findById(id);
+	const comment = await getCommentById(id);
 	if (!comment) throw { statusCode: 404, message: 'Comment not found' };
 	Object.assign(comment, updateBody);
 	await comment.save();
