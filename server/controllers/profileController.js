@@ -21,22 +21,22 @@ const createProfile = catchAsync(async (req, res) => {
 	const userId = req.user._id;
 	const name = req.body.name; // grab name object from body
 
-	console.log('make sure we have files in here', { files: req.files });
+	console.log('make sure we have files in here', {files: req.files});
 	const uploadPromises = [];
 
 	// check for and upload license
 	const license = req.files.licenseFile[0];
 	if (!license) {
-		throw { statusCode: 400, message: 'Please include a license' };
+		throw {statusCode: 400, message: 'Please include a license'};
 	} else {
 		uploadPromises.push(s3Service.uploadFile(license));
 	}
-
+	
 	const workAuth = req.files?.workAuthFile[0] ?? undefined; // may be undefined if they are citizen/green_card
 	const isCitizen = req.body.citizenType === 'CITIZEN' || req.body.citizenType === 'GREEN_CARD';
 	if (!isCitizen) {
 		if (!workAuth) {
-			throw { statusCode: 400, message: 'Please include an OPT Receipt' };
+			throw {statusCode: 400, message: 'Please include an OPT Receipt'};
 		} else {
 			uploadPromises.push(s3Service.uploadFile(workAuth));
 		}
@@ -48,33 +48,28 @@ const createProfile = catchAsync(async (req, res) => {
 
 	// get the results
 	const results = await Promise.all(uploadPromises);
-	console.log({ results });
+	console.log({results});
 
 	// break them out
 	const licenseResponse = results.shift();
 	const licenseLink = licenseResponse.Location;
 	if (!licenseLink) {
-		throw { statusCode: 500, message: 'Error uploading license to S3' };
+		throw {statusCode: 500, message: 'Error uploading license to S3'};
 	} else {
 		// add it to the profile
 		req.body.license.link = licenseLink;
 	}
-
+	
 	let workAuthDocument;
 	// if we have work auth, need to build a document for it
 	if (workAuth) {
 		let visaResponse = results.shift();
 		const link = visaResponse.Location;
 		if (!link) {
-			throw { statusCode: 500, message: 'Error uploading work auth to S3' };
+			throw {statusCode: 500, message: 'Error uploading work auth to S3'};
 		} else {
 			// create document for work auth
-			workAuthDocument = documentService.createDocument({
-				link,
-				feedback: '',
-				status: 'APPROVED',
-				type: 'OTHER',
-			});
+			workAuthDocument = documentService.createDocument({link, feedback: '', status: 'APPROVED', type: 'OTHER'});
 		}
 	}
 
@@ -83,7 +78,7 @@ const createProfile = catchAsync(async (req, res) => {
 		let photoResponse = results.shift();
 		const link = photoResponse.Location;
 		if (!link) {
-			throw { statusCode: 500, message: 'Error uploading profile photo to S3' };
+			throw {statusCode: 500, message: 'Error uploading profile photo to S3'};
 		} else {
 			// add link to req.body?
 			req.body.photo = link;
@@ -230,7 +225,7 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	// get user, and profile id
 	const user = await userService.getUserById(userId);
 
-	let nextSteps = await profileService.getNextStepForProfileId(user?.profile);
+	let nextSteps = await profileService.getUserNextStepForProfileId(user?.profile);
 	console.log({ nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
