@@ -49,7 +49,7 @@ const postComment = catchAsync(async (req, res) => {
 	// // how to get facility_id
 	const report = await reportService.getReportById(reportId);
 	report.comments.push(comment._id);
-	report.save();
+	await report.save();
 	res.status(200).json({ report });
 });
 
