@@ -2,9 +2,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
+import { useNavigate } from 'react-router-dom';
 import {
 	StyledSection,
 	StyledForm,
@@ -35,7 +36,7 @@ const schema = yup.object({
 });
 
 const LoginForm = (props) => {
-	const [isCheck, setIsCheck] = useState(false);
+	const navigate = useNavigate();
 	const { submitLogin } = props;
 
 	const {
@@ -46,9 +47,9 @@ const LoginForm = (props) => {
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
+
 	const onSubmit = async (data) => {
 		console.log('data', data);
-		setIsCheck(false);
 		reset();
 
 		try {
@@ -56,12 +57,16 @@ const LoginForm = (props) => {
 			const response = await submitLogin(data);
 			console.log('login form submit', {response});
 
-			//If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
-			// if(response.user.applicationStatus == 'APPROVED'){
-			props.history.push({ pathname: '/housing' });
-			// }else{
-			// props.history.push({pathname: '/onboardingApp'})
-			// }
+			// if HR, go to HR page,
+			if (response?.user?.role === 'hr') {
+				navigate('/home');
+			} else {
+				if (response.user.profile.status === 'APPROVED') {
+					navigate('/housing');
+				} else {
+					navigate('/onboardingApp');
+				}
+			}
 		} catch (err) {
 			console.log(err);
 		}

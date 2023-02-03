@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { submitSignup } from '../redux/actions/index';
 import {
@@ -11,6 +11,7 @@ import {
 	StyledStack,
 	StyledA,
 } from '../components/styled-components/login-register/login-register';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
 	userName: yup
@@ -39,8 +40,8 @@ const schema = yup.object({
 });
 
 const SignUpForm = (props) => {
-	const [isCheck, setIsCheck] = useState(false);
-	console.log('props', props);
+	const navigate = useNavigate();
+	console.log('signup', {props});
 	// const { name, email, password } = props.data;
 	const { submitSignup } = props;
 
@@ -52,15 +53,14 @@ const SignUpForm = (props) => {
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
+
 	const onSubmit = async (data) => {
 		console.log('data', data);
-		setIsCheck(false);
 		reset();
 		try {
 			const response = await submitSignup(data);
 			console.log('signup onsubmit', { response });
-			let { history } = props;
-			history.push({ pathname: '/Login' });
+			navigate('/login');
 		} catch (err) {
 			console.log(err);
 		}
