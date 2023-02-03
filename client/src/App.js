@@ -22,26 +22,20 @@ function App(props) {
 							<Route path='/' exact component={Home} />
               <Route path="/signup" exact component={SignUp} />{/* Done */}
               <Route path="/login" exact component={Login} />{/* Done */}
-              <Route path="/personalInfo" exact component={PersonalInfo} />
-              <Route path="/onboardingApp" exact component={OnboardingApp} />
-              <Route path="/visaStatus" exact component={VisaStatus} />
-              <Route path="/housing" exact component={Housing} /> {/* Done */}
-              <Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
-              <Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
-              <Route path="/housing/comments" exact component={Comments} />{/* Progress */}
+							{/* <GuardedRoute roleRequired="user" redirectPath="/login" > */}
 
-							{/* <Route component={<GuardedRoute roleRequired="hr" routeRedirect="/login"/>}>
-								<Route path="/home" element={HrHome}/>
-							</Route> */}
-							<GuardedRoute roleRequired="hr" routeRedirect="/login" >
-							<Route path="/home" exact component={HrHome} />
+								<Route path="/personalInfo" exact component={PersonalInfo} />
+								<Route path="/onboardingApp" exact component={OnboardingApp} />
+								<Route path="/visaStatus" exact component={VisaStatus} />
+								<Route path="/housing" exact component={Housing} /> {/* Done */}
+								<Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
+								<Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
+								<Route path="/housing/comments" exact component={Comments} />{/* Progress */}
+							{/* </GuardedRoute> */}
+
+							<GuardedRoute roleRequired="hr" redirectPath="/login" >
+								<Route path="/home" exact component={HrHome} />
 							</GuardedRoute>
-
-							{/* <Route path="/home" element={
-								<GuardedRoute roleRequired="hr" routeRedirect="/login" component={HrHome}/>
-							} /> */}
-							{/* <GuardedRoute path='/home' component={HrHome} roleRequired="hr" /> */}
-							{/* <Route path="/home" exact component={HrHome} /> */}
           </Switch>
         </Suspense>
     </BrowserRouter>
