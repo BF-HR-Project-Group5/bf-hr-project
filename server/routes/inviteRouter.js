@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const controllers = require('../controllers/inviteController');
 const authHr = require('../middlewares/authHr');
+const auth = require('../middlewares/auth');
 
 // HR will submit user data to this path
 router.post( // checked

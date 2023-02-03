@@ -2,7 +2,6 @@ const catchAsync = require('../utils/catchAsync');
 const reportService = require('../services/reportService');
 const userService = require('../services/userService');
 const houseService = require('../services/houseService');
-const { useResource$ } = require( '@builder.io/qwik' );
 
 //get all facilityReport by houseid // only show comment_id, not full information
 const getReports = catchAsync(async (req, res) => {
