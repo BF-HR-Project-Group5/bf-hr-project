@@ -15,6 +15,7 @@ const profileService = require('../services/profileService');
 const Profile = require('../models/profile.model');
 const documentService = require('../services/documentService');
 const Document = require('../models/document.model');
+const reportService = require('../services/reportService');
 
 const seedInvites = async (count) => {
 	const invites = [];
@@ -179,6 +180,19 @@ const seedDocuments = async (count) => {
 	}
 	return Promise.all(documents);
 };
+
+
+// const seedReports = async (count) => {
+// 	const reports = [];
+// 	for (let i = 0; i < count; i++) {
+// 		const data = {
+// 			title: `reportTitle${i}`,
+// 			description:`reportDescription${i}`,
+// 		};
+// 		reports.push(reportService.createReport(data));
+// 	}
+// 	return Promise.all(reports);
+// }
 
 const updateHouseRoommates = async (count, users, houses) => {
 	const houseUpdates = [];
