@@ -21,6 +21,29 @@ const createProfile = catchAsync(async (req, res) => {
 	const userId = req.user._id;
 	const name = req.body.name; // grab name object from body
 
+	console.log('make sure we have files in here', {files: req.files});
+	const photo = req.files.photo[0] ?? undefined; // optional field
+	const license = req.files.license[0];
+	const workAuth = req.files?.workAuth[0] ?? undefined; // may be undefined if they are citizen/green_card
+	const uploadPromises = [];
+	if (photo) uploadPromises.push(s3Service.uploadFile(photo));
+	if (!license) {
+	throw {statusCode: 400, message: 'Please include a license'};
+	} else {
+		uploadPromises.push(s3Service.uploadFile(license));
+	}
+	const isVisaStatus = req.body.workAuth.title !== 'CITIZEN' && req.body.workAuth.title !== 'GREEN_CARD';
+	if (isVisaStatus) { // should check if they are NOT green_card || citizen
+		if (!workAuth) {
+			throw {statusCode: 400, message: 'Please include an OPT Receipt'};
+		} else {
+			uploadPromises.push(s3Service.uploadFile(workAuth));
+		}
+	}
+	const results = await Promise.all(uploadPromises);
+	console.log({results});
+	const link = response.location;
+	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 	// maybe need to save document here!
 	// const thisFileLink = s3Service.upload([1])...
 	// documentService.create...

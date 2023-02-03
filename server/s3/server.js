@@ -10,9 +10,7 @@ const upload = multer({ dest: 'uploads/' })
 const { uploadFileImg, getFileStream } = require('./s3')
 
 const cors = require('cors')
-
 const app = express()
-
 // use cors
 app.use(cors({ origin: true, credentials: true }))
 

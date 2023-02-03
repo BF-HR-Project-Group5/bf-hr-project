@@ -2,6 +2,7 @@ const router = require('express').Router();
 const controllers = require('../controllers/profileController');
 const auth = require('../middlewares/auth');
 const authHr = require('../middlewares/authHr');
+const upload = require('../utils/multer');
 
 // user routes
 router.get(
@@ -14,6 +15,11 @@ router.post(
 	// checked
 	'/profile/create',
 	auth, // require user
+	upload.fields([
+		{ name: 'photo', maxCount: 1 }, // profile photo
+		{ name: 'license', maxCount: 1 }, // license photo
+		{ name: 'workAuth', maxCount: 1 }, // work auth if needed
+	]),
 	controllers.createProfile
 );
 router.put(
@@ -30,9 +36,6 @@ router.get(
 	auth,
 	controllers.getProfileNextStep
 );
-
-
-
 
 // HR routes below:
 router.get(

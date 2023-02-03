@@ -9,6 +9,7 @@ const connection = require('./config/db');
 
 require('dotenv').config();
 
+
 // use cors
 app.use(cors({origin: true, credentials: true }))
 

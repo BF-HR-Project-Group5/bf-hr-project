@@ -1,8 +1,9 @@
 const userService = require('../services/userService');
 const profileService = require('../services/profileService');
 const documentService = require('../services/documentService');
+const s3Service = require('../services/s3Service');
 const catchAsync = require( '../utils/catchAsync' );
-
+// const upload = require('../utils/multer');
 
 
 // already logged in
@@ -23,8 +24,12 @@ const createDocument = catchAsync(async (req, res) => {
 	const profile = await profileService.getProfileById(user.profile);
 	if (!profile) throw {statusCode: 404, message: 'Profile not found'};
 
-	// const link = s3Service.uploadDocument(req.body.document);
-	const link = 'some link'
+	// upload the file, and get the response
+	console.log('make sure we have a file in here', {files: req.files});
+	const file = req.files.file[0];
+	if (!file) throw {statusCode: 400, message: 'Please include a file'};
+	const response = await s3Service.uploadFile(file);
+	const link = response.location;
 	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 
 	// save document
