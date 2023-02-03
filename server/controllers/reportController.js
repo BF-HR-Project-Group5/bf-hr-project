@@ -74,6 +74,7 @@ const deleteComment = catchAsync(async (req, res) => {
 
 const putUpdateToReportId = catchAsync(async (req, res) => {
 	const reportId = req.params.reportId;
+	console.log("con",req.body);
 	const report = await reportService.updateReportById(reportId, req.body);
 	res.status(202).json({report});
 })

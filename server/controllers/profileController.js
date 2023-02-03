@@ -230,7 +230,7 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	// get user, and profile id
 	const user = await userService.getUserById(userId);
 
-	let nextSteps = await profileService.getNextStepForProfileId(user?.profile);
+	let nextSteps = await profileService.getUserNextStepForProfileId(user?.profile);
 	console.log({ nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
