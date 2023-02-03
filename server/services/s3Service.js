@@ -38,7 +38,16 @@ const getFileStream = (fileKey) => {
 	return s3.getObject(downloadParams).createReadStream();
 };
 
+const uploadFiles = (...files) => {
+	console.log('uploading files...', {files});
+	// for each file, upload it. Then return the results in an array
+	const promises = files.map(file => uploadFile(file));
+	console.log({promises});
+	return Promise.all(promises);
+}
+
 module.exports = {
 	uploadFile,
+	uploadFiles,
 	getFileStream,
 };
