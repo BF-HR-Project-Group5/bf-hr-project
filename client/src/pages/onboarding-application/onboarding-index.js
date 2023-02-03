@@ -7,6 +7,7 @@ import { Survey } from "survey-react-ui";
 import "../../layout/survey-core/defaultV2.min.css";
 import { json } from "./onboarding-mock";
 import '../../layout/onboarding-app.css'
+// import Chip from '@material-ui/core/Chip';
 
 const OnboardingApplication = (props) => {
     console.log('props',props)

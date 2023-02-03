@@ -261,17 +261,20 @@ export const json = {
           {
           "type": "text",
           "name": "phone",
-          "title": "Phone number",
+          "title": "10 Digit Phone number",
           "isRequired": true,
           "startWithNewLine": false,
           "titleLocation": "top",
           "validators": [{
             "type": "regex",
-            "text": "Phone number must be in the following format: +0 (000) 000-00-00",
-            "regex": "\\+[0-9]{1} \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}"
+            // "text": "Phone number must be in the following format: +0 (000) 000-00-00",
+            // "regex": "\\+[0-9]{1} \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}"
+						// "regex": "^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$"
+						"text": "Please enter a 10 digit phone number",
+						"regex": "((\(\d{3}\)?)|(\d{3}))([\s-./]?)(\d{3})([\s-./]?)(\d{4})"
           }],
           "inputType": "tel",
-          "placeholder": "+0 (000) 000-00-00"
+          "placeholder": "+0 (000) 000-0000"
         },         
         {
           "type": "text",

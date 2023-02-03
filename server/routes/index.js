@@ -4,3 +4,4 @@ exports.inviteRouter = require('./inviteRouter');
 // exports.userRouter = require('./userRouter');
 exports.reportRouter = require('./reportRouter');
 exports.profileRouter = require('./profileRouter');
+exports.documentRouter = require('./documentRouter');

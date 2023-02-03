@@ -29,7 +29,7 @@ const createDocument = catchAsync(async (req, res) => {
 	const file = req.files.file[0];
 	if (!file) throw {statusCode: 400, message: 'Please include a file'};
 	const response = await s3Service.uploadFile(file);
-	const link = response.location;
+	const link = response.Location;
 	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 
 	// save document
