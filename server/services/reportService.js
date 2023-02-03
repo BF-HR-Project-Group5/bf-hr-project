@@ -29,7 +29,7 @@ const getReportByIdAndPopulateFields = async (reportId) => {
 
 //update status for report
 const updateReportById = async (id, updateBody) => {
-	const report = getReportById(id);
+	const report = await getReportById(id);
 	if (!report) throw { statusCode: 404, message: 'Report not found' };
 	Object.assign(report, updateBody);
 	await report.save();

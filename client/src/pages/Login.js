@@ -56,12 +56,17 @@ const LoginForm = (props) => {
 			const response = await submitLogin(data);
 			console.log('login form submit', {response});
 
-			//If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
-			// if(response.user.applicationStatus == 'APPROVED'){
-			props.history.push({ pathname: '/housing' });
-			// }else{
-			// props.history.push({pathname: '/onboardingApp'})
-			// }
+			// if HR, go to HR page,
+			if (response.user.role === 'hr') {
+				props.history.push({pathname: '/home'});
+			} else {
+				//If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
+				if (response.user.profile.status === 'APPROVED') {
+					props.history.push({ pathname: '/housing' });
+				} else {
+					props.history.push({pathname: '/onboardingApp'})
+				}
+			}
 		} catch (err) {
 			console.log(err);
 		}
