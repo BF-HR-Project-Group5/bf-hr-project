@@ -26,7 +26,7 @@ exports.config = {
 	// document model: status, doctype
 	document: {
 		statuses: statusEnum,
-		types: [ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER', 'LICENSE'],
+		types: [ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER'],
 	},
 
 	// profile or application: status, steps

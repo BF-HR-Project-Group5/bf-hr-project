@@ -1,5 +1,6 @@
 const path = require('path');
 require('dotenv').config(path.join(__dirname, '../.env'));
+const {config} = require('../config/constants');
 
 const mongoose = require('mongoose');
 const { MONGO_URL } = process.env;
@@ -94,7 +95,7 @@ const seedHouses = async (count) => {
 };
 
 const GENDERS = ['MALE', 'FEMALE', 'NO_RESPONSE'];
-const WORK_AUTH_TITLES = ['CITIZEN', 'GREEN_CARD', 'VISA'];
+const CITIZEN_TYPE = ['CITIZEN', 'GREEN_CARD', 'VISA'];
 
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
@@ -115,8 +116,9 @@ const seedProfiles = async (count, documents) => {
 				state: `state_${i}`,
 				zipcode: `55555(-5555)${i}`,
 			},
+			citizenType: CITIZEN_TYPE[i % 3],
 			workAuth: {
-				title: WORK_AUTH_TITLES[i%3],
+				title: config.document.types[i%5],
 				startDate: new Date(),
 				endDate: new Date(),
 				daysRemaining: 99,
