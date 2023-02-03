@@ -20,7 +20,25 @@ const getCommentById = async (id) => Comment.findById(id);
 //first report 63d80ed7cbe3476841d3ea35
 const getReportByIdAndPopulateFields = async (reportId) => {
 	//get HouseById not write
-	const report = await Report.findById(reportId).populate('comments');
+	const report = await Report.findById(reportId).populate([
+		{
+			path: 'comments',
+			model: 'Comment',
+			populate: {
+				path: 'createdBy',
+				model: 'User',
+			}
+		},
+		{
+			path: 'createdBy',
+			model: 'User',
+			populate: [
+				{ path: 'profile', model: 'Profile' },
+				{ path: 'invite', model: 'Invite' },
+				{ path: 'house', model: 'House' },
+			],
+		},
+	]);
 
 	return report;
 };
@@ -48,15 +66,15 @@ const updateCommentById = async (id, updateBody) => {
 
 const addCommentToReportId = async (reportId, data) => {
 	// create comment
-	const comment = await createComment(data)
+	const comment = await createComment(data);
 	// find report
 	const report = await getReportById(reportId);
 	// add comment to report
 	report.comments.push(comment._id);
 	// save
 	await report.save();
-	return {report, comment};
-}
+	return { report, comment };
+};
 
 //delete report report
 const deleteReportById = async (id) => Report.findByIdAndDelete(id);
