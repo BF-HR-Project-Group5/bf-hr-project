@@ -1,8 +1,9 @@
 const proxy = require('http-proxy-middleware');
+const PORT = 3000; // port of the server app
 
 module.exports = function (app) {
-  app.use(proxy('/user/*', { target: 'http://localhost:5000/' }));
-  app.use(proxy('/house', { target: 'http://localhost:5000/' }));
-  app.use(proxy('/house/*', { target: 'http://localhost:5000/' }));
+  app.use(proxy('/user/*', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/house', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/house/*', { target: `http://localhost:${PORT}/` }));
 };
 
