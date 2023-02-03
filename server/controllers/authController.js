@@ -2,6 +2,7 @@ const userService = require('../services/userService');
 const authService = require('../services/authService');
 const inviteService = require('../services/inviteService');
 const tokenService = require('../services/tokenService');
+const houseService = require('../services/houseService');
 const catchAsync = require('../utils/catchAsync');
 const { validatePasswordsMatch } = require('../utils/validate');
 
@@ -30,6 +31,7 @@ const register = catchAsync(async (req, res) => {
 
 	// mark registered
 	await inviteService.putIsRegisteredToInviteId(invite._id);
+	await houseService.assignUserIdToHouse(user._id);
 	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
