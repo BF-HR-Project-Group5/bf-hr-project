@@ -1,15 +1,11 @@
 const User = require('../models/user.model');
 const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
-
 const DEEP_POPULATE_PATH = [
 	{
 		path: 'profile',
 		model: 'Profile',
-		populate: [
-			{ path: 'documents', model: 'Document' },
-			{ path: 'license.link', model: 'Document' },
-		],
+		populate: { path: 'documents', model: 'Document' },
 	},
 	{
 		path: 'invite',
@@ -133,7 +129,6 @@ const getUserByIdAndPopulate = async (userId) => {
 	}
 	return user.populate(DEEP_POPULATE_PATH);
 };
-
 
 // put a document to the user
 const putDocumentIdToUserId = async (docId, userId) => {

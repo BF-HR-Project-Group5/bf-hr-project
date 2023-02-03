@@ -79,16 +79,10 @@ const getProfileByIdAndPopulate = async (profileId) => {
 		throw { statusCode: 404, message: 'getProfileByIdAndPopulate: Profile not found' };
 	}
 
-	return profile.populate([
-		{
-			path: 'documents',
-			model: 'Document',
-		},
-		{
-			path: 'license.link',
-			model: 'Document',
-		}
-	]);
+	return profile.populate({
+		path: 'documents',
+		model: 'Document',
+	});
 };
 
 // figure out what the "next step" is for documents
