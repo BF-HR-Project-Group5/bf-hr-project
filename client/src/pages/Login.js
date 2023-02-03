@@ -58,15 +58,16 @@ const LoginForm = (props) => {
 			console.log('login form submit', {response});
 
 			// if HR, go to HR page,
-			if (response?.user?.role === 'hr') {
-				navigate('/home');
-			} else {
-				if (response.user.profile.status === 'APPROVED') {
+			// if (response?.user?.role === 'hr') {
+			// 	navigate('/home');
+			// } else {
+				// if (response.user.profile.status === 'APPROVED') {
 					navigate('/housing');
-				} else {
-					navigate('/onboardingApp');
-				}
-			}
+				// } 
+			// 	else {
+			// 		navigate('/onboardingApp');
+			// 	}
+			// }
 		} catch (err) {
 			console.log(err);
 		}

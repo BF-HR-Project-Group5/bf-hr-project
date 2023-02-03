@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { FETCH_USER, FETCH_FAILED } from './types';
+import { FETCH_USER, FETCH_HOUSE, FETCH_FAILED } from './types';
 
 export const submitLogin = (values) => async (dispatch) => {
 	const { data } = await axios.post('/user/login', values);
@@ -25,8 +25,8 @@ export const submitLogout = (values) => async (dispatch) => {
 export const fetchHouse = (values) => async (dispatch) => {
 	console.log('values', values);
 	const { data } = await axios.get('/house');
+	dispatch({ type: FETCH_HOUSE, payload: data.house });
 	return data;
-	// dispatch({ type: FETCH_HOUSE, payload: data });
 };
 
 export const fetchUser = (values) => async (dispatch) => {

@@ -37,7 +37,8 @@ const HouseDetails = (props) => {
     useEffect(() => {
         (async function () {
             try {
-            const response = await fetchHouse();
+                const response = await fetchHouse();
+                console.log('response',response)
                 setData(response.house)
             } catch (err) {
             console.log(err);

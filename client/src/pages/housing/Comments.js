@@ -8,11 +8,14 @@ import Navigation from '../../components/navigation/navigation';
 import MaterialTable from "material-table";
 import { createComment } from '../../redux/actions/index';
 import { updateComment } from '../../redux/actions/index';
+import {useLocation} from 'react-router-dom';
 
 const Comments = (props) => {
     console.log('props',props)
+    const location = useLocation();
+    console.log('location',location)
     const { createComment, updateComment } = props
-    const reportId = props.location.state
+    const reportId = location.state
 
     const [columns, setColumns] = useState([
         { title: 'Description', field: 'description' },
@@ -57,7 +60,7 @@ const Comments = (props) => {
                         console.log('props',props)
                         newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
                         const d = new Date();
-                        const n = d.toLocaleDateString();
+                        const n = d.toLocaleDateString();//2/3/2023, 
                         newData.updatedAt = n
                         resolve();
                         (async function () {

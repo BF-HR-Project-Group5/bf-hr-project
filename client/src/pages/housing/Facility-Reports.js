@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,6 +24,7 @@ import Button from 'react-bootstrap/Button';
 import { createReport } from '../../redux/actions/index';
 import { fetchHouse } from '../../redux/actions/index';
 import { Link, withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const yupSchema = yup.object().shape({
     title: yup.string().required(),
@@ -76,6 +77,7 @@ function TabPanel(props) {
 
     const FacilityReports = (props) => {
         console.log('props',props)
+        const navigate = useNavigate();
         const classes = useStyles();
         const [value, setValue] = React.useState({'title':'','description':''});
         const [formData, setFormData] = useState(null);
@@ -93,6 +95,11 @@ function TabPanel(props) {
                 console.log('res-createReport',res)
             })
         };
+
+        const handleClick = (index,row,e)=> {
+            console.log('data',row)
+            navigate('/housing/comments',{state:row._id});
+        }
 
         return (
             <>
@@ -186,11 +193,9 @@ function TabPanel(props) {
                                 <TableCell align="right">{row.updatedAt}</TableCell>
                                 <TableCell align="right">{row.status}</TableCell>
                                 <TableCell align="right">
-                                    {/* <Link to={{pathname:`/housing/comments?reportId=${row._id}`}}> */}
-                                    <Link to={{pathname:`/housing/comments`, state: row._id}}>
-                                        <Button>View Comments</Button>
-                                    </Link>
-                                    {/* <Button onClick={(e)=>{handleClick(index,row,e)}}>View Comments</Button> */}
+                                    {/* <Link to={{pathname:`/housing/comments`, state: row._id}}>
+                                    </Link> */}
+                                    <Button onClick={(e)=>{handleClick(index,row,e)}}>View Comments</Button>
                                 </TableCell>
                                 </TableRow>
                             ))}

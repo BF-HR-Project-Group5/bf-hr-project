@@ -5,6 +5,7 @@ module.exports = function (app) {
   app.use(proxy('/user/*', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/house', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/house/*', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/report/*', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/report/*/comment', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/comment/*', { target: `http://localhost:${PORT}/` }));
 };
