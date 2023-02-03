@@ -36,7 +36,6 @@ const schema = yup.object({
 });
 
 const LoginForm = (props) => {
-	const [isCheck, setIsCheck] = useState(false);
 	const navigate = useNavigate();
 	const { submitLogin } = props;
 
@@ -48,9 +47,9 @@ const LoginForm = (props) => {
 	} = useForm({
 		resolver: yupResolver(schema),
 	});
+
 	const onSubmit = async (data) => {
 		console.log('data', data);
-		setIsCheck(false);
 		reset();
 
 		try {
