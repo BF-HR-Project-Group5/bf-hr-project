@@ -8,7 +8,7 @@ const DEEP_POPULATE_PATH = [
 		model: 'Profile',
 		populate: [
 			{ path: 'documents', model: 'Document' },
-			{ path: 'license.document', model: 'Document' },
+			{ path: 'license.link', model: 'Document' },
 		],
 	},
 	{

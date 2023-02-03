@@ -91,7 +91,7 @@ const getHouseByIdAndPopulateUsers = async (houseId) => {
 							model: 'Document',
 						},
 						{
-							path: 'license.document',
+							path: 'license.link',
 							model: 'Document',
 						},
 					],

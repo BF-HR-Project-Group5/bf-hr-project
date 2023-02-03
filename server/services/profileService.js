@@ -79,24 +79,16 @@ const getProfileByIdAndPopulate = async (profileId) => {
 		throw { statusCode: 404, message: 'getProfileByIdAndPopulate: Profile not found' };
 	}
 
-	await profile.populate([
+	return profile.populate([
 		{
 			path: 'documents',
 			model: 'Document',
 		},
 		{
-			path: 'license.document',
+			path: 'license.link',
 			model: 'Document',
 		}
 	]);
-	return profile;
-	
-	// const promises = [];
-	// promises.push(profile.populate('documents'));
-	// promises.push(profile.license.populate('link'));
-
-	// await Promise.allSettled(promises);
-	// return profile;
 };
 
 // figure out what the "next step" is for documents
