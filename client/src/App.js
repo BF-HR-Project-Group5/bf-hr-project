@@ -14,6 +14,7 @@ const HouseDetails = lazy(() => import('./pages/housing/House-Details'));
 const FacilityReports = lazy(() => import('./pages/housing/Facility-Reports'));
 const Comments = lazy(() => import('./pages/housing/Comments'));
 const HrHome = lazy(() => import('./pages/HrHome'));
+const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
 
 function App(props) {
 	return (
