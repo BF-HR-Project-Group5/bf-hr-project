@@ -22,18 +22,21 @@ const createProfile = catchAsync(async (req, res) => {
 	const name = req.body.name; // grab name object from body
 
 	console.log('make sure we have files in here', {files: req.files});
-	const photo = req.files.photo[0] ?? undefined; // optional field
-	const license = req.files.license[0];
-	const workAuth = req.files?.workAuth[0] ?? undefined; // may be undefined if they are citizen/green_card
 	const uploadPromises = [];
+	// check for and upload profile photo
+	const photo = req.files.photo[0] ?? undefined; // optional field
 	if (photo) uploadPromises.push(s3Service.uploadFile(photo));
+	// check for and upload license
+	const license = req.files.license[0];
 	if (!license) {
-	throw {statusCode: 400, message: 'Please include a license'};
+		throw {statusCode: 400, message: 'Please include a license'};
 	} else {
 		uploadPromises.push(s3Service.uploadFile(license));
 	}
+	
+	const workAuth = req.files?.workAuth[0] ?? undefined; // may be undefined if they are citizen/green_card
 	const isVisaStatus = req.body.workAuth.title !== 'CITIZEN' && req.body.workAuth.title !== 'GREEN_CARD';
-	if (isVisaStatus) { // should check if they are NOT green_card || citizen
+	if (isVisaStatus) {
 		if (!workAuth) {
 			throw {statusCode: 400, message: 'Please include an OPT Receipt'};
 		} else {
