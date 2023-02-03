@@ -1,8 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import GuardRouteAuth from './components/GuardRoute/GuardRouteAuth';
-import GuardRouteHr from './components/GuardRoute/GuardRouteHr';
+import { BrowserRouter, Navigate, Redirect, Route, Routes } from 'react-router-dom';
+import RequireAuthOrHr from './components/RequireAuthOrHr';
 
 const Login = lazy(() => import('./pages/Login'));
 const SignUp = lazy(() => import('./pages/Signup'));
@@ -16,63 +15,138 @@ const Comments = lazy(() => import('./pages/housing/Comments'));
 const HrHome = lazy(() => import('./pages/HrHome'));
 
 function App(props) {
-  return (
-    <BrowserRouter>
-        <Suspense fallback={null}>
-          <Switch>
-							<Route path='/' exact component={Home} />
-              <Route path="/signup" exact component={SignUp} />{/* Done */}
-              <Route path="/login" exact component={Login} />{/* Done */}
-
-<GuardRouteAuth path="/personalInfo" exact>
-	<PersonalInfo />
-</GuardRouteAuth>
-<GuardRouteAuth path="/onboardingApp" exact>
-	<OnboardingApp />
-</GuardRouteAuth>
-<GuardRouteAuth path="/visaStatus" exact>
-	<VisaStatus />
-</GuardRouteAuth>
-<GuardRouteAuth path="/housing" exact>
-	<Housing />
-</GuardRouteAuth>
-<GuardRouteAuth path="/houseDetails" exact>
-	<HouseDetails />
-</GuardRouteAuth>
-<GuardRouteAuth path="/facilityReports" exact>
-	<FacilityReports />
-</GuardRouteAuth>
-<GuardRouteAuth path="/housing/comments" exact>
-	<Comments />
-</GuardRouteAuth>
-
-
-							{/* <Route element={<GuardRouteHr />}>
-								<Route path="/home" exact component={HrHome} />
-							</Route> */}
-							<GuardRouteHr exact path="/home">
+	return (
+		<BrowserRouter>
+			<Suspense fallback={null}>
+				<Routes>
+					<Route
+						path="/"
+						exact
+						element={
+							<Navigate
+								to="/login"
+								replace
+							/>
+						}
+					/>
+					<Route
+						path="/signup"
+						exact
+						element={<SignUp />}
+					/>
+					{/* Done */}
+					<Route
+						path="/login"
+						exact
+						element={<Login />}
+					/>
+					{/* Done */}
+					<Route
+						path="/personalInfo"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<PersonalInfo />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/onboardingApp"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<OnboardingApp />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/visaStatus"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<VisaStatus />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/housing"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<Housing />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Done */}
+					<Route
+						path="/houseDetails"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<HouseDetails />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Done */}
+					<Route
+						path="/facilityReports"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<FacilityReports />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Progress */}
+					<Route
+						path="/housing/comments"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<Comments />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Progress */}
+					<Route
+						path="/home"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
 								<HrHome />
-							</GuardRouteHr>
-
-          </Switch>
-        </Suspense>
-    </BrowserRouter>
-  );
-}
-
-const Home = () => {
-	return <Redirect to="/login" />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="*"
+						element={<h1>404! Not Found!</h1>}
+					/>
+				</Routes>
+			</Suspense>
+		</BrowserRouter>
+	);
 }
 
 export default connect(null, {})(App);
 
-
-
-
-								// <Route path="/personalInfo" exact component={PersonalInfo} />
-								// <Route path="/onboardingApp" exact component={OnboardingApp} />
-								// <Route path="/visaStatus" exact component={VisaStatus} />
-								// <Route path="/housing" exact component={Housing} /> {/* Done */}
-								// <Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
-								// <Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
-								// <Route path="/housing/comments" exact component={Comments} />Progress
+// {/* <GuardRouteAuth path="/personalInfo" exact>
+// 	<PersonalInfo />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/onboardingApp" exact>
+// 	<OnboardingApp />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/visaStatus" exact>
+// 	<VisaStatus />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/housing" exact>
+// 	<Housing />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/houseDetails" exact>
+// 	<HouseDetails />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/facilityReports" exact>
+// 	<FacilityReports />
+// </GuardRouteAuth>
+// <GuardRouteAuth path="/housing/comments" exact>
+// 	<Comments />
+// </GuardRouteAuth> */}

@@ -5,6 +5,7 @@ import { TextField, Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
+import { useNavigate } from 'react-router-dom';
 import {
 	StyledSection,
 	StyledForm,
@@ -36,6 +37,7 @@ const schema = yup.object({
 
 const LoginForm = (props) => {
 	const [isCheck, setIsCheck] = useState(false);
+	const navigate = useNavigate();
 	const { submitLogin } = props;
 
 	const {
@@ -57,14 +59,13 @@ const LoginForm = (props) => {
 			console.log('login form submit', {response});
 
 			// if HR, go to HR page,
-			if (response.user.role === 'hr') {
-				props.history.push({pathname: '/home'});
+			if (response?.user?.role === 'hr') {
+				navigate('/home');
 			} else {
-				//If application is APPROVED, Redirect to "personal info page", else Onboarding Application page
 				if (response.user.profile.status === 'APPROVED') {
-					props.history.push({ pathname: '/housing' });
+					navigate('/housing');
 				} else {
-					props.history.push({pathname: '/onboardingApp'})
+					navigate('/onboardingApp');
 				}
 			}
 		} catch (err) {
