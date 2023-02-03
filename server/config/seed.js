@@ -101,6 +101,8 @@ const seedProfiles = async (count, documents) => {
 	for (let i = 0; i < count; i++) {
 		const width = rng(300, 400);
 		const height = rng(300, 400);
+		const width1 = rng(300, 400);
+		const height1 = rng(300, 400);
 		const data = {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
@@ -127,7 +129,7 @@ const seedProfiles = async (count, documents) => {
 			license: {
 				number: `${i}abcde12345`,
 				expiration: new Date(),
-				document: documents[i+count],
+				link: `http://placeKitten.com/${width1}/${height1}`,
 			},
 			phone: {
 				mobile: Number(`999999999${i}`),
@@ -163,12 +165,13 @@ const seedDocuments = async (count) => {
 	for (let i = 0; i < count; i++) {
 		const width = rng(400, 600);
 		const height = rng(400, 600);
-		const isLicense = i >= (count / 2);
+		// const isLicense = i >= (count / 2);
 		const data = {
 			link: `http://placekitten.com/${width}/${height}`,
 			feedback: 'feedback on document',
 			status: `PENDING`,
-			type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
+			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
+			type:  `F1(CPT/OPT)`,
 		};
 		documents.push(documentService.createDocument(data));
 	}
@@ -193,7 +196,7 @@ async function run() {
 	try {
 		// connect mongoose
 		const count = 5; // how many of each to make
-		const documentCount = count * 2 // one license doc, one work auth doc
+		// const documentCount = count * 2 // one license doc, one work auth doc
 		mongoose.set('strictQuery', false);
 		await mongoose.connect(MONGO_URL);
 		console.log('Seed - Connected to DB');
@@ -204,7 +207,7 @@ async function run() {
 		// const documents = await seedDocuments(5);
 		// const houses = await seedHouses(5);
 		// const invites = await seedInvites(5);
-		const [documents, houses, invites] = (await Promise.allSettled([seedDocuments(documentCount), seedHouses(count), seedInvites(count)])).map(result => result.value);
+		const [documents, houses, invites] = (await Promise.allSettled([seedDocuments(count), seedHouses(count), seedInvites(count)])).map(result => result.value);
 
 		console.log({documents, houses, invites});
 
