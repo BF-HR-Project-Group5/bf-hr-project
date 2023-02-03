@@ -20,7 +20,25 @@ const getCommentById = async (id) => Comment.findById(id);
 //first report 63d80ed7cbe3476841d3ea35
 const getReportByIdAndPopulateFields = async (reportId) => {
 	//get HouseById not write
-	const report = await Report.findById(reportId).populate('comments');
+	const report = await Report.findById(reportId).populate([
+		{
+			path: 'comments',
+			model: 'Comment',
+			populate: {
+				path: 'createdBy',
+				model: 'User',
+			}
+		},
+		{
+			path: 'createdBy',
+			model: 'User',
+			populate: [
+				{ path: 'profile', model: 'Profile' },
+				{ path: 'invite', model: 'Invite' },
+				{ path: 'house', model: 'House' },
+			],
+		},
+	]);
 
 	return report;
 };
@@ -39,7 +57,7 @@ const updateReportById = async (id, updateBody) => {
 //update the comment 63d8191e79b969073a624e0c
 //http://localhost:3000/house/63d7f0930f7ade2b7b6c5f68/report/63d8191e79b969073a624e0c/comment
 const updateCommentById = async (id, updateBody) => {
-	const comment = await Comment.findById(id);
+	const comment = await getCommentById(id);
 	if (!comment) throw { statusCode: 404, message: 'Comment not found' };
 	Object.assign(comment, updateBody);
 	await comment.save();
@@ -48,15 +66,15 @@ const updateCommentById = async (id, updateBody) => {
 
 const addCommentToReportId = async (reportId, data) => {
 	// create comment
-	const comment = await createComment(data)
+	const comment = await createComment(data);
 	// find report
 	const report = await getReportById(reportId);
 	// add comment to report
 	report.comments.push(comment._id);
 	// save
 	await report.save();
-	return {report, comment};
-}
+	return { report, comment };
+};
 
 //delete report report
 const deleteReportById = async (id) => Report.findByIdAndDelete(id);
