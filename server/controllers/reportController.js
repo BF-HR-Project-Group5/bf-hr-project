@@ -29,7 +29,7 @@ const postCreateReport = catchAsync(async (req, res) => {
 	// //push the new report to the house
 	const house = await houseService.getHouseById(user.house._id);
 	house.reports.push(report._id);
-	house.save();
+	await house.save();
 	const newHouse = await houseService.getHouseByIdAndPopulateFields(house._id);
 	res.status(200).json({ reports: newHouse.reports, house: newHouse });
 });
