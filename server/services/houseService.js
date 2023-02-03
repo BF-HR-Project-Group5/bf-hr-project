@@ -95,10 +95,20 @@ const getHouseByIdAndPopulateUsers = async (houseId) => {
 		},
 		{
 			path: 'reports',
-			populate: {
-				path: 'comments',
-				model: 'Comment',
-			},
+			populate: [
+				{
+					path: 'comments',
+					model: 'Comment',
+					populate: {
+						path: 'createdBy',
+						model: 'User',
+					},
+				},
+				{
+					path: 'createdBy',
+					model: 'User',
+				},
+			],
 		},
 	]);
 
