@@ -23,9 +23,6 @@ const createProfile = catchAsync(async (req, res) => {
 
 	console.log('make sure we have files in here', {files: req.files});
 	const uploadPromises = [];
-	// check for and upload profile photo
-	const photo = req.files.photo[0] ?? undefined; // optional field
-	if (photo) uploadPromises.push(s3Service.uploadFile(photo));
 	// check for and upload license
 	const license = req.files.license[0];
 	if (!license) {
@@ -43,8 +40,38 @@ const createProfile = catchAsync(async (req, res) => {
 			uploadPromises.push(s3Service.uploadFile(workAuth));
 		}
 	}
+
+	// check for and upload (optional) profile photo
+	const photo = req.files.photo[0] ?? undefined; // optional field
+	if (photo) uploadPromises.push(s3Service.uploadFile(photo));
+
+	// get the results
 	const results = await Promise.all(uploadPromises);
 	console.log({results});
+	const documents = [];
+
+	// break them out
+	const licenseResponse = results.shift();
+	const licenseLink = licenseResponse.location;
+	if (!licenseLink) {
+		throw {statusCode: 500, message: 'Error uploading license to S3'};
+	} else {
+		documents.push(documentService.createDocument({link: licenseLink, feedback: '', status: 'APPROVED', type: 'OTHER'}));
+	}
+	
+	// if we have work auth, need to build a document for it
+	if (workAuth) {
+		let visaResponse = results.shift();
+		const link = visaResponse.location;
+		if (!link) {
+			throw {statusCode: 500, message: 'Error uploading work auth to S3'};
+		} else {
+
+		}
+	}
+	let photoResponse = null;
+	if (photo) photoResponse = results.shift();
+	
 	const link = response.location;
 	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 	// maybe need to save document here!
