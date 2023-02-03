@@ -26,7 +26,7 @@ const updateDocumentById = async (
 	id,
 	updateBody = { link: '', feedback: '', status: '', type: '' }
 ) => {
-	const document = getDocumentById(id);
+	const document = await getDocumentById(id);
 
 	if (!document) throw { statusCode: 404, message: 'Document not found' };
 
