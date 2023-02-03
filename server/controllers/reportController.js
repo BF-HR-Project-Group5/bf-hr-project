@@ -23,14 +23,15 @@ const getReportsComments = catchAsync(async (req, res) => {
 
 // create a facility report // done
 const postCreateReport = catchAsync(async (req, res) => {
-	const userId = req.user._id;
-	const user = await userService.getUserByIdAndPopulate(userId);
+	const userId = req.user._id; // get logged-in user id
+	const user = await userService.getUserById(userId);
 	const report = await reportService.createReport(req.body);
 	// //push the new report to the house
-	const house = await houseService.getHouseById(user.house._id);
-	house.reports.push(report._id);
-	await house.save();
-	const newHouse = await houseService.getHouseByIdAndPopulateFields(house._id);
+	const foundHouse = await houseService.getHouseById(user.house._id);
+	foundHouse.reports.push(report);
+	await foundHouse.save();
+
+	const newHouse = await houseService.getHouseByIdAndPopulateFields(user.house._id);
 	res.status(200).json({ reports: newHouse.reports, house: newHouse });
 });
 
