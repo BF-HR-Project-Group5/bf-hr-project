@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import React, from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { submitSignup } from '../redux/actions/index';
 import {
