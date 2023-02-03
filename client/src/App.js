@@ -11,6 +11,7 @@ const Housing = lazy(() => import('./pages/housing/Housing'));
 const HouseDetails = lazy(() => import('./pages/housing/House-Details'));
 const FacilityReports = lazy(() => import('./pages/housing/Facility-Reports'));
 const Comments = lazy(() => import('./pages/housing/Comments'));
+const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
 
 function App(props) {
   return (
@@ -27,6 +28,9 @@ function App(props) {
               <Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
               <Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
               <Route path="/housing/comments" exact component={Comments} />{/* Progress */}
+              
+              {/* HR Router */}
+              <Route path="/hr/employeeProfiles" exact component={EmployeeProfiles} />
           </Switch>
         </Suspense>
     </BrowserRouter>

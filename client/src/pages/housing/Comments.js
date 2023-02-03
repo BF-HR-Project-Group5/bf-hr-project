@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../../layout/House.css';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
@@ -6,24 +6,34 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Navigation from '../../components/navigation/navigation';
 import MaterialTable from "material-table";
-  
-const rows = [
-{ id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-{ id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-{ id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-];
+import { createComment } from '../../redux/actions/index';
+import { updateComment } from '../../redux/actions/index';
 
 const Comments = (props) => {
+    console.log('props',props)
+    const { createComment, updateComment } = props
+    const reportId = props.location.state
+
     const [columns, setColumns] = useState([
         { title: 'Description', field: 'description' },
         { title: 'Created By', field: 'createdBy', initialEditValue: 'initial edit value', editable: 'never' },
-        { title: 'Timestamp', field: 'timestamp', editable: 'never' },
+        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
       ]);
     
-      const [data, setData] = useState([
-        { description: 'Mehmet', createdBy: 'Baran', timestamp: '2/1/2023' },
-        { description: 'Zerya Betül', createdBy: 'Baran', timestamp: '1/31/2023' },
-      ]);
+      const [data, setData] = useState([]);
+
+      useEffect(() => {
+        (async function () {
+            try {
+                props.house.reports.forEach(element => {
+                    if(element._id == reportId){setData(element.comments)}
+                    return
+                });
+            } catch (err) {
+            console.log(err);
+            }
+          })()
+      }, []);
 
     return (
         <>
@@ -44,26 +54,37 @@ const Comments = (props) => {
                 editable={{
                 onRowAdd: newData =>
                     new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        console.log('data',data)
-                        console.log('newData',newData)
-                        newData.createdBy = 'Tao'
+                        console.log('props',props)
+                        newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
                         const d = new Date();
                         const n = d.toLocaleDateString();
-                        newData.timestamp = n
-                        setData([...data, newData]);
+                        newData.updatedAt = n
                         resolve();
-                    }, 1000)
+                        (async function () {
+                            try {
+                                const response = await createComment(reportId, newData)
+                                console.log('res',response)
+                                setData([...data, newData]);
+                            } catch (err) {
+                            console.log(err);
+                            }
+                        })()
                     }),
                 onRowUpdate: (newData, oldData) =>
                     new Promise((resolve, reject) => {
-                    setTimeout(() => {
                         const dataUpdate = [...data];
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
-                        setData([...dataUpdate]);
                         resolve();
-                    }, 1000)
+                        (async function () {
+                            try {
+                                const response = await updateComment(newData)
+                                console.log('res',response)
+                                setData([...dataUpdate]);
+                            } catch (err) {
+                            console.log(err);
+                            }
+                        })()
                     }),
                 }}
                 />
@@ -74,12 +95,14 @@ const Comments = (props) => {
 }
 
 
-const mapStateToProps = ({ auth }) => ({
-    auth
+const mapStateToProps = ({ auth, house }) => ({
+    auth,
+    house
 });
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    {createComment, updateComment}
 )(Comments);
 
 

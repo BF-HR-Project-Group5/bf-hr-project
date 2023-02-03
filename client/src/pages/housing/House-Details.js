@@ -11,7 +11,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { fetchHouse } from '../../redux/actions/index';
-import { fetchUser } from '../../redux/actions/index';
 
 const useStyles = makeStyles({
     table: {
@@ -33,17 +32,17 @@ createData('Justin', "Tao Yang", 312222225),
 const HouseDetails = (props) => {
     console.log('props',props)
     const [data,setData] = useState()
+    const { fetchHouse } = props;
 
     useEffect(() => {
-        try {
-            const promise = fetchHouse()
-            promise().then((res)=>{
-                console.log('res',res)
-                setData(res.house)
-            })
-          } catch (err) {
+        (async function () {
+            try {
+            const response = await fetchHouse();
+                setData(response.house)
+            } catch (err) {
             console.log(err);
-          }
+            }
+          })()
       }, []);
 
     const classes = useStyles();
@@ -95,10 +94,12 @@ const HouseDetails = (props) => {
     )
 }
 
-const mapStateToProps = ({ auth }) => ({
-    auth
+const mapStateToProps = ({ auth, house }) => ({
+    auth,
+    house
 });
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    { fetchHouse }
 )(HouseDetails);
