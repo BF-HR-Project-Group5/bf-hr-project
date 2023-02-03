@@ -24,7 +24,7 @@ const getReportsComments = catchAsync(async (req, res) => {
 // create a facility report // done
 const postCreateReport = catchAsync(async (req, res) => {
 	const userId = req.user._id;
-	const user = userService.getUserByIdAndPopulate(userId);
+	const user = await userService.getUserByIdAndPopulate(userId);
 	const report = await reportService.createReport(req.body);
 	// //push the new report to the house
 	const house = await houseService.getHouseById(user.house._id);
