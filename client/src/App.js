@@ -1,7 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import GuardedRoute from './components/GuardedRoute/GuardedRoute';
+import GuardRouteAuth from './components/GuardRoute/GuardRouteAuth';
+import GuardRouteHr from './components/GuardRoute/GuardRouteHr';
 
 const Login = lazy(() => import('./pages/Login'));
 const SignUp = lazy(() => import('./pages/Signup'));
@@ -22,19 +23,37 @@ function App(props) {
 							<Route path='/' exact component={Home} />
               <Route path="/signup" exact component={SignUp} />{/* Done */}
               <Route path="/login" exact component={Login} />{/* Done */}
-							<GuardedRoute redirectPath="/login" >
-								<Route path="/personalInfo" exact component={PersonalInfo} />
-								<Route path="/onboardingApp" exact component={OnboardingApp} />
-								<Route path="/visaStatus" exact component={VisaStatus} />
-								<Route path="/housing" exact component={Housing} /> {/* Done */}
-								<Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
-								<Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
-								<Route path="/housing/comments" exact component={Comments} />{/* Progress */}
-							</GuardedRoute>
 
-							<GuardedRoute roleRequired="hr" redirectPath="/login" >
+<GuardRouteAuth path="/personalInfo" exact>
+	<PersonalInfo />
+</GuardRouteAuth>
+<GuardRouteAuth path="/onboardingApp" exact>
+	<OnboardingApp />
+</GuardRouteAuth>
+<GuardRouteAuth path="/visaStatus" exact>
+	<VisaStatus />
+</GuardRouteAuth>
+<GuardRouteAuth path="/housing" exact>
+	<Housing />
+</GuardRouteAuth>
+<GuardRouteAuth path="/houseDetails" exact>
+	<HouseDetails />
+</GuardRouteAuth>
+<GuardRouteAuth path="/facilityReports" exact>
+	<FacilityReports />
+</GuardRouteAuth>
+<GuardRouteAuth path="/housing/comments" exact>
+	<Comments />
+</GuardRouteAuth>
+
+
+							{/* <Route element={<GuardRouteHr />}>
 								<Route path="/home" exact component={HrHome} />
-							</GuardedRoute>
+							</Route> */}
+							<GuardRouteHr exact path="/home">
+								<HrHome />
+							</GuardRouteHr>
+
           </Switch>
         </Suspense>
     </BrowserRouter>
@@ -46,3 +65,14 @@ const Home = () => {
 }
 
 export default connect(null, {})(App);
+
+
+
+
+								// <Route path="/personalInfo" exact component={PersonalInfo} />
+								// <Route path="/onboardingApp" exact component={OnboardingApp} />
+								// <Route path="/visaStatus" exact component={VisaStatus} />
+								// <Route path="/housing" exact component={Housing} /> {/* Done */}
+								// <Route path="/houseDetails" exact component={HouseDetails} />{/* Done */}
+								// <Route path="/facilityReports" exact component={FacilityReports} />{/* Progress */}
+								// <Route path="/housing/comments" exact component={Comments} />Progress
