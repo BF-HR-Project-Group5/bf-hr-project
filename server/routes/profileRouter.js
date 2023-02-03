@@ -16,9 +16,9 @@ router.post(
 	'/profile/create',
 	auth, // require user
 	upload.fields([
-		{ name: 'photo', maxCount: 1 }, // profile photo
-		{ name: 'license', maxCount: 1 }, // license photo
-		{ name: 'workAuth', maxCount: 1 }, // work auth if needed
+		{ name: 'photoFile', maxCount: 1 }, // profile photo
+		{ name: 'licenseFile', maxCount: 1 }, // license photo
+		{ name: 'workAuthFile', maxCount: 1 }, // work auth if needed
 	]),
 	controllers.createProfile
 );

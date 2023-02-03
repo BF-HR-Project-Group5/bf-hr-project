@@ -23,6 +23,7 @@ const createProfile = catchAsync(async (req, res) => {
 
 	console.log('make sure we have files in here', {files: req.files});
 	const uploadPromises = [];
+
 	// check for and upload license
 	const license = req.files.license[0];
 	if (!license) {
@@ -32,8 +33,8 @@ const createProfile = catchAsync(async (req, res) => {
 	}
 	
 	const workAuth = req.files?.workAuth[0] ?? undefined; // may be undefined if they are citizen/green_card
-	const isVisaStatus = req.body.workAuth.title !== 'CITIZEN' && req.body.workAuth.title !== 'GREEN_CARD';
-	if (isVisaStatus) {
+	const isCitizen = req.body.citizenType === 'CITIZEN' || req.body.citizenType === 'GREEN_CARD';
+	if (!isCitizen) {
 		if (!workAuth) {
 			throw {statusCode: 400, message: 'Please include an OPT Receipt'};
 		} else {
@@ -66,7 +67,8 @@ const createProfile = catchAsync(async (req, res) => {
 		if (!link) {
 			throw {statusCode: 500, message: 'Error uploading work auth to S3'};
 		} else {
-
+			// const workAuthType 
+			documents.push(documentService.createDocument({link, feedback: '', status: 'APPROVED', type: 'OTHER'}));
 		}
 	}
 	let photoResponse = null;

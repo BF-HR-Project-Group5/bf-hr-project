@@ -51,7 +51,7 @@ Sends you to Onboarding Application page {
 				ssn: number,
 				dateOfBirth: Date,
 				gender: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
-				photo?: file? if sending file from backend,
+				photoFile?: file? if sending file from backend,
 				address: {
 					line1: string,
 					line2: string,
@@ -59,8 +59,9 @@ Sends you to Onboarding Application page {
 					state: string,
 					zipcode: string,
 				},
-				workAuth: {
-					title: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+				citizenType: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+				workAuth?: {
+					title?: string ('H1-B' | 'L2' | 'F1(CPT/OPT)' | 'H4' | 'OTHER'),
 					startDate?: Date,
 					endDate?: Date,
 					daysRemaining?: number,
@@ -70,16 +71,16 @@ Sends you to Onboarding Application page {
 					model: string,
 					color: string,
 				},
+				licenseFile: file,
 				license: {
 					number: string,
 					expiration: Date,
-					document: file? if sending file from backend,
 				},
 				phone: {
 					mobile: number? string?
 					work?: number? string?
 				},
-				document?: file? if sending file from backend, if workAuth is not 'CITIZEN' | 'GREEN_CARD',
+				workAuthFile?: file,
 				emergencyContacts: [
 					{
 						name: {
@@ -125,7 +126,7 @@ Can go to Personal Info page {
 				ssn?: number,
 				dateOfBirth?: Date,
 				gender?: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
-				photo?: file,
+				photoFile?: file,
 				address?: {
 					line1?: string,
 					line2?: string,
@@ -134,8 +135,9 @@ Can go to Personal Info page {
 					zipcode?: string,
 				},
 				dateOfBirth?: Date,
+				citizenType: string ('CITIZEN' | 'GREEN_CARD' | 'VISA')
 				workAuth?: {
-					title?: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+					title?: string ('H1-B' | 'L2' | 'F1(CPT/OPT)' | 'H4' | 'OTHER'),
 					startDate?: Date,
 					endDate?: Date,
 					daysRemaining?: number,
@@ -145,16 +147,16 @@ Can go to Personal Info page {
 					model?: string,
 					color?: string,
 				},
+				licenseFile: file,
 				license?: {
 					number?: string,
 					expiration?: Date,
-					document?: file? if sending file from backend
 				},
 				phone?: {
 					mobile?: number? string?
 					work?: number? string?
 				},
-				document?: file? if sending file from backend, if workAuth is not 'CITIZEN' | 'GREEN_CARD',
+				workAuthFile?: file,
 				emergencyContacts?: [
 					{
 						name?: {

@@ -32,6 +32,7 @@ exports.config = {
 	// profile or application: status, steps
 	application: {
 		statuses: statusEnum,
+		citizenType: ['CITIZEN' , 'GREEN_CARD' , 'VISA'],
 
 		genders: ['MALE' , 'FEMALE' , 'NO_RESPONSE'],
 
