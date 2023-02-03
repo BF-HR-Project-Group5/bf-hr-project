@@ -52,7 +52,7 @@ const addCommentToReportId = async (reportId, data) => {
 	// find report
 	const report = await getReportById(reportId);
 	// add comment to report
-	report.comments.push(comment);
+	report.comments.push(comment._id);
 	// save
 	await report.save();
 	return {report, comment};
