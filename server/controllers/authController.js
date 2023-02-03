@@ -31,7 +31,8 @@ const register = catchAsync(async (req, res) => {
 
 	// mark registered
 	await inviteService.putIsRegisteredToInviteId(invite._id);
-	await houseService.assignUserIdToHouse(user._id);
+	const house = await houseService.assignUserIdToHouse(user._id);
+	await userService.putHouseIdToUserId(house._id);
 	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
