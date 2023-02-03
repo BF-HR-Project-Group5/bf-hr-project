@@ -24,11 +24,14 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/', (req, res, next) => {
+	// user 2: role: 'user'
+	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjNDBhMmY2MTc5NTg1ZmZhYmE1YzEiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1Mzk0MTU1MDY3LCJleHAiOjE2NzUzOTQ3NTUwNjd9.vyDe-dgF23o0clsBguHj6OhngCWqpsDmEZhukIbGfEU';
+
 	// user 1: role: 'hr'{}
 	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjNDBhMmY2MTc5NTg1ZmZhYmE1YzUiLCJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImVtYWlsIjoiZW1haWwxQGVtYWlsLmNvbSIsInJvbGUiOiJociIsImlhdCI6MTY3NTM3ODk1NzQwNSwiZXhwIjoxNjc1Mzc5NTU3NDA1fQ.bYvwKpfZQfvvi0o_eA-8M3sk6s0g6iu1K6zLFCaWL9M';
 
 	// user 0: role: 'user'
-	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjNDBhMmY2MTc5NTg1ZmZhYmE1YzIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1Mzc4ODYzMjA0LCJleHAiOjE2NzUzNzk0NjMyMDR9.PbUOQOD0aB9SAGOoEsbVe51JgXzVVrZ0BZIdwNFP-LU'; 
+	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjNDBhMmY2MTc5NTg1ZmZhYmE1YzIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1Mzc4ODYzMjA0LCJleHAiOjE2NzUzNzk0NjMyMDR9.PbUOQOD0aB9SAGOoEsbVe51JgXzVVrZ0BZIdwNFP-LU'; 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
 	next();
 })
