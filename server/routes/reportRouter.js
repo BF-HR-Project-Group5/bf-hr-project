@@ -53,7 +53,7 @@ router.post( // checked // post a comment to a report
 	controllers.postCommentToReport,
 );
 router.put( // checked // edit a comment
-	'comments/:commentId',
+	'/comments/:commentId',
 	auth, authHr,
 	controllers.putEditToComment
 );
