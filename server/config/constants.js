@@ -1,12 +1,3 @@
-exports.users = [
-	'63bc961c4c418933398d858a',
-	'63bc96204c418933398d8595',
-	'63bc96224c418933398d85a0',
-	'63bc96244c418933398d85ab',
-	'63bc96254c418933398d85b6',
-	'error',
-];
-
 const allStatuses = {
 	PENDING: 'PENDING',
 	APPROVED: 'APPROVED',
@@ -46,6 +37,18 @@ exports.config = {
 			'I-983_APPROVED',
 			'I-20_WAITING',
 			'I-20_APPROVED', // i-20 is approved? all done
+			'COMPLETED'
+		],
+
+		nextStepCode: [
+			'OPT_RECEIPT_WAIT', // uploaded, next step is wait for approval
+			'OPT_EAD_UPLOAD', // next step is upload next doc
+			'OPT_EAD_WAIT',
+			'I-983_UPLOAD',
+			'I-983_WAIT',
+			'I-20_UPLOAD',
+			'I-20_WAIT',
+			'COMPLETED'
 		],
 
 		nextSteps: {
