@@ -9,9 +9,9 @@ const createProfile = async (profileBody) => {
 	if (isNotVisa) {
 		// is citizen or green card
 		// complete with documents
-		const stepInt = config.application.steps.length - 1;
-		const stepString = config.application.steps[stepInt];
-		profileBody.currentStepInt = stepInt;
+		const completedStepInt = config.application.nextStepCode.length - 1;
+		const stepString = config.application.steps[completedStepInt];
+		profileBody.currentStepInt = completedStepInt;
 		profileBody.currentStep = stepString;
 	} else {
 		const isNotOPT = profileBody?.document?.type === config.document.types[0];
@@ -85,35 +85,22 @@ const getProfileByIdAndPopulate = async (profileId) => {
 	});
 };
 
-// figure out what the "next step" is for documents
-const getUserNextStepForProfileId = async (profileId) => {
-	const profile = await getProfileById(profileId);
-	if (!profile) {
-		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
-	}
-
-	// return the nextStep for the profile.currentStep
-	const currentStep = profile.currentStep;
-	return config.application.nextSteps[currentStep].user;
-};
-
 const putStepToNextForProfileId = async (profileId) => {
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'putStepToNextForProfileId: Profile not found' };
 	}
-	const isAlreadyComplete = profile.currentStepInt === config.application.steps.length - 1;
+
+	const isAlreadyComplete = profile.currentStepInt === config.application.nextStepCode.length - 1;
 	if (isAlreadyComplete) return profile;
 
 	// if NOT already complete...
-	// get int of current (previous) step
-	const currentStepInt = profile.currentStepInt;
 	// get next int, get next step string
-	const nextStepInt = currentStepInt++;
-	const nextStep = config.application.steps[nextStepInt];
+	const nextStepInt = profile.currentStepInt++;
+	const nextStepCode = config.application.nextStepCode[nextStepInt];
 
 	// save next int and string
-	profile.currentStep = nextStep;
+	profile.nextStep = nextStepCode;
 	profile.currentStepInt = nextStepInt;
 	await profile.save();
 	return profile;
@@ -129,6 +116,5 @@ module.exports = {
 	approveProfileId,
 	rejectProfileId,
 	rejectProfileIdWithFeedback,
-	getUserNextStepForProfileId,
 	putStepToNextForProfileId,
 };

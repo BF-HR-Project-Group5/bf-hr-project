@@ -30,6 +30,11 @@ function ListItemLink(props) {
 // Once saved, post edit to profile
 
 
+// editable: on edit ?? show the save/cancel buttons
+// editable: onSubmit, set the state for that key:val.
+// Then on save, do the post update
+// and on cancel, revert the state to original state (comes from auth.user.profile)
+
 const PersonalInformation = (props) => {
   const classes = useStyles();
 	

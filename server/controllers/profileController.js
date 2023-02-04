@@ -11,6 +11,7 @@ const emailService = require('../services/emailService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
 const { objectValuesToRegex } = require('../utils/regexHelpers');
+const { config } = require( '../config/constants' );
 
 // already logged in, so we have req.user
 // this needs to update the profile, and update the user.name
@@ -150,15 +151,6 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 	return res.status(200).json({ user, profile });
 });
 
-// the user gets their profile status AKA next step
-const getProfileNextStep = catchAsync(async (req, res) => {
-	// get the profile, get the user
-	const userId = req.user._id;
-	const user = await userService.getUserById(userId);
-	const nextStepForUser = await profileService.getUserNextStepForProfileId(user.profile._id);
-	return res.status(200).json({ nextStep: nextStepForUser });
-});
-
 // should be auth and authHr protected
 const getAllProfiles = catchAsync(async (req, res) => {
 	console.log('getAllProfiles');
@@ -223,10 +215,11 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	console.log('sendReminder to userId:', { reqParam: req.params });
 	const userId = req.params.userId;
 	// get user, and profile id
-	const user = await userService.getUserById(userId);
+	const user = await userService.getUserByIdAndPopulate(userId);
+	const nextStepCode = user?.profile?.nextStep;
+	const nextSteps = config.application.nextStepsObj[nextStepCode];
 
-	let nextSteps = await profileService.getUserNextStepForProfileId(user?.profile);
-	console.log({ nextSteps });
+	console.log({ nextStepCode, nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
 
@@ -250,5 +243,4 @@ module.exports = {
 	queryProfiles,
 	queryVisaProfiles,
 	sendReminderToProfile,
-	getProfileNextStep,
 };
