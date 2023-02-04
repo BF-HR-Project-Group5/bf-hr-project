@@ -83,7 +83,7 @@ const HouseDetails = (props) => {
                                 <TableCell component="th" scope="row">
                                     {row.name?.preferred}
                                 </TableCell>
-                                <TableCell align="right">{row.name.last + ' ' + row.name.first}</TableCell>
+                                <TableCell align="right">{row.name?.last + ' ' + row.name?.first}</TableCell>
                                 <TableCell align="right">{row?.profile?.phone.mobile}</TableCell>
                             </TableRow>
                         ))}

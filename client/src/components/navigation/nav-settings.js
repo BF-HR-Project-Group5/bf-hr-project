@@ -27,7 +27,7 @@ function NavSettings(props) {
       </Link>
       <Link 
         className='profileLink'
-        to={{ pathname : '/personalInfor' , state : props.data}}>
+        to={{ pathname : '/personalInfo' , state : props.data}}>
         Profile
       </Link>
       <Logout onClick={handleSubmit}>
