@@ -2,7 +2,7 @@ const router = require('express').Router();
 const controllers = require('../controllers/profileController');
 const auth = require('../middlewares/auth');
 const authHr = require('../middlewares/authHr');
-const upload = require('../utils/multer');
+const {upload} = require('../utils/fileUtils');
 
 // user routes
 router.get(
