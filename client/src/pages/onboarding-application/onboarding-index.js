@@ -23,6 +23,7 @@ const buildFormData = (formData, data, parentKey) => {
 };
 
 const onSubmit = async (data) => {
+	console.log('onSubmit:', {data});
 	const formattedData = {
 		ssn: data.ssn,
 		dateOfBirth: data.dateOfBirth,
@@ -79,10 +80,10 @@ const onSubmit = async (data) => {
 			email: each.email,
 			relationship: each.relationship,
 
-			licenseFile: data?.licenseFile[0],
-			workAuthFile: data?.workAuthFile[0],
-			photoFile: data?.profilePhotoFile[0],
 		})),
+		licenseFile: data?.licenseFile[0],
+		workAuthFile: data?.workAuthFile[0],
+		photoFile: data?.profilePhotoFile[0],
 	};
 	console.log({ formattedData });
 

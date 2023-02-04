@@ -41,6 +41,7 @@ const getFileStream = (fileKey) => {
 // file = {name, type, content}
 const uploadFileFromBuffer = async (file) => {
 	const {name, type, content} = file;
+	console.log('uploadFileFromBuffer:', {name, type, content});
 	// split around the base64 starting indicator
 	const base64FileSplit = content.split(';base64,');
 	// index 1 is the actual base64 file content
@@ -52,7 +53,6 @@ const uploadFileFromBuffer = async (file) => {
     Bucket: bucketName,
     Key: name, // type is not required
     Body: base64Data,
-    ACL: 'public-read',
     ContentEncoding: 'base64', // required
     ContentType: type // required. Notice the back ticks
   }

@@ -8,6 +8,7 @@ const profileService = require('../services/profileService');
 const inviteService = require('../services/inviteService');
 const emailService = require('../services/emailService');
 const s3Service = require('../services/s3Service');
+const documentService = require('../services/documentService');
 // const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
@@ -94,8 +95,10 @@ const createProfile = catchAsync(async (req, res) => {
 		}
 	}
 
-	// make citizenType match our constants
+	// make citizenType and gender match our constants
 	req.body.citizenType = req.body.citizenType.toUpperCase().replace(' ', '_');
+	const uppercaseGender = req.body.gender.toUpperCase();
+	req.body.gender = (uppercaseGender !== 'MALE' && uppercaseGender !== 'FEMALE') ? 'NO_RESPONSE' : uppercaseGender;
 
 	console.log('final body before creating profile:', req.body);
 
