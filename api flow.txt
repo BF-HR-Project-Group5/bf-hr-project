@@ -81,6 +81,16 @@ Sends you to Onboarding Application page {
 					work?: number? string?
 				},
 				workAuthFile?: file,
+				reference: {
+					name: {
+						first: string,
+						last: string,
+						middle?: string,
+					},
+					phone: string,
+					email: string,
+					relationship: string,
+				},
 				emergencyContacts: [
 					{
 						name: {
