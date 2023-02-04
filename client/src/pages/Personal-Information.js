@@ -69,7 +69,7 @@ const PersonalInformation = (props) => {
                             disabled={false}
                             editText="Edit"
                             id={null}
-                            initialValue="Tao"
+                            initialValue={props.auth.user.name.first}
                             isValueClickable={false}
                             label={null}
                             mode="inline"
@@ -93,7 +93,7 @@ const PersonalInformation = (props) => {
                             disabled={false}
                             editText="Edit"
                             id={null}
-                            initialValue="Yang"
+                            initialValue={props.auth.user.name.last}
                             isValueClickable={false}
                             label={null}
                             mode="inline"
@@ -117,7 +117,7 @@ const PersonalInformation = (props) => {
                             disabled={false}
                             editText="Edit"
                             id={null}
-                            initialValue="Jack"
+                            initialValue={props.auth.user.name?.middle ?? ''}
                             isValueClickable={false}
                             label={null}
                             mode="inline"
@@ -141,7 +141,7 @@ const PersonalInformation = (props) => {
                             disabled={false}
                             editText="Edit"
                             id={null}
-                            initialValue="Justin"
+                            initialValue={props.auth.user.name?.preferred ?? ''}
                             isValueClickable={false}
                             label={null}
                             mode="inline"
@@ -157,28 +157,28 @@ const PersonalInformation = (props) => {
                         />
                     </div>
                     <div className="col-3 mx-auto">
-                    <label>Email:</label>
-                    <Editable
-                        ajax={null}
-                        alwaysEditing={false}
-                        className={null}
-                        disabled={false}
-                        editText="Edit"
-                        id={null}
-                        initialValue="y3589358@gmail.com"
-                        isValueClickable={false}
-                        label={null}
-                        mode="inline"
-                        onSubmit={null}
-                        onValidated={null}
-                        options={null}
-                        placement="top"
-                        renderCancelElement={null}
-                        renderConfirmElement={null}
-                        showText
-                        type="textfield"
-                        validate={null}
-                    />
+											<label>Email:</label>
+											<Editable
+													ajax={null}
+													alwaysEditing={false}
+													className={null}
+													disabled={false}
+													editText="Edit"
+													id={null}
+													initialValue={props.auth.user.email}
+													isValueClickable={false}
+													label={null}
+													mode="inline"
+													onSubmit={null}
+													onValidated={null}
+													options={null}
+													placement="top"
+													renderCancelElement={null}
+													renderConfirmElement={null}
+													showText
+													type="textfield"
+													validate={null}
+											/>
                     </div>
                     <div className="col-3 mx-auto">
                         <label>SSN:</label>
@@ -189,7 +189,7 @@ const PersonalInformation = (props) => {
                             disabled={false}
                             editText="Edit"
                             id={null}
-                            initialValue="12345678"
+                            initialValue={props.auth.user.email}
                             isValueClickable={false}
                             label={null}
                             mode="inline"

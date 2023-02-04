@@ -146,6 +146,7 @@ const getProfile = catchAsync(async (req, res) => {
 });
 
 // take the req.user, look up profile, put edit to profile
+// When updating, should fail if profile.status === 'PENDING'
 const putUpdateProfile = catchAsync(async (req, res) => {
 	console.log('putUpdateProfile controller, get current user profile:', {
 		reqUser: req.user,
