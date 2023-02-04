@@ -86,6 +86,8 @@ const onSubmit = async (data) => {
 	const formData = new FormData();
 	buildFormData(formData, formattedData);
 
+	console.log('files:', {photo: data?.profilePhotoFile, license: data.licenseFile, workAuth: data.workAuthFile});
+
 	// append the files
 	formData.append('licenseFile', data.licenseFile[0]);
 	if (data?.profilePhotoFile) formData.append('photoFile', data.profilePhotoFile[0]);
