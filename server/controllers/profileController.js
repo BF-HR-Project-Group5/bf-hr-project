@@ -240,6 +240,34 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	return res.status(202).json({ message: `Notification sent to ${user.email}` });
 });
 
+
+const approveProfile = catchAsync(async (req, res) => {
+	const userId = req.params.userId
+	// approve the profile
+	const user = await userService.getUserById(userId);
+	if (!user) throw { statusCode: 404, message: 'User not found' };
+
+	await profileService.approveProfileId(user?.profile);
+
+	const updatedUser = await userService.getUserByIdAndPopulate(userId);
+
+	return res.status(202).json({user: updatedUser});
+});
+
+const rejectProfile = catchAsync(async (req, res) => {
+	const userId = req.params.userId
+	const {feedback} = req.body;
+	// reject the profile
+	const user = await userService.getUserById(userId);
+	if (!user) throw { statusCode: 404, message: 'User not found' };
+
+	await profileService.rejectProfileId(user?.profile, feedback);
+
+	const updatedUser = await userService.getUserByIdAndPopulate(userId);
+
+	return res.status(202).json({user: updatedUser});
+});
+
 module.exports = {
 	createProfile,
 	getProfile,
@@ -251,4 +279,6 @@ module.exports = {
 	queryVisaProfiles,
 	sendReminderToProfile,
 	getProfileNextStep,
+	rejectProfile,
+	approveProfile,
 };
