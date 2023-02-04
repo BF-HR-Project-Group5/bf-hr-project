@@ -47,6 +47,11 @@ const ProfileSchema = new Schema(
 			enum: config.application.steps,
 			default: config.application.steps[0],
 		},
+		nextStep: {
+			type: String,
+			enum: config.application.nextStepCode,
+			default: config.application.nextStepCode[0],
+		},
 		reference: {
 			name: {
 				first: { type: String, required: true },
