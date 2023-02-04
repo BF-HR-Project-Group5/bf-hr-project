@@ -236,6 +236,7 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 		nextStep: nextSteps.user,
 	};
 	emailService.sendReminder(data);
+	
 	return res.status(202).json({ message: `Notification sent to ${user.email}` });
 });
 
