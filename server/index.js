@@ -1,6 +1,6 @@
 const {app, connection} = require('./server');
 
-const SERVER_PORT = process.env.SERVER_PORT || 3000;
+const SERVER_PORT = process.env.SERVER_PORT || 5000;
 
 connection.once('open', () => {
 	app.listen(SERVER_PORT, () => {
