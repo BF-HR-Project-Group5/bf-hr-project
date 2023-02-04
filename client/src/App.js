@@ -15,6 +15,8 @@ const FacilityReports = lazy(() => import('./pages/housing/Facility-Reports'));
 const Comments = lazy(() => import('./pages/housing/Comments'));
 const HrHome = lazy(() => import('./pages/HrHome'));
 const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
+const HrVisaStatus = lazy(() => import('./pages/Hr-Visa-Status'));
+const HrVisaStatusDoc = lazy(() => import('./pages/Hr-Visa-Status-Doc'));
 
 function App(props) {
 	return (
@@ -124,6 +126,36 @@ function App(props) {
 						path="*"
 						element={<h1>404! Not Found!</h1>}
 					/>
+					<Route
+						path="/hrVisaStatus"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<HrVisaStatus />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Progress */}
+					<Route
+						path="/employeeProfiles"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<EmployeeProfiles />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/hrVisaStatus/doc"
+						exact
+						element={
+							<RequireAuthOrHr>
+								<HrVisaStatusDoc />
+							</RequireAuthOrHr>
+						}
+					/>
+					{/* Progress */}
+					
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
