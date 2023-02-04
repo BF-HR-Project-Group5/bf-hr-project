@@ -17,7 +17,7 @@ const { objectValuesToRegex } = require('../utils/regexHelpers');
 // could also update the invite.name
 // need to add profile to user
 const createProfile = catchAsync(async (req, res) => {
-	console.log('createProfile controller:', { reqUser: req.user, reqBody: req.body });
+	console.log('createProfile controller:', { reqUser: req.user, reqBody: req.body, req: req });
 	const userId = req.user._id;
 	const name = req.body.name; // grab name object from body
 
