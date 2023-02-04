@@ -2,7 +2,7 @@ const router = require('express').Router();
 const controllers = require('../controllers/documentController');
 const authHr = require('../middlewares/authHr');
 const auth = require('../middlewares/auth');
-const upload = require('../utils/multer');
+const {upload} = require('../utils/fileUtils');
 
 // user routes
 // user create document

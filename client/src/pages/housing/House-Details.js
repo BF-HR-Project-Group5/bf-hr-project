@@ -81,10 +81,10 @@ const HouseDetails = (props) => {
                         {data?.roommates.map((row,index) => (
                             <TableRow key={index}>
                                 <TableCell component="th" scope="row">
-                                    {row.name.preferred}
+                                    {row.name?.preferred}
                                 </TableCell>
                                 <TableCell align="right">{row.name.last + ' ' + row.name.first}</TableCell>
-                                <TableCell align="right">{row.profile.phone.mobile}</TableCell>
+                                <TableCell align="right">{row?.profile?.phone.mobile}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

@@ -165,29 +165,33 @@ const addUserIdToHouseId = (userId, houseId) =>
 		$inc: { numResidents: 1 },
 	});
 
+const getHousesWithVacancies = () => House.find({numResidents: {$lt: 4}});
+
 // NEW SERVICE: add user id to random house
 // + NEW SERVICE: UPDATE numResidents
 // ADD THIS TO REGISTRATION CONTROLLER
 const assignUserIdToHouse = async (userId) => {
-	const houses = await queryHouses();
+	// get houses with < 4 numResidents
+	const houses = await getHousesWithVacancies();
 	console.log('houses', houses);
+	
+	const houseIds = houses.map(h => h._id);
 
-	let min = 0;
-	let max = houses.length;
-	// get random number
 	function randomNumber(min, max) {
 		return Math.floor(Math.random() * (max - min) + min);
 	}
 
-	// if there are more than 4 residents find another house.
-	// randomly assign house by id
-	const randomId = randomNumber(houses[min], houses[max]);
+	// get random index of the found houses
+	let min = 0;
+	let max = houses.length - 1;
+	const randomIndex = randomNumber(min, max);
+	console.log({randomIndex});
+	
+	// get the house
+	const randomId = houseIds[randomIndex];
 	console.log('randomId', randomId);
 
-	const foundHouse = await getHouseById(randomId);
-	console.log('foundHouse', foundHouse);
-
-	return addUserIdToHouseId(userId, foundHouse._id);
+	return addUserIdToHouseId(userId, randomId);
 };
 
 module.exports = {

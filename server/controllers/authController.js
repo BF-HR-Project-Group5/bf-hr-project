@@ -24,6 +24,12 @@ const register = catchAsync(async (req, res) => {
 
 	// add this to the body so it's added into the user
 	req.body.invite = invite;
+	req.body.name = {
+		first: invite.name.first,
+		last: invite.name.last,
+		middle: invite.name?.middle,
+		preferred: invite.name?.preferred,
+	}
 
 	// create user, create token
 	const user = await userService.createUser(req.body);
@@ -34,7 +40,7 @@ const register = catchAsync(async (req, res) => {
 	// assign to random house
 	const house = await houseService.assignUserIdToHouse(user._id);
 	// assign the house to the user
-	await userService.putHouseIdToUserId(house._id);
+	await userService.putHouseIdToUserId(house._id, user._id);
 	// refresh the user so everything is up to date when sending response
 	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
