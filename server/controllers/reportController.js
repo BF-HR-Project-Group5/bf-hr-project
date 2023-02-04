@@ -31,12 +31,12 @@ const postCreateReport = catchAsync(async (req, res) => {
 		createdBy: req.user._id,
 	};
 	const report = await reportService.createReport(reportBody);
-	// //push the new report to the house
-	const foundHouse = await houseService.getHouseById(user.house._id);
-	foundHouse.reports.push(report);
-	await foundHouse.save();
 
-	const newHouse = await houseService.getHouseByIdAndPopulateFields(user.house._id);
+
+	// //push the new report to the house
+	const foundHouse = await houseService.addReportIdToHouseId(report._id, user.house._id);
+
+	const newHouse = await houseService.getHouseByIdAndPopulateFields(foundHouse._id);
 	res.status(200).json({ reports: newHouse.reports, house: newHouse });
 });
 

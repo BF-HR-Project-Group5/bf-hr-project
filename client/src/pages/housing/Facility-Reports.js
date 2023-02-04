@@ -21,6 +21,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { Formik } from 'formik';
 import Button from 'react-bootstrap/Button';
+import { createReport } from '../../redux/actions/index';
+import { fetchHouse } from '../../redux/actions/index';
+import { Link, withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const yupSchema = yup.object().shape({
     title: yup.string().required(),
@@ -71,50 +75,31 @@ function TabPanel(props) {
     },
   }));
 
-
-    function createData(title, description, createdBy, timestamp, status, action) {
-        return { title, description, createdBy, timestamp, status, action };
-    }
-
-    const rows = [
-    createData('Light issue', "Light is not working", 'Joe', '01/31/2023','Open','View comment'),
-    createData('Window issue', "The window is broken, I feel really cold", 'Tao', '01/30/2023','In Progress','View comment'),
-    createData('Refrigerator issue', "Refrigerator not working", 'Yuxing', '01/29/2023','Closed','View comment'),
-    createData('air-conditioning issue', "The air-conditioning doesn't work, I feel super hot", 'Teressa', '01/28/2023','Open','View comment'),
-    ];
-
     const FacilityReports = (props) => {
         console.log('props',props)
+        const navigate = useNavigate();
         const classes = useStyles();
-        const [value, setValue] = React.useState(0);
+        const [value, setValue] = React.useState({'title':'','description':''});
         const [formData, setFormData] = useState(null);
-
-        useEffect(() => {
-            (async function() {
-            if (formData) {
-                try {
-                    props.history.push({pathname: '/housing'})
-                } catch (err) {
-                console.log(err);
-                }
-            }
-            })()
-        }, [formData]);
+        const { fetchHouse } = props;
 
         const handleChange = (event, newValue) => {
+            console.log('event',event)
             setValue(newValue);
         };
 
-        const handleRoute = (index) =>{
-            // props.history.push({pathname: '/housing/comments'})
-            window.location.href = '/housing/comments'
-        }
-
         const onSubmit = (data) => {
             console.log('data',data)
-            reset();
-            setFormData(data)
+            const promise = createReport(data)
+            promise().then((res)=>{
+                console.log('res-createReport',res)
+            })
         };
+
+        const handleClick = (index,row,e)=> {
+            console.log('data',row)
+            navigate('/housing/comments',{state:row._id});
+        }
 
         return (
             <>
@@ -136,7 +121,7 @@ function TabPanel(props) {
                 <TabPanel value={value} index={0}>
                 <Formik
                 validationSchema={yupSchema}
-                onSubmit={console.log}
+                onSubmit={onSubmit}
                 initialValues={{
                     title: '',
                     description: '',
@@ -198,16 +183,20 @@ function TabPanel(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {rows.map((row,index) => (
+                            {props.house.reports.map((row,index) => (
                                 <TableRow key={index}>
                                 <TableCell component="th" scope="row">
                                     {row.title}
                                 </TableCell>
                                 <TableCell align="right">{row.description}</TableCell>
                                 <TableCell align="right">{row.createdBy}</TableCell>
-                                <TableCell align="right">{row.timestamp}</TableCell>
+                                <TableCell align="right">{row.updatedAt}</TableCell>
                                 <TableCell align="right">{row.status}</TableCell>
-                                <TableCell align="right"><Button onClick={(index)=>{handleRoute(index)}}>{row.action}</Button></TableCell>
+                                <TableCell align="right">
+                                    {/* <Link to={{pathname:`/housing/comments`, state: row._id}}>
+                                    </Link> */}
+                                    <Button onClick={(e)=>{handleClick(index,row,e)}}>View Comments</Button>
+                                </TableCell>
                                 </TableRow>
                             ))}
                             </TableBody>
@@ -219,10 +208,12 @@ function TabPanel(props) {
         )
     }
 
-const mapStateToProps = ({ auth }) => ({
-    auth
+const mapStateToProps = ({ auth, house }) => ({
+    auth,
+    house
 });
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    {fetchHouse}
 )(FacilityReports);

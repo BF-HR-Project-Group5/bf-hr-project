@@ -25,6 +25,8 @@ function Navigation({ auth }) {
     return (
         <HeaderWrapper>
           <Nav>
+						<Link to="/housing">Housing</Link>
+						<Link to="/onboardingApp">OnboardingApp</Link>
             <Link to="/">
               <Title>
                 <Logo src="/assets/logo.png"/>

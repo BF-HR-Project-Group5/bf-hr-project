@@ -80,8 +80,9 @@ const Housing = (props) => {
     );
   }
 
-const mapStateToProps = ({ auth }) => ({
-    auth
+const mapStateToProps = ({ auth, house }) => ({
+    auth,
+    house
 });
 
 export default connect(

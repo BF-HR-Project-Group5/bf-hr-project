@@ -8,8 +8,8 @@ const { roles } = require('../config/roles');
 const ProfileSchema = new Schema(
 	{
 		ssn: { type: Number, required: true },
-		dateOfBirth: { type: Date },
-		gender: { type: String, enum: config.application.genders },
+		dateOfBirth: { type: Date, required: true },
+		gender: { type: String, enum: config.application.genders, required: true },
 		photo: { type: String },
 		address: {
 			line1: { type: String, required: true },
@@ -18,7 +18,7 @@ const ProfileSchema = new Schema(
 			state: { type: String, required: true },
 			zipcode: { type: String, required: true },
 		},
-		citizenType: { type: String, enum: config.application.citizenType, default: 'CITIZEN' }, // CITIZEN | "GREEN CARD" | "VISA" ???
+		citizenType: { type: String, enum: config.application.citizenType, default: 'CITIZEN', required: true }, // CITIZEN | "GREEN CARD" | "VISA" ???
 		workAuth: {
 			title: { type: String, enum: config.document.types, default: 'F1(CPT/OPT)' },
 			startDate: { type: Date },
@@ -33,7 +33,7 @@ const ProfileSchema = new Schema(
 		license: {
 			number: { type: String },
 			expiration: { type: Date },
-			link: { type: String, required: true},
+			link: { type: String, required: true },
 		},
 		phone: {
 			mobile: { type: Number, required: true },
@@ -47,6 +47,16 @@ const ProfileSchema = new Schema(
 			enum: config.application.steps,
 			default: config.application.steps[0],
 		},
+		reference: {
+			name: {
+				first: { type: String, required: true },
+				last: { type: String, required: true },
+				middle: { type: String },
+			},
+			phone: { type: String, required: true},
+			email: { type: String , required: true},
+			relationship: { type: String , required: true},
+		},
 		emergencyContact: [
 			{
 				name: {
@@ -54,9 +64,9 @@ const ProfileSchema = new Schema(
 					last: { type: String, required: true },
 					middle: { type: String },
 				},
-				phone: { type: String },
-				email: { type: String },
-				relationship: { type: String },
+				phone: { type: String , required: true},
+				email: { type: String, required: true },
+				relationship: { type: String, required: true },
 			},
 		],
 

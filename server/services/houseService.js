@@ -61,10 +61,14 @@ const getHouseByIdAndPopulateFields = async (houseId) => {
 		{
 			path: 'reports',
 			model: 'Report',
-			populate: {
-				path: 'comments',
-				model: 'Comment',
-			},
+			populate: [
+				{
+					path: 'comments',
+					model: 'Comment',
+					populate: { path: 'createdBy', model: 'User' },
+				},
+				{ path: 'createdBy', model: 'User' },
+			],
 		},
 	]);
 
@@ -95,10 +99,20 @@ const getHouseByIdAndPopulateUsers = async (houseId) => {
 		},
 		{
 			path: 'reports',
-			populate: {
-				path: 'comments',
-				model: 'Comment',
-			},
+			populate: [
+				{
+					path: 'comments',
+					model: 'Comment',
+					populate: {
+						path: 'createdBy',
+						model: 'User',
+					},
+				},
+				{
+					path: 'createdBy',
+					model: 'User',
+				},
+			],
 		},
 	]);
 
@@ -127,6 +141,13 @@ const updateHouse = async (houseId, updateBody) => {
 	// await house.save();
 	return house;
 };
+
+const addReportIdToHouseId = async (reportId, houseId) => {
+	const foundHouse = await getHouseById(houseId);
+	foundHouse.reports.push(reportId);
+	await foundHouse.save();
+	return foundHouse;
+}
 
 // DELETE house
 const deleteHouseById = async (houseId) => {
@@ -180,4 +201,5 @@ module.exports = {
 	assignUserIdToHouse,
 	addUserIdToHouseId,
 	getHouseByIdAndPopulateUsers,
+	addReportIdToHouseId,
 };

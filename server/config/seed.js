@@ -1,6 +1,6 @@
 const path = require('path');
 require('dotenv').config(path.join(__dirname, '../.env'));
-const {config} = require('../config/constants');
+const { config } = require('../config/constants');
 
 const mongoose = require('mongoose');
 const { MONGO_URL } = process.env;
@@ -15,6 +15,7 @@ const profileService = require('../services/profileService');
 const Profile = require('../models/profile.model');
 const documentService = require('../services/documentService');
 const Document = require('../models/document.model');
+const reportService = require('../services/reportService');
 
 const seedInvites = async (count) => {
 	const invites = [];
@@ -52,7 +53,7 @@ const seedInvitedUsers = async (count, invites, houses, profiles, role = 'user')
 				preferred: `preferred${i}`,
 			},
 
-			role: roles[i%2],
+			role: roles[i % 2],
 			invite: invites[i]._id, // add the created invite
 			profile: profiles[i]._id,
 			house: houses[i]._id,
@@ -108,7 +109,7 @@ const seedProfiles = async (count, documents) => {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
 			gender: GENDERS[i % 3],
-			photo:  `http://placekitten.com/${width}/${height}`,
+			photo: `http://placekitten.com/${width}/${height}`,
 			address: {
 				line1: `addressLine1_${i}`,
 				line2: `addressLine2_${i}`,
@@ -118,7 +119,7 @@ const seedProfiles = async (count, documents) => {
 			},
 			citizenType: CITIZEN_TYPE[i % 3],
 			workAuth: {
-				title: config.document.types[i%5],
+				title: config.document.types[i % 5],
 				startDate: new Date(),
 				endDate: new Date(),
 				daysRemaining: 99,
@@ -139,6 +140,16 @@ const seedProfiles = async (count, documents) => {
 			},
 			documents: [documents[i]],
 			feedback: 'overall feedback on profile',
+			reference: {
+				name: {
+					first: `first${i}`,
+					last: `last${i}`,
+					middle: `middle${i}`,
+				},
+				phone: `999999999${i}`,
+				email: `email${i}@email.com`,
+				relationship: `BFF`,
+			},
 			emergencyContact: [
 				{
 					name: {
@@ -163,7 +174,7 @@ const rng = (min, max) => min + Math.round((max - min) * Math.random());
 
 const seedDocuments = async (count) => {
 	const documents = [];
-	
+
 	for (let i = 0; i < count; i++) {
 		const width = rng(400, 600);
 		const height = rng(400, 600);
@@ -173,20 +184,47 @@ const seedDocuments = async (count) => {
 			feedback: 'feedback on document',
 			status: `PENDING`,
 			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
-			type:  `F1(CPT/OPT)`,
+			type: `F1(CPT/OPT)`,
 		};
 		documents.push(documentService.createDocument(data));
 	}
 	return Promise.all(documents);
 };
 
-const updateHouseRoommates = async (count, users, houses) => {
+const seedReports = async (count, users) => {
+	const reports = [];
+	for (let i = 0; i < count; i++) {
+		const data = {
+			title: `reportTitle${i}`,
+			description:`reportDescription${i}`,
+			createdBy: users[i]._id,
+		};
+		reports.push(reportService.createReport(data));
+
+	}
+	return Promise.all(reports);
+}
+
+const seedComments = async (count, users, reports) => {
+	const comments = [];
+	for (let i = 0; i < count; i++) {
+		const data = {
+			description:`reportDescription${i}`,
+			createdBy: users[(count - 1) - i]._id,
+		};
+		comments.push(reportService.addCommentToReportId(reports[i]._id, data));
+	}
+	return Promise.all(comments);
+}
+
+const updateHouseRoommatesAndReports = async (count, users, houses, reports) => {
 	const houseUpdates = [];
-	for (let i = 0; i < count; i++){
+	for (let i = 0; i < count; i++) {
 		houseUpdates.push(houseService.addUserIdToHouseId(users[i]._id, houses[i]._id));
+		houseUpdates.push(houseService.addReportIdToHouseId(reports[i]._id, houses[i]._id));
 	}
 	return Promise.all(houseUpdates);
-}
+};
 
 const clearInvites = () => Invite.deleteMany({});
 const clearUsers = () => User.deleteMany({ _id: { $ne: '63d6da694ba462d927745b7e' } });
@@ -203,24 +241,34 @@ async function run() {
 		await mongoose.connect(MONGO_URL);
 		console.log('Seed - Connected to DB');
 
-		await Promise.allSettled([clearInvites(), clearUsers(), clearHouses(), clearProfiles(), clearDocuments()])
+		await Promise.allSettled([
+			clearInvites(),
+			clearUsers(),
+			clearHouses(),
+			clearProfiles(),
+			clearDocuments(),
+		]);
 
 		// seed documents, houses, invites
 		// const documents = await seedDocuments(5);
 		// const houses = await seedHouses(5);
 		// const invites = await seedInvites(5);
-		const [documents, houses, invites] = (await Promise.allSettled([seedDocuments(count), seedHouses(count), seedInvites(count)])).map(result => result.value);
+		const [documents, houses, invites] = (
+			await Promise.allSettled([seedDocuments(count), seedHouses(count), seedInvites(count)])
+		).map((result) => result.value);
 
-		console.log({documents, houses, invites});
+		console.log({ documents, houses, invites });
 
 		// seed profiles and add a document
 		const profiles = await seedProfiles(count, documents);
 
 		// seed users and add invites, houses, profiles
 		const users = await seedInvitedUsers(count, invites, houses, profiles);
+		const reports = await seedReports(count, users);
+		const comments = await seedComments(count, users, reports);
 
 		// update house roommates
-		await updateHouseRoommates(count, users, houses);
+		await updateHouseRoommatesAndReports(count, users, houses, reports);
 
 		console.log('final users:', users);
 	} catch (e) {

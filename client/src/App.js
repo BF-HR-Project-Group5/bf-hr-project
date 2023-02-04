@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Navigate, Redirect, Route, Routes } from 'react-router-dom';
+import Navigation from './components/navigation/navigation';
 import RequireAuthOrHr from './components/RequireAuthOrHr';
 
 const Login = lazy(() => import('./pages/Login'));
@@ -13,10 +14,12 @@ const HouseDetails = lazy(() => import('./pages/housing/House-Details'));
 const FacilityReports = lazy(() => import('./pages/housing/Facility-Reports'));
 const Comments = lazy(() => import('./pages/housing/Comments'));
 const HrHome = lazy(() => import('./pages/HrHome'));
+const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
 
 function App(props) {
 	return (
 		<BrowserRouter>
+		<Navigation />
 			<Suspense fallback={null}>
 				<Routes>
 					<Route
