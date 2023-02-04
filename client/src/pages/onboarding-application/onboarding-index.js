@@ -48,8 +48,8 @@ const onSubmit = async (data) => {
 		},
 		workAuth: {
 			title: data.workAuthType ?? '',
-			startDate: data.workAuthStartDate,
-			endDate: data.workAuthEndDate,
+			startDate: data.workAuthStartDate ?? '',
+			endDate: data.workAuthEndDate ?? '',
 		},
 		car: {
 			make: data['car-make'],
@@ -57,8 +57,8 @@ const onSubmit = async (data) => {
 			color: data['car-color'],
 		},
 		license: {
-			number: data.licenseNumber,
-			expiration: data.licenseExpiration,
+			number: data.licenseNumber ?? '',
+			expiration: data.licenseExpiration ?? '',
 		},
 		reference: {
 			name: {
@@ -113,37 +113,6 @@ const OnboardingApplication = (props) => {
 		await onSubmit(sender.data);
 		navigate('/personalInfo');
 	});
-	/* 
-		ref-name-first, last, middle, phone, email, relationship
-		emergencyContact[{name-first, last middle, phone, email, relationship}]
-
-		licenseNumber,
-		car-make, model, color
-		licenseFile[{name: fileName, type: fileType, content: data:type;base64,...}]
-
-		birthDate
-		gender: 'Male' | 'Female' | 'Prefer not to answer'
-		ssn
-
-		is-citizen-permanent: boolean
-		if true:
-			citizenType: 'Green Card' | 'Citizen'
-		else: 
-			workAuthType: 'H1-B' | 'L2' | 'F1(CPT/OPT)' | 'H4' | 'OTHER' (input some text???)
-			workAuthFile [{...}]
-
-		phone-cell
-		phone-work
-
-		line1
-		line2
-		city
-		state
-		zip
-
-		first-name, middle, last, preferred
-
-		*/
 
 	return (
 		<>

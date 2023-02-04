@@ -36,17 +36,17 @@ const createProfile = catchAsync(async (req, res) => {
 		if (!workAuth) {
 			throw { statusCode: 400, message: 'Please include an OPT Receipt' };
 		} else {
-			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth));
+			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth, userId));
 		}
 	}
 
 	// check for and upload license
 	const license = req.body.licenseFile ?? undefined;
-	if (license) uploadPromises.push(s3Service.uploadFileFromBuffer(license));
+	if (license) uploadPromises.push(s3Service.uploadFileFromBuffer(license, userId));
 
 	// check for and upload (optional) profile photo
 	const photo = req.body.photoFile ?? undefined; // optional field
-	if (photo) uploadPromises.push(s3Service.uploadFileFromBuffer(photo));
+	if (photo) uploadPromises.push(s3Service.uploadFileFromBuffer(photo, userId));
 
 	// get the results
 	const results = await Promise.all(uploadPromises);

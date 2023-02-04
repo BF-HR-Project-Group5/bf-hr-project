@@ -393,42 +393,35 @@ export const json = {
 	width: '864px',
 };
 
-// "elements": [{
-//     "type": "panel",
-//     "name": "name",
-//     "title": "Name",
-//     "elements": [{
-//       "type": "text",
-//       "name": "first-name",
-//       "title": "First Name",
-//       "startWithNewLine": false,
-//       "isRequired": true
-//     },{
-//       "type": "text",
-//       "name": "last-name",
-//       "title": "Last Name",
-//       "startWithNewLine": false,
-//       "isRequired": true
-//     },{
-//       "type": "text",
-//       "name": "middle-name",
-//       "title": "Middle Name",
-//       "startWithNewLine": false,
-//       "isRequired": false
-//     },{
-//       "type": "text",
-//       "name": "preferred-name",
-//       "title": "Preferred name",
-//       "startWithNewLine": false,
-//     }]
-//   },],
 
-/*
-		
-		notes:
-			move car info into under "Do you have a license?"
-			need to move DOB to somewhere else,
-			need SSN
-		
-		
-		*/
+/* 
+	first-name, middle, last, preferred
+
+	line1
+	line2
+	city
+	state
+	zip
+
+	phone-cell
+	phone-work
+
+	birthDate
+	gender: 'Male' | 'Female' | 'Prefer not to answer'
+	ssn
+
+	is-citizen-permanent: boolean
+	if true:
+		citizenType: 'Green Card' | 'Citizen'
+	else: 
+		workAuthType: 'H1-B' | 'L2' | 'F1(CPT/OPT)' | 'H4' | 'OTHER' (input some text???)
+		workAuthFile [{...}]
+
+	licenseNumber,
+	car-make, model, color
+	licenseFile[{name: fileName, type: fileType, content: data:type;base64,...}]
+
+
+	ref-name-first, last, middle, phone, email, relationship
+	emergencyContact[{name-first, last middle, phone, email, relationship}]
+	*/
