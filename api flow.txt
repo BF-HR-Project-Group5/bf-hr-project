@@ -48,6 +48,12 @@ Sends you to Onboarding Application page {
 		=> /profile/create (after document is uploaded)
 			(creates a profile, with ALL the user data that they submit)
 			body = {
+				name: {
+					first: string,
+					last: string,
+					middle?: string,
+					preferred?: string,
+				},
 				ssn: number,
 				dateOfBirth: Date,
 				gender: string: 'Male' | 'Female' | 'Prefer not to answer',

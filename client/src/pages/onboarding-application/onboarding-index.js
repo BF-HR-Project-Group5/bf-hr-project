@@ -90,6 +90,7 @@ const onSubmit = async (data) => {
 	formData.append('licenseFile', data.licenseFile[0]);
 	if (data?.profilePhotoFile) formData.append('photoFile', data.profilePhotoFile[0]);
 	if (data?.workAuthFile) formData.append('workAuthFile', data.workAuthFile[0]);
+	console.log({formData});
 
 	// send the post request!
 	const result = await axios.post(`/profile/create`, formData, {headers: {'Content-Type': "multipart/form-data"}});
@@ -101,7 +102,7 @@ const OnboardingApplication = (props) => {
 	const navigate = useNavigate();
 	const survey = new Model(json);
 	survey.onComplete.add(async (sender, options) => {
-		console.log({data: sender.data});
+		// console.log({data: sender.data});
 		await onSubmit(sender.data);
 		navigate('/personalInfo');
 	});
