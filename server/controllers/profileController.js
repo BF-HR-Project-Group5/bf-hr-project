@@ -118,12 +118,12 @@ const getProfile = catchAsync(async (req, res) => {
 	});
 
 	// look up user so we know which profile id to find
-	const user = await userService.getUserByIdAndPopulate(req.user._id);
+	const user = await userService.getUserByIdAndPopulate(req?.user?._id);
 	if (!user) throw { statusCode: 404, message: 'User not found' };
 	console.log('found user, should populate profile, which should have _id:', { user });
 
 	// find profile and populate documents
-	const profile = await profileService.getProfileByIdAndPopulate(user.profile._id);
+	const profile = await profileService.getProfileByIdAndPopulate(user?.profile?._id);
 	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 	console.log('found profile:', { profile });
 
