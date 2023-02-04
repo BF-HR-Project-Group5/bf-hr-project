@@ -60,7 +60,7 @@ const Comments = (props) => {
                         console.log('props',props)
                         newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
                         const d = new Date();
-                        const n = d.toLocaleDateString();//2/3/2023, 
+                        const n = d.toLocaleDateString();
                         newData.updatedAt = n
                         resolve();
                         (async function () {

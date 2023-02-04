@@ -65,6 +65,42 @@ export const updateComment = (commentData) => async dispatch => {
   // dispatch({ type: FETCH_HOUSE, payload: data });
 };
 
+export const fetchAllProfiles = (value) => async dispatch => {
+  // /profiles/all
+  console.log('value',value)
+  const { data } = await axios.get('/profiles/all');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const documentApprove = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/documents/' + value + '/approve');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const documentReject = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/documents/' + value._id + '/reject', value);
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const sendReminder = (value) => async dispatch => {
+  // /profiles/:userId/sendReminder
+  console.log('value',value)
+  const { data } = await axios.get('/profiles/' + value + '/sendReminder');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+
+
+
+
+
+
 
 
 

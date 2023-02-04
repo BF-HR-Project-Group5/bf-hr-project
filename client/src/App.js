@@ -15,6 +15,8 @@ const FacilityReports = lazy(() => import('./pages/housing/Facility-Reports'));
 const Comments = lazy(() => import('./pages/housing/Comments'));
 const HrHome = lazy(() => import('./pages/HrHome'));
 const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
+const HrVisaStatus = lazy(() => import('./pages/Hr-Visa-Status'));
+const HrVisaStatusDoc = lazy(() => import('./pages/Hr-Visa-Status-Doc'));
 
 function App(props) {
 	return (
@@ -37,13 +39,11 @@ function App(props) {
 						exact
 						element={<SignUp />}
 					/>
-					{/* Done */}
 					<Route
 						path="/login"
 						exact
 						element={<Login />}
 					/>
-					{/* Done */}
 					<Route
 						path="/personalInfo"
 						exact
@@ -80,7 +80,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Done */}
 					<Route
 						path="/houseDetails"
 						exact
@@ -90,7 +89,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Done */}
 					<Route
 						path="/facilityReports"
 						exact
@@ -100,7 +98,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
 					<Route
 						path="/housing/comments"
 						exact
@@ -110,7 +107,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
 					<Route
 						path="/home"
 						exact
@@ -124,6 +120,33 @@ function App(props) {
 						path="*"
 						element={<h1>404! Not Found!</h1>}
 					/>
+					<Route
+						path="/hrVisaStatus"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<HrVisaStatus />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/employeeProfiles"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<EmployeeProfiles />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/hrVisaStatus/doc"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<HrVisaStatusDoc />
+							</RequireAuthOrHr>
+						}
+					/>
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
@@ -131,25 +154,3 @@ function App(props) {
 }
 
 export default connect(null, {})(App);
-
-// {/* <GuardRouteAuth path="/personalInfo" exact>
-// 	<PersonalInfo />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/onboardingApp" exact>
-// 	<OnboardingApp />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/visaStatus" exact>
-// 	<VisaStatus />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/housing" exact>
-// 	<Housing />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/houseDetails" exact>
-// 	<HouseDetails />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/facilityReports" exact>
-// 	<FacilityReports />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/housing/comments" exact>
-// 	<Comments />
-// </GuardRouteAuth> */}
