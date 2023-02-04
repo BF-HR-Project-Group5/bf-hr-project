@@ -3,16 +3,16 @@ const Document = require('../models/document.model');
 const removeEmptyFields = require( '../utils/removeEmptyFields' );
 
 // find one
-const getDocumentById = async (id) => Document.findById(id);
-const getDocumentByLink = async (link) => Document.findOne({ link });
+const getDocumentById = (id) => Document.findById(id);
+const getDocumentByLink = (link) => Document.findOne({ link });
 
 // find multiple
-const getDocumentsByStatus = async (status) => Document.find({ status });
-const getDocumentsByType = async (type) => Document.find({ type });
+const getDocumentsByStatus = (status) => Document.find({ status });
+const getDocumentsByType = (type) => Document.find({ type });
 
 // create a document when the user submits a document file.
 // Separately, we have the s3Service upload and provide us the link for this function
-const createDocument = async (
+const createDocument = (
 	data = {
 		link: '',
 		feedback: '',
@@ -33,25 +33,26 @@ const updateDocumentById = async (
 	// remove fields that have value of ''
 	const nonEmptyUpdateObj = removeEmptyFields(updateBody);
 
+	// console.log('updating body with:', {nonEmptyUpdateObj});
 	Object.assign(document, nonEmptyUpdateObj);
 	await document.save();
 	return document;
 };
 
 // const updateFieldById = async (id, field, value) => updateDocumentById(id, { [field]: value });
-const rejectDocumentIdWithFeedback = async (id, feedback) => updateDocumentById(id, {feedback, status: 'REJECTED'});
+const rejectDocumentIdWithFeedback = (id, feedback) => updateDocumentById(id, {feedback: feedback, status: 'REJECTED'});
 
-const updateStatusById = async (id, status) => updateDocumentById(id, {status});
+const updateStatusById = (id, status) => updateDocumentById(id, {status});
 
-const approveDocumentId = async (id) => updateStatusById(id, 'APPROVED');
-const pendingDocumentId = async (id) => updateStatusById(id, 'PENDING');
-const rejectDocumentId = async (id) => updateStatusById(id, 'REJECTED');
+const approveDocumentId = (id) => updateStatusById(id, 'APPROVED');
+const pendingDocumentId = (id) => updateStatusById(id, 'PENDING');
+const rejectDocumentId = (id) => updateStatusById(id, 'REJECTED');
 
 
 // types and links should not need to be updated ??
 // maybe if user  wants to replace a file, find and delete  one and then create a new one
 // so here we delete, and in a different function we do the rest
-const deleteDocumentById = async (id) => Document.findByIdAndDelete(id);
+const deleteDocumentById = (id) => Document.findByIdAndDelete(id);
 
 const replaceDocumentById = async (
 	id,
