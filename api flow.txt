@@ -50,7 +50,7 @@ Sends you to Onboarding Application page {
 			body = {
 				ssn: number,
 				dateOfBirth: Date,
-				gender: string: 'MALE' | 'FEMALE' | 'NO_RESPONSE',
+				gender: string: 'Male' | 'Female' | 'Prefer not to answer',
 				photoFile?: file,
 				address: {
 					line1: string,
@@ -59,12 +59,11 @@ Sends you to Onboarding Application page {
 					state: string,
 					zipcode: string,
 				},
-				citizenType: string ('CITIZEN' | 'GREEN_CARD' | 'VISA'),
+				citizenType: string ('Citizen' | 'Green Card' | 'Visa'),
 				workAuth?: {
 					title?: string ('H1-B' | 'L2' | 'F1(CPT/OPT)' | 'H4' | 'OTHER'),
 					startDate?: Date,
 					endDate?: Date,
-					daysRemaining?: number,
 				},
 				car: {
 					make: string,
