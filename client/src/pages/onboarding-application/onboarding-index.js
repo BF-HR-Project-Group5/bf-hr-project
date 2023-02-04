@@ -100,7 +100,7 @@ const onSubmit = async (data) => {
 	// send the post request!
 	const result = await axios.post(`/profile/create`, formData, {
 		headers: { 'Content-Type': 'multipart/form-data' },
-	});
+	}).catch(err => console.error(err));
 	console.log('POST form data:', { result });
 };
 
