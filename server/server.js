@@ -24,14 +24,14 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/', (req, res, next) => {
-	// user 2: role: 'user'
-	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjODUzMDMwMWQzNDA3MDU1MGViNGUiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1Mzk2NDgzNTMyLCJleHAiOjE2NzUzOTcwODM1MzJ9._Rj60rKAReQ_emdrRBUkhemVtFNbr7NCrxY3iryzAXo';
+// user 2: role: 'user'
+	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkZDc3MjY1MmYyMWExNjlhMmE5ZTIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDgzMDY5NTI5LCJleHAiOjE2NzU0ODM2Njk1Mjl9.vBD2AUwJSdjq905bME11O4VOwvfNuYsimyxhvn32-jo';
 
 	// user 1: role: 'hr'{}
-	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmYiLCJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImVtYWlsIjoiZW1haWwxQGVtYWlsLmNvbSIsInJvbGUiOiJociIsImlhdCI6MTY3NTQ3MDU4ODY5NiwiZXhwIjoxNjc1NDcxMTg4Njk2fQ.nwYHP6OuHYORcqwD0mBPqJijcZ2dEERS0ceaxte504Q';
+	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkZDc3MjY1MmYyMWExNjlhMmE5ZTAiLCJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImVtYWlsIjoiZW1haWwxQGVtYWlsLmNvbSIsInJvbGUiOiJociIsImlhdCI6MTY3NTQ4MzA1MzU5NiwiZXhwIjoxNjc1NDgzNjUzNTk2fQ.kMt-z2tWHdTqUil2V6naBRQX5kps0bPDg7twRaTF7uI';
 
 	// user 0: role: 'user'
-	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RjODUzMDMwMWQzNDA3MDU1MGViNTAiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1Mzk2NDEzOTU4LCJleHAiOjE2NzUzOTcwMTM5NTh9.dn5KzJt3e7sQ4IdtItVgmW77MHb7dNtn3kpmTGDKedI'; 
+	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkZDc3MjY1MmYyMWExNjlhMmE5ZTEiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDgzMDMyMDQ3LCJleHAiOjE2NzU0ODM2MzIwNDd9.HYZgRAJSokCGJ0nx9nd-KeibLVvZinfxaZtxkhLj4Fk'; 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
 	next();
 })
