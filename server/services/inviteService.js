@@ -92,9 +92,9 @@ const getInviteFromHeaders = async (headers) => {
 };
 
 const getInviteFromParams = async (params) => {
-	// if no headers, return empty
 	if (!params || !params?.token) return {};
 
+	console.log('looking up invite token...');
 	const invite = await getInviteByToken(params.token);
 	return { invite }; // look up invite
 };

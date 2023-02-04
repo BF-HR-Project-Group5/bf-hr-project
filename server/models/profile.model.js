@@ -18,7 +18,12 @@ const ProfileSchema = new Schema(
 			state: { type: String, required: true },
 			zipcode: { type: String, required: true },
 		},
-		citizenType: { type: String, enum: config.application.citizenType, default: 'CITIZEN', required: true }, // CITIZEN | "GREEN CARD" | "VISA" ???
+		citizenType: {
+			type: String,
+			enum: config.application.citizenType,
+			default: 'CITIZEN',
+			required: true,
+		}, // CITIZEN | "GREEN CARD" | "VISA" ???
 		workAuth: {
 			title: { type: String, enum: config.document.types, default: 'F1(CPT/OPT)' },
 			startDate: { type: Date },
@@ -58,9 +63,9 @@ const ProfileSchema = new Schema(
 				last: { type: String, required: true },
 				middle: { type: String },
 			},
-			phone: { type: String, required: true},
-			email: { type: String , required: true},
-			relationship: { type: String , required: true},
+			phone: { type: String, required: true },
+			email: { type: String, required: true },
+			relationship: { type: String, required: true },
 		},
 		emergencyContact: [
 			{
@@ -69,7 +74,7 @@ const ProfileSchema = new Schema(
 					last: { type: String, required: true },
 					middle: { type: String },
 				},
-				phone: { type: String , required: true},
+				phone: { type: String, required: true },
 				email: { type: String, required: true },
 				relationship: { type: String, required: true },
 			},
