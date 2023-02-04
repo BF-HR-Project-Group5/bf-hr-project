@@ -3,6 +3,7 @@ const profileService = require('../services/profileService');
 const documentService = require('../services/documentService');
 const s3Service = require('../services/s3Service');
 const catchAsync = require( '../utils/catchAsync' );
+const { reset } = require('nodemon');
 // const upload = require('../utils/multer');
 
 
@@ -29,7 +30,7 @@ const createDocument = catchAsync(async (req, res) => {
 	const file = req.files.file[0];
 	if (!file) throw {statusCode: 400, message: 'Please include a file'};
 	const response = await s3Service.uploadFile(file);
-	const link = response.location;
+	const link = response.Location;
 	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
 
 	// save document
@@ -77,7 +78,7 @@ const getAllDocumentsFromUser = catchAsync(async (req, res) => {
 const approveDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const document = await documentService.approveDocumentId(docId);
-	return document
+	return res.status(200).send({document})
 });
 
 
@@ -86,7 +87,7 @@ const rejectDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const feedback = req.body.feedback;
 	const document = await documentService.rejectDocumentIdWithFeedback(docId, feedback);
-	return document
+	return res.status(200).send({document})
 });
 
 

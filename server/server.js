@@ -43,7 +43,7 @@ app.use('/', routes.houseRouter);
 app.use('/', routes.inviteRouter);
 // app.use('/', routes.userRouter);
 app.use('/', routes.reportRouter);
-// app.use('/', routes.documentRouter);
+app.use('/', routes.documentRouter);
 app.use('/', routes.profileRouter);
 
 

@@ -1,5 +1,6 @@
 First time registering/viewing webpage
 
+TESTED
 Receives invite email, Register page {
 	=> /user/register/{hexToken (from route param)} (POST)
 		(creates user with {username, email, password})
@@ -15,6 +16,7 @@ Receives invite email, Register page {
 		}
 }
 
+TESTED
 log in page, when coming back {
 	=> /user/login (POST)
 		(username and/or email? + password)
@@ -101,6 +103,7 @@ Sends you to Onboarding Application page {
 			}
 	}
 
+TESTED
 	(once submitted, show review status, prevent editing unless REJECTED) {
 		=> /profile (GET)
 			(after profile is saved/uploaded)
@@ -186,6 +189,7 @@ Can go to Personal Info page {
 
 
 Visa Status Management page {
+	TESTED
 		=> /profile/nextStep ? (GET) ?? 
 			(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 			returns: {
@@ -199,6 +203,7 @@ Visa Status Management page {
 
 
 Housing page: {
+	TESTED
 	=> /house (GET)
 		(get details of the house the user is in)
 		(also gets reports of that house, etc.)
@@ -206,6 +211,7 @@ Housing page: {
 			house: HouseDocument and deeply populated
 		}
 
+TESTED
 	=> /report/create (POST)
 		(create a report for the house the user is in)
 		body = {
@@ -217,6 +223,7 @@ Housing page: {
 			house: HouseSchema
 		}
 
+TESTED
 	=> /report/:reportId (PUT)
 		(edit the base report)
 		params: {
@@ -231,7 +238,7 @@ Housing page: {
 			report,
 		}
 
-
+TESTED
 	=> /report/:reportId/comment (POST)
 		(add comment to the given report)
 		params: {
@@ -245,6 +252,7 @@ Housing page: {
 			comment,
 		}
 
+TESTED
 	=> /comment/:commentId (PUT)
 		(edit particular comment from the user?)
 		params: {
@@ -264,10 +272,12 @@ HR users:
 
 requires auth, authHr
 Employee Profiles Page: {
+	TESTED
 	=> /profiles/all (GET) 
 		(get all users, and populate profiles, and send everything)
 		(get each profile "summary")
 
+TESTED
 	Link to their profile page
 	=> /profiles/:userId (GET)
 		(get one profile)
@@ -276,6 +286,7 @@ Employee Profiles Page: {
 			userId,
 		}
 
+TESTED
 	=> /profiles?search="some name search" (GET)
 		(return ALL user profiles filtered by search query)
 		query: {
@@ -285,10 +296,12 @@ Employee Profiles Page: {
 
 
 Visa Status Management page: {
+	TESTED
 	=> /profiles/visa (GET)
 		(get all user profiles with visa status)
 
 	=> /profiles/visa?search="some name search" (GET)
+	TESTED
 		(return visa status user profiles filtered by query)
 		(can filter IN PROGRESS vs ALL on the client side ??)
 		query: {
@@ -296,18 +309,21 @@ Visa Status Management page: {
 		}
 
 	=> /profiles/:userId/sendReminder (GET)
+	TESTED
 		(send a reminder to that user._id of their next step)
 		params: {
 			userId,
 		}
 
 	=> /documents/:documentId/approve (GET)
+	TESTED
 		(tell server to approve the document._id)
 		params: {
 			documentId,
 		}
 
 	=> /documents/:documentId/reject (POST)
+	TESTED
 		params: {
 			documentId,
 		}
@@ -321,6 +337,7 @@ Visa Status Management page: {
 
 Hiring Management Page:{
 	(onboarding application review) {
+		TESTED
 		=> /profiles/all (GET) (duplicate)
 			(get all profiles, display 3 tabs for the different statuses?)
 			(PENDING | REJECTED | APPROVED)
@@ -328,6 +345,7 @@ Hiring Management Page:{
 			(client-side filter by status)
 
 		=> /profiles/:userId (GET)
+		TESTED
 			(for opening the profile in a new tab)
 			params: {
 				userId,
@@ -335,9 +353,11 @@ Hiring Management Page:{
 	}
 
 	(registration tokens) {
+		TESTED
 		=> /invites (GET)
 			(get all invites)
 
+		TESTED
 		=> /invites/send (POST) 
 			(send an invite with the data)
 			body = {
@@ -353,14 +373,17 @@ Hiring Management Page:{
 }
 
 Housing Management Page: {
+	TESTED
 	=> /houses/all (GET)
 
+	TESTED
 	=> /houses/:houseId (GET)
 		(get house, populate facility reports, populate employees/roommates)
 		params: {
 			houseId,
 		}
 
+	TESTED
 	=> /houses/create (POST)
 		body = {
 			address: {
@@ -384,6 +407,7 @@ Housing Management Page: {
 			},
 		}
 	
+	TESTED
 	=> /houses/houseId (PUT)
 		body = {
 			address: {
@@ -409,11 +433,13 @@ Housing Management Page: {
 			reports?: [],
 		}
 
+	TESTED
 	=> /houses/:houseId (DELETE)
 		params: {
 			houseId,
 		}
 
+	TESTED
 	=> /report/:reportId (PUT)
 		(changing the status)
 		(edit the report)
@@ -426,6 +452,7 @@ Housing Management Page: {
 			description: string,
 		}
 
+	TESTED
 	=> /report/:reportId/comments (GET)
 		(gets the comments from this report)
 		params: {
@@ -433,6 +460,7 @@ Housing Management Page: {
 		}
 		returns:
 
+	TESTED
 	=> /report/:reportId/comments (POST)
 		params: {
 			reportId,
@@ -442,6 +470,7 @@ Housing Management Page: {
 		}
 		returns:
 
+	TESTED
 	=> /comments/:commentId (PUT)
 		(edit the comment)
 		params: {
@@ -452,6 +481,7 @@ Housing Management Page: {
 		}
 		returns:
 
+	TESTED
 	=> /comments/:commentId (DELETE)
 		(delete a comment)
 		params: {

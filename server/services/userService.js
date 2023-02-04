@@ -154,7 +154,7 @@ const putHouseIdToUserId = async (houseId, userId) => {
 const getAllUsersAndPopulate = () => User.find().populate(DEEP_POPULATE_PATH);
 
 const filterVisaProfiles = (users) =>
-	users.filter((user) => user?.profile?.workAuth.title === 'VISA');
+	users.filter((user) => user?.profile?.citizenType === 'VISA');
 
 const getAllVisaUsers = async () => {
 	const users = await getAllUsersAndPopulate();
