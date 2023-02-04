@@ -77,7 +77,7 @@ const getAllDocumentsFromUser = catchAsync(async (req, res) => {
 const approveDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const document = await documentService.approveDocumentId(docId);
-	return document
+	return res.status(200).send({document})
 });
 
 
@@ -86,7 +86,7 @@ const rejectDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const feedback = req.body.feedback;
 	const document = await documentService.rejectDocumentIdWithFeedback(docId, feedback);
-	return document
+	return res.status(200).send({document})
 });
 
 
