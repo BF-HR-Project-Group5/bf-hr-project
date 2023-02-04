@@ -69,7 +69,7 @@ const onSubmit = async (data) => {
 			email: data['ref-email'],
 			relationship: data['ref-relationship'],
 		},
-		emergencyContacts: data.emergencyContacts.map((each) => ({
+		emergencyContacts: data.emergencyContact.map((each) => ({
 			name: {
 				first: each['name-first'],
 				last: each['name-last'],
@@ -87,9 +87,9 @@ const onSubmit = async (data) => {
 	buildFormData(formData, formattedData);
 
 	// append the files
-	formData.append('licenseFile', data.licenseFile);
-	if (data?.profilePhotoFile) formData.append('photoFile', data.profilePhotoFile);
-	if (data?.workAuthFile) formData.append('workAuthFile', data.workAuthFile);
+	formData.append('licenseFile', data.licenseFile[0]);
+	if (data?.profilePhotoFile) formData.append('photoFile', data.profilePhotoFile[0]);
+	if (data?.workAuthFile) formData.append('workAuthFile', data.workAuthFile[0]);
 
 	// send the post request!
 	const result = await axios.post(`/profile/create`, formData, {headers: {'Content-Type': "multipart/form-data"}});
@@ -101,6 +101,7 @@ const OnboardingApplication = (props) => {
 	const navigate = useNavigate();
 	const survey = new Model(json);
 	survey.onComplete.add(async (sender, options) => {
+		console.log({data: sender.data});
 		await onSubmit(sender.data);
 		navigate('/personalInfo');
 	});

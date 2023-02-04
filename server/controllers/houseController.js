@@ -52,7 +52,7 @@ const deleteHouse = catchAsync(async (req, res) => {
 const getHouseForUser = catchAsync(async(req, res) => {
 		const userId = req.user._id;
 		const user = await userService.getUserById(userId);
-		const house = await houseService.getHouseByIdAndPopulateUsers(user.house._id);
+		const house = await houseService.getHouseByIdAndPopulateUsers(user?.house?._id);
 		res.status(200).json({ house });
 })
 

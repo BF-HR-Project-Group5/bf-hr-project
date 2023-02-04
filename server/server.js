@@ -23,18 +23,18 @@ app.use('/', (req, res, next) => {
 	next();
 });
 
-app.use('/', (req, res, next) => {
-	// user 2: role: 'user'
-	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDcwNjQ1NDk5LCJleHAiOjE2NzU0NzEyNDU0OTl9.J38QuyCWaYF82EaGN2TKykHcHpRBYZzNQqLLh8o0x0E';
+// app.use('/', (req, res, next) => {
+// 	// user 2: role: 'user'
+// 	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDcwNjQ1NDk5LCJleHAiOjE2NzU0NzEyNDU0OTl9.J38QuyCWaYF82EaGN2TKykHcHpRBYZzNQqLLh8o0x0E';
 
-	// user 1: role: 'hr'{}
-	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmYiLCJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImVtYWlsIjoiZW1haWwxQGVtYWlsLmNvbSIsInJvbGUiOiJociIsImlhdCI6MTY3NTQ3MDU4ODY5NiwiZXhwIjoxNjc1NDcxMTg4Njk2fQ.nwYHP6OuHYORcqwD0mBPqJijcZ2dEERS0ceaxte504Q';
+// 	// user 1: role: 'hr'{}
+// 	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmYiLCJ1c2VybmFtZSI6InVzZXJuYW1lMSIsImVtYWlsIjoiZW1haWwxQGVtYWlsLmNvbSIsInJvbGUiOiJociIsImlhdCI6MTY3NTQ3MDU4ODY5NiwiZXhwIjoxNjc1NDcxMTg4Njk2fQ.nwYHP6OuHYORcqwD0mBPqJijcZ2dEERS0ceaxte504Q';
 
-	// user 0: role: 'user'
-	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmUiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDcwNjE4NDc2LCJleHAiOjE2NzU0NzEyMTg0NzZ9.wlPVXb77vkby3-dTSfk0TUbcUBCztmVaCRfhwB4X2A8'; 
-	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
-	next();
-})
+// 	// user 0: role: 'user'
+// 	// const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkYTY3NTlhZGY0MDAyNGUwYzFhMmUiLCJ1c2VybmFtZSI6InVzZXJuYW1lMCIsImVtYWlsIjoiZW1haWwwQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDcwNjE4NDc2LCJleHAiOjE2NzU0NzEyMTg0NzZ9.wlPVXb77vkby3-dTSfk0TUbcUBCztmVaCRfhwB4X2A8'; 
+// 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
+// 	next();
+// })
 
 // routes
 // console.log('server router')
