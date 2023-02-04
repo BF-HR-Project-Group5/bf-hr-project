@@ -47,11 +47,6 @@ const ProfileSchema = new Schema(
 		documents: [{ type: refType, ref: 'Document' }],
 		feedback: { type: String },
 		currentStepInt: { type: Number, default: 0 },
-		// currentStep: {
-		// 	type: String,
-		// 	enum: config.application.steps,
-		// 	default: config.application.steps[0],
-		// },
 		nextStep: {
 			type: String,
 			enum: config.application.nextStepCode,

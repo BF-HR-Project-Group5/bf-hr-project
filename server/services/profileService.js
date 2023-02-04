@@ -5,27 +5,31 @@ const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
+
 	const isNotVisa = profileBody.citizenType !== 'VISA';
 	if (isNotVisa) {
 		// is citizen or green card
 		// complete with documents
 		const completedStepInt = config.application.nextStepCode.length - 1;
-		const stepString = config.application.steps[completedStepInt];
+		const stepCodeString = config.application.nextStepCode[completedStepInt];
+
 		profileBody.currentStepInt = completedStepInt;
-		profileBody.currentStep = stepString;
+		profileBody.nextStep = stepCodeString;
+
 	} else {
 		const isNotOPT = profileBody?.document?.type === config.document.types[0];
 		if (isNotOPT) {
 			// they uploaded something other than OPT receipt
 			// complete with documents
-			const stepInt = config.application.steps.length - 1;
-			const stepString = config.application.steps[stepInt];
-			profileBody.currentStepInt = stepInt;
-			profileBody.currentStep = stepString;
+			const completedStepInt = config.application.nextStepCode.length - 1;
+			const stepCodeString = config.application.nextStepCode[completedStepInt];
+
+			profileBody.currentStepInt = completedStepInt;
+			profileBody.nextStep = stepCodeString;
 		} else {
 			// they uploaded an OPT receipt
 			profileBody.currentStepInt = 0;
-			profileBody.currentStep = config.application.steps[0];
+			profileBody.currentStep = config.application.nextStepCode[0];
 		}
 	}
 	return Profile.create(profileBody);
@@ -111,13 +115,15 @@ const putStepToNextForProfileId = async (profileId) => {
 
 	// if NOT already complete...
 	// get next int, get next step string
-	const nextStepInt = profile.currentStepInt++;
-	const nextStepCode = config.application.nextStepCode[nextStepInt];
+	const nextInt = profile.currentStepInt++;
+	const nextCode = config.application.nextStepCode[nextStepInt];
 
 	// save next int and string
-	profile.nextStep = nextStepCode;
-	profile.currentStepInt = nextStepInt;
+	profile.currentStepInt = nextInt;
+	profile.nextStep = nextCode;
+
 	await profile.save();
+
 	return profile;
 };
 
