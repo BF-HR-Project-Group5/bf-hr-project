@@ -143,7 +143,7 @@ const updateHouse = async (houseId, updateBody) => {
 };
 
 const addReportIdToHouseId = async (reportId, houseId) => {
-	const foundHouse = await houseService.getHouseById(houseId);
+	const foundHouse = await getHouseById(houseId);
 	foundHouse.reports.push(reportId);
 	await foundHouse.save();
 	return foundHouse;
