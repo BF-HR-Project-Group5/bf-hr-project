@@ -38,16 +38,33 @@ const getFileStream = (fileKey) => {
 	return s3.getObject(downloadParams).createReadStream();
 };
 
-const uploadFiles = (...files) => {
-	console.log('uploading files...', {files});
-	// for each file, upload it. Then return the results in an array
-	const promises = files.map(file => uploadFile(file));
-	console.log({promises});
-	return Promise.all(promises);
+// file = {name, type, content}
+const uploadFileFromBuffer = async (file) => {
+	const {name, type, content} = file;
+	// split around the base64 starting indicator
+	const base64FileSplit = content.split(';base64,');
+	// index 1 is the actual base64 file content
+	const base64File = base64FileSplit[1];
+	// create a buffer so we can upload to s3
+	const base64Data = new Buffer.from(base64File);
+
+	const params = {
+    Bucket: bucketName,
+    Key: name, // type is not required
+    Body: base64Data,
+    ACL: 'public-read',
+    ContentEncoding: 'base64', // required
+    ContentType: type // required. Notice the back ticks
+  }
+
+	const uploadPromise = await s3.upload(params).promise();
+	console.log({uploadPromise});
+	return uploadPromise;
 }
+
 
 module.exports = {
 	uploadFile,
-	uploadFiles,
 	getFileStream,
+	uploadFileFromBuffer,
 };

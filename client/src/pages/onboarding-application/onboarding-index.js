@@ -10,6 +10,8 @@ import { json } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 // import Chip from '@material-ui/core/Chip';
 
+<<<<<<< Updated upstream
+=======
 const buildFormData = (formData, data, parentKey) => {
   if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
     Object.keys(data).forEach(key => {
@@ -86,7 +88,7 @@ const onSubmit = async (data) => {
 	const formData = new FormData();
 	buildFormData(formData, formattedData);
 
-	console.log('files:', {photo: data?.profilePhotoFile, license: data.licenseFile, workAuth: data.workAuthFile});
+	console.log('files:', {photo: data?.profilePhotoFile, license: data.licenseFile, workAuth: data?.workAuthFile});
 
 	// append the files
 	formData.append('licenseFile', data.licenseFile[0]);
@@ -99,6 +101,7 @@ const onSubmit = async (data) => {
 	console.log('POST form data:', {result});
 };
 
+>>>>>>> Stashed changes
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();

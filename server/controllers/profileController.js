@@ -7,6 +7,7 @@ const userService = require('../services/userService');
 const profileService = require('../services/profileService');
 const inviteService = require('../services/inviteService');
 const emailService = require('../services/emailService');
+const s3Service = require('../services/s3Service');
 // const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
@@ -19,94 +20,104 @@ const { objectValuesToRegex } = require('../utils/regexHelpers');
 const createProfile = catchAsync(async (req, res) => {
 	console.log('createProfile controller:', { reqUser: req.user, reqBody: req.body, req: req });
 	const userId = req.user._id;
-	const name = req.body.name; // grab name object from body
 
-	console.log('make sure we have files in here', {files: req.files});
+	console.log('files:', {
+		license: req.body.licenseFile,
+		workAuth: req.body.workAuthFile,
+		photo: req.body.photoFile,
+	});
 	const uploadPromises = [];
 
-	// check for and upload license
-	const license = req.files.licenseFile[0];
-	if (!license) {
-		throw {statusCode: 400, message: 'Please include a license'};
-	} else {
-		uploadPromises.push(s3Service.uploadFile(license));
-	}
-	
-	const workAuth = req.files?.workAuthFile[0] ?? undefined; // may be undefined if they are citizen/green_card
-	const isCitizen = req.body.citizenType === 'CITIZEN' || req.body.citizenType === 'GREEN_CARD';
+	// check for work auth
+	const workAuth = req.body.workAuthFile ?? undefined;
+	const isCitizen = req.body.citizenType === 'Citizen' || req.body.citizenType === 'Green Card';
 	if (!isCitizen) {
 		if (!workAuth) {
-			throw {statusCode: 400, message: 'Please include an OPT Receipt'};
+			throw { statusCode: 400, message: 'Please include an OPT Receipt' };
 		} else {
-			uploadPromises.push(s3Service.uploadFile(workAuth));
+			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth));
 		}
 	}
 
+	// check for and upload license
+	const license = req.body.licenseFile ?? undefined;
+	if (license) uploadPromises.push(s3Service.uploadFileFromBuffer(license));
+
 	// check for and upload (optional) profile photo
-	const photo = req.files.photoFile[0] ?? undefined; // optional field
-	if (photo) uploadPromises.push(s3Service.uploadFile(photo));
+	const photo = req.body.photoFile ?? undefined; // optional field
+	if (photo) uploadPromises.push(s3Service.uploadFileFromBuffer(photo));
 
 	// get the results
 	const results = await Promise.all(uploadPromises);
-	console.log({results});
+	console.log({ results });
 
-	// break them out
-	const licenseResponse = results.shift();
-	const licenseLink = licenseResponse.Location;
-	if (!licenseLink) {
-		throw {statusCode: 500, message: 'Error uploading license to S3'};
-	} else {
-		// add it to the profile
-		req.body.license.link = licenseLink;
-	}
-	
-	let workAuthDocument;
+	// break each file out of the array of upload results:
+
 	// if we have work auth, need to build a document for it
 	if (workAuth) {
-		let visaResponse = results.shift();
-		const link = visaResponse.Location;
-		if (!link) {
-			throw {statusCode: 500, message: 'Error uploading work auth to S3'};
+		const { Location, Key } = results.shift();
+		if (!Location) {
+			throw { statusCode: 500, message: 'Error uploading work auth to S3' };
 		} else {
 			// create document for work auth
-			workAuthDocument = documentService.createDocument({link, feedback: '', status: 'APPROVED', type: 'OTHER'});
+			const workAuthDocument = await documentService.createDocument({
+				link: Location,
+				feedback: '',
+				status: 'PENDING',
+				type: 'OTHER',
+			});
+
+			// finalize the work auth
+			req.body.documents = [workAuthDocument._id];
 		}
 	}
 
-	// if we have a photo, need to build a document for it
+	// if we have a license, save the link
+	if (license) {
+		const { Location, Key } = results.shift();
+		if (!Location) {
+			throw { statusCode: 500, message: 'Error uploading license to S3' };
+		} else {
+			// add it to the profile
+			req.body.license.link = Location;
+		}
+	}
+
+	// if we have a photo, save the link
 	if (photo) {
-		let photoResponse = results.shift();
-		const link = photoResponse.Location;
-		if (!link) {
-			throw {statusCode: 500, message: 'Error uploading profile photo to S3'};
+		const { Location, Key } = results.shift();
+		if (!Location) {
+			throw { statusCode: 500, message: 'Error uploading profile photo to S3' };
 		} else {
 			// add link to req.body?
-			req.body.photo = link;
+			req.body.photo = Location;
 		}
 	}
 
-	const workAuthDocFinal = await workAuthDocument;
+	// make citizenType match our constants
+	req.body.citizenType = req.body.citizenType.toUpperCase().replace(' ', '_');
 
-	req.body.documents = [workAuthDocFinal._id];
 	console.log('final body before creating profile:', req.body);
 
-	// create profile
+	// create profile!!
 	const profile = await profileService.createProfile(req.body);
 
 	// update user.name and user.profile
+	const name = req.body.name; // grab name object from body
 	const userUpdate = {
 		name,
 		profile: profile._id,
 	};
+	// update current user with the data, then we can update the invite
 	const user = await userService.updateUserById(userId, userUpdate);
 
-	// update invite.name for this user
-	const inviteId = user.invite;
+	// update invite.name for this user's invite, just to stay consistent
 	const inviteUpdate = {
 		name,
 	};
-	const invite = await inviteService.updateInviteById(inviteId, inviteUpdate);
+	const invite = await inviteService.updateInviteById(user.invite, inviteUpdate);
 
+	// done!!!
 	res.status(200).json({ user, profile, invite });
 });
 
