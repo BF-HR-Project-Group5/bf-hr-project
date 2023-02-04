@@ -23,9 +23,17 @@ const useStyles = makeStyles((theme) => ({
 function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
 }
+// need to have Save and Cancel buttons on each section
+// so each state will be hold separately
+
+// When editing any input in the section, detect changes and show the Save and Cancel buttons for that section
+// Once saved, post edit to profile
+
 
 const PersonalInformation = (props) => {
   const classes = useStyles();
+	
+	
   return (
     <>
     <Navigation />

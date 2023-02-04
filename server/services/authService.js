@@ -33,8 +33,12 @@ const loginUserWithUsernameOrEmail = async (username, email, password) => {
 	const results = await Promise.allSettled(promises);
 	const firstSuccessfulPromise = results.filter(r => r.status === 'fulfilled')[0];
 	console.log({user: firstSuccessfulPromise});
+
 	if (!firstSuccessfulPromise) throw { statusCode: 400, message: 'login: Failed, user not found!'}
-	return firstSuccessfulPromise.value
+
+	const user = firstSuccessfulPromise.value;
+
+	return userService.getUserByIdAndPopulate(user._id);
 }
 
 module.exports = {
