@@ -200,8 +200,21 @@ const seedReports = async (count, users) => {
 			createdBy: users[i]._id,
 		};
 		reports.push(reportService.createReport(data));
+
 	}
 	return Promise.all(reports);
+}
+
+const seedComments = async (count, users, reports) => {
+	const comments = [];
+	for (let i = 0; i < count; i++) {
+		const data = {
+			description:`reportDescription${i}`,
+			createdBy: users[(count - 1) - i]._id,
+		};
+		comments.push(reportService.addCommentToReportId(reports[i]._id, data));
+	}
+	return Promise.all(comments);
 }
 
 const updateHouseRoommatesAndReports = async (count, users, houses, reports) => {
@@ -252,6 +265,7 @@ async function run() {
 		// seed users and add invites, houses, profiles
 		const users = await seedInvitedUsers(count, invites, houses, profiles);
 		const reports = await seedReports(count, users);
+		const comments = await seedComments(count, users, reports);
 
 		// update house roommates
 		await updateHouseRoommatesAndReports(count, users, houses, reports);
