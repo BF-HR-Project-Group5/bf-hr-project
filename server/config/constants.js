@@ -39,7 +39,7 @@ exports.config = {
 			'COMPLETED'
 		],
 		
-		nextSteps: {
+		nextStepsObj: {
 			// should have 1 document minimum, so the first phase is waiting for HR approval
 			OPT_RECEIPT_WAIT: {
 				user: 'Please wait for HR to approve your OPT receipt.',
@@ -73,8 +73,7 @@ exports.config = {
 				user: 'You are all done!',
 				hr: 'Document upload complete.'
 			},
-		
-		}
+		},
 
 		// for "Next Step"
 		steps: [
@@ -82,28 +81,10 @@ exports.config = {
 			'OPT_RECEIPT_APPROVED', // next step is upload next doc
 			'OPT_EAD_WAITING',
 			'OPT_EAD_APPROVED',
-<<<<<<< Updated upstream
 			'I-983_WAITING',
 			'I-983_APPROVED',
 			'I-20_WAITING',
 			'I-20_APPROVED', // i-20 is approved? all done
-			'COMPLETED'
-		],
-
-		nextStepCode: [
-			'OPT_RECEIPT_WAIT', // uploaded, next step is wait for approval
-			'OPT_EAD_UPLOAD', // next step is upload next doc
-			'OPT_EAD_WAIT',
-			'I-983_UPLOAD',
-			'I-983_WAIT',
-			'I-20_UPLOAD',
-			'I-20_WAIT',
-=======
-			'I-984_WAITING',
-			'I-984_APPROVED',
-			'I-21_WAITING',
-			'I-21_APPROVED', // i-20 is approved? all done
->>>>>>> Stashed changes
 			'COMPLETED'
 		],
 
@@ -141,7 +122,6 @@ exports.config = {
 				user: 'You are all done!',
 				hr: 'Document upload complete.'
 			},
-		
 		}
 
 	},
