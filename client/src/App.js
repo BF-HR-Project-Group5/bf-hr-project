@@ -39,13 +39,11 @@ function App(props) {
 						exact
 						element={<SignUp />}
 					/>
-					{/* Done */}
 					<Route
 						path="/login"
 						exact
 						element={<Login />}
 					/>
-					{/* Done */}
 					<Route
 						path="/personalInfo"
 						exact
@@ -82,7 +80,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Done */}
 					<Route
 						path="/houseDetails"
 						exact
@@ -92,7 +89,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Done */}
 					<Route
 						path="/facilityReports"
 						exact
@@ -102,7 +98,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
 					<Route
 						path="/housing/comments"
 						exact
@@ -112,7 +107,6 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
 					<Route
 						path="/home"
 						exact
@@ -130,17 +124,16 @@ function App(props) {
 						path="/hrVisaStatus"
 						exact
 						element={
-							<RequireAuthOrHr>
+							<RequireAuthOrHr hrRequired={true}>
 								<HrVisaStatus />
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
 					<Route
 						path="/employeeProfiles"
 						exact
 						element={
-							<RequireAuthOrHr>
+							<RequireAuthOrHr hrRequired={true}>
 								<EmployeeProfiles />
 							</RequireAuthOrHr>
 						}
@@ -149,13 +142,11 @@ function App(props) {
 						path="/hrVisaStatus/doc"
 						exact
 						element={
-							<RequireAuthOrHr>
+							<RequireAuthOrHr hrRequired={true}>
 								<HrVisaStatusDoc />
 							</RequireAuthOrHr>
 						}
 					/>
-					{/* Progress */}
-					
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
@@ -163,25 +154,3 @@ function App(props) {
 }
 
 export default connect(null, {})(App);
-
-// {/* <GuardRouteAuth path="/personalInfo" exact>
-// 	<PersonalInfo />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/onboardingApp" exact>
-// 	<OnboardingApp />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/visaStatus" exact>
-// 	<VisaStatus />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/housing" exact>
-// 	<Housing />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/houseDetails" exact>
-// 	<HouseDetails />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/facilityReports" exact>
-// 	<FacilityReports />
-// </GuardRouteAuth>
-// <GuardRouteAuth path="/housing/comments" exact>
-// 	<Comments />
-// </GuardRouteAuth> */}
