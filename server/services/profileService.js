@@ -67,10 +67,25 @@ const addLicenseIdToProfileId = async (licenseId, profileId) => {
 	return profile;
 };
 
-const approveProfileId = async (profileId) => updateProfileById(profileId, { status: 'APPROVED' });
-const rejectProfileId = async (profileId) => updateProfileById(profileId, { status: 'REJECTED' });
-const rejectProfileIdWithFeedback = async (profileId, feedback) =>
-	updateProfileById(profileId, { status: 'REJECTED', feedback });
+const approveProfileId = async (profileId) => {
+	const profile = await getProfileById(profileId);
+	// should prevent approving a rejected application
+	if (profile.status === 'REJECTED') throw {statusCode: 403, message: 'Profile must be updated before approving'}
+	// should prevent approving an approved application
+	if (profile.status === 'APPROVED') throw {statusCode: 403, message: 'Profile already approved'}
+
+	return updateProfileById(profileId, { status: 'APPROVED' });
+}
+
+const rejectProfileIdWithFeedback = async (profileId, feedback) =>{
+	const profile = await getProfileById(profileId);
+	// should prevent rejecting a rejected application
+	if (profile.status === 'REJECTED') throw {statusCode: 403, message: 'Profile already rejected'}
+	// should prevent rejecting an approved application
+	if (profile.status === 'APPROVED') throw {statusCode: 403, message: 'Profile already approved'}
+
+	return updateProfileById(profileId, { status: 'REJECTED', feedback });
+}
 
 // can get user and populate 'Documents', etc.
 const getProfileByIdAndPopulate = async (profileId) => {
@@ -127,7 +142,6 @@ module.exports = {
 	addLicenseIdToProfileId,
 	addDocumentIdToProfileId,
 	approveProfileId,
-	rejectProfileId,
 	rejectProfileIdWithFeedback,
 	getUserNextStepForProfileId,
 	putStepToNextForProfileId,

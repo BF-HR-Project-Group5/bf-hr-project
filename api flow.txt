@@ -365,6 +365,27 @@ Hiring Management Page:{
 			params: {
 				userId,
 			}
+
+		=> /profiles/:userId/approve (GET)
+			(for approving a profile)
+			params: {
+				:userId
+			}
+			returns: {
+				user
+			}
+
+		=> /profiles/:userId/reject (POST)
+			(for rejecting a profile)
+			params: {
+				:userId
+			}
+			body: {
+				feedback: string
+			}
+			returns: {
+				user
+			}
 	}
 
 	(registration tokens) {
