@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../../redux/actions/index';
@@ -10,19 +10,17 @@ import { json } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 // import Chip from '@material-ui/core/Chip';
 
-<<<<<<< Updated upstream
-=======
 const buildFormData = (formData, data, parentKey) => {
-  if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-    Object.keys(data).forEach(key => {
-      buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-    });
-  } else {
-    const value = data == null ? '' : data;
+	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+		Object.keys(data).forEach((key) => {
+			buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+		});
+	} else {
+		const value = data == null ? '' : data;
 
-    formData.append(parentKey, value);
-  }
-} 
+		formData.append(parentKey, value);
+	}
+};
 
 const onSubmit = async (data) => {
 	const formattedData = {
@@ -80,28 +78,31 @@ const onSubmit = async (data) => {
 			phone: each.phone,
 			email: each.email,
 			relationship: each.relationship,
+
+			licenseFile: data?.licenseFile[0],
+			workAuthFile: data?.workAuthFile[0],
+			photoFile: data?.profilePhotoFile[0],
 		})),
 	};
-	console.log({formattedData});
+	console.log({ formattedData });
 
 	// build formData from the object
 	const formData = new FormData();
 	buildFormData(formData, formattedData);
 
-	console.log('files:', {photo: data?.profilePhotoFile, license: data.licenseFile, workAuth: data?.workAuthFile});
-
-	// append the files
-	formData.append('licenseFile', data.licenseFile[0]);
-	if (data?.profilePhotoFile) formData.append('photoFile', data.profilePhotoFile[0]);
-	if (data?.workAuthFile) formData.append('workAuthFile', data.workAuthFile[0]);
-	console.log({formData});
+	console.log('files:', {
+		photo: formattedData?.photoFile,
+		license: formattedData?.licenseFile,
+		workAuth: formattedData?.workAuthFile,
+	});
 
 	// send the post request!
-	const result = await axios.post(`/profile/create`, formData, {headers: {'Content-Type': "multipart/form-data"}});
-	console.log('POST form data:', {result});
+	const result = await axios.post(`/profile/create`, formData, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
+	console.log('POST form data:', { result });
 };
 
->>>>>>> Stashed changes
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
