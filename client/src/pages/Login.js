@@ -62,7 +62,9 @@ const LoginForm = (props) => {
 			// 	navigate('/home');
 			// } else {
 				// if (response.user.profile.status === 'APPROVED') {
-					navigate('/housing');
+					navigate('/hrVisaStatus');
+					// navigate('/housing');
+
 				// } 
 			// 	else {
 			// 		navigate('/onboardingApp');
