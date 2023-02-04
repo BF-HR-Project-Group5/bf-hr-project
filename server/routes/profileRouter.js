@@ -2,7 +2,7 @@ const router = require('express').Router();
 const controllers = require('../controllers/profileController');
 const auth = require('../middlewares/auth');
 const authHr = require('../middlewares/authHr');
-const upload = require('../utils/multer');
+const {upload} = require('../utils/fileUtils');
 
 // user routes
 router.get(
@@ -29,13 +29,13 @@ router.put(
 	controllers.putUpdateProfile
 );
 
-// 	// not needed? just get the profile and look inside for the status?
-router.get(
-	// checked
-	'/profile/nextStep',
-	auth,
-	controllers.getProfileNextStep
-);
+// // 	// not needed? just get the profile and look inside for the status?
+// router.get(
+// 	// checked
+// 	'/profile/nextStep',
+// 	auth,
+// 	controllers.getProfileNextStep
+// );
 
 // HR routes below:
 router.get(

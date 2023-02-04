@@ -17,7 +17,7 @@ router.get( // should also get facility reports for this house (populate facilit
 // HR routes
 router.post(
 	// checked
-	'/houses/createHouse',
+	'/houses/create',
 	// validate(createHouse),
 	auth, authHr,
 	controllers.createHouse

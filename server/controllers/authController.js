@@ -2,6 +2,7 @@ const userService = require('../services/userService');
 const authService = require('../services/authService');
 const inviteService = require('../services/inviteService');
 const tokenService = require('../services/tokenService');
+const houseService = require('../services/houseService');
 const catchAsync = require('../utils/catchAsync');
 const { validatePasswordsMatch } = require('../utils/validate');
 
@@ -23,6 +24,12 @@ const register = catchAsync(async (req, res) => {
 
 	// add this to the body so it's added into the user
 	req.body.invite = invite;
+	req.body.name = {
+		first: invite.name.first,
+		last: invite.name.last,
+		middle: invite.name?.middle,
+		preferred: invite.name?.preferred,
+	}
 
 	// create user, create token
 	const user = await userService.createUser(req.body);
@@ -30,6 +37,12 @@ const register = catchAsync(async (req, res) => {
 
 	// mark registered
 	await inviteService.putIsRegisteredToInviteId(invite._id);
+	// assign to random house
+	const house = await houseService.assignUserIdToHouse(user._id);
+	// assign the house to the user
+	await userService.putHouseIdToUserId(house._id, user._id);
+	// refresh the user so everything is up to date when sending response
+	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`); // removed httponly
 	// res.headers = {
@@ -37,7 +50,7 @@ const register = catchAsync(async (req, res) => {
 	// }
 	// should change to header
 
-	return res.status(201).send({ user, jwt }); // send jwt so client can save it in redux
+	return res.status(201).send({ user: freshUser, jwt }); // send jwt so client can save it in redux
 });
 
 const login = catchAsync(async (req, res) => {
