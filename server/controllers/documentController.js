@@ -3,8 +3,6 @@ const profileService = require('../services/profileService');
 const documentService = require('../services/documentService');
 const s3Service = require('../services/s3Service');
 const catchAsync = require( '../utils/catchAsync' );
-const { reset } = require('nodemon');
-// const upload = require('../utils/multer');
 
 
 // already logged in

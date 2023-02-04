@@ -165,42 +165,26 @@ const addUserIdToHouseId = (userId, houseId) =>
 		$inc: { numResidents: 1 },
 	});
 
-
-// GET ALL HOUSES WITH < 4 ROOMMATES
-const getHousesWithVacancies = async() => {
-	const houses = House.find({ numResidents: {$lt: 4} });
-	return houses;
-}
-
 // NEW SERVICE: add user id to random house
 // + NEW SERVICE: UPDATE numResidents
 // ADD THIS TO REGISTRATION CONTROLLER
 const assignUserIdToHouse = async (userId) => {
-	const houses = await getHousesWithVacancies();
+	const houses = await queryHouses();
 	console.log('houses', houses);
 
-	const houseIds = houses.map((house) => house._id)
-	console.log('houseIds', houseIds);
-	
 	let min = 0;
-	let max = houseIds.length;
-	console.log("max",max)
-	
+	let max = houses.length;
 	// get random number
 	function randomNumber(min, max) {
 		return Math.floor(Math.random() * (max-min) + min);	
 	}
 
-	const randomIdx = randomNumber(min, max);
-	console.log('randomIdx', randomIdx);
-
-	const randomId = houseIds[randomIdx];
+	// if there are more than 4 residents find another house.
+	// randomly assign house by id
+	const randomId = randomNumber(houses[min], houses[max]);
 	console.log('randomId', randomId);
 
-	const randomHouse = await getHouseById(randomId);
-	console.log('randomHouse', randomHouse);
-
-	const foundHouse = await getHouseById(randomHouse);
+	const foundHouse = await getHouseById(randomId);
 	console.log('foundHouse', foundHouse);
 
 	return addUserIdToHouseId(userId, foundHouse._id);
