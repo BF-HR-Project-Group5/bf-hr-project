@@ -35,7 +35,7 @@ const onSubmit = async (data) => {
 			state: data.state,
 			zipcode: data.zip,
 		},
-		citizenType: data.citizenType,
+		citizenType: data.citizenType ?? 'Visa',
 		name: {
 			first: data['first-name'],
 			last: data['last-name'],
