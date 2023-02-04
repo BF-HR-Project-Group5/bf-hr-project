@@ -65,7 +65,7 @@ const createProfile = catchAsync(async (req, res) => {
 				link: Location,
 				feedback: '',
 				status: 'PENDING',
-				type: 'OTHER',
+				type: req.body.workAuth.title,
 			});
 
 			// finalize the work auth

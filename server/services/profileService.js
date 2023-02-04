@@ -5,7 +5,7 @@ const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
-	const isNotVisa = profileBody.workAuth.title !== 'VISA';
+	const isNotVisa = profileBody.citizenType !== 'VISA';
 	if (isNotVisa) {
 		// is citizen or green card
 		// complete with documents
