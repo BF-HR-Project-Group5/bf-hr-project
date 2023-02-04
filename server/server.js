@@ -24,7 +24,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/', (req, res, next) => {
-// user 2: role: 'user'
+	// user 2: role: 'user'
 	const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2RkZDc3MjY1MmYyMWExNjlhMmE5ZTIiLCJ1c2VybmFtZSI6InVzZXJuYW1lMiIsImVtYWlsIjoiZW1haWwyQGVtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc1NDgzMDY5NTI5LCJleHAiOjE2NzU0ODM2Njk1Mjl9.vBD2AUwJSdjq905bME11O4VOwvfNuYsimyxhvn32-jo';
 
 	// user 1: role: 'hr'{}
