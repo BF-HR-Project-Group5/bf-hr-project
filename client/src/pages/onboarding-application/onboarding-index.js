@@ -70,7 +70,7 @@ const onSubmit = async (data) => {
 			email: data['ref-email'],
 			relationship: data['ref-relationship'],
 		},
-		emergencyContacts: data.emergencyContact.map((each) => ({
+		emergencyContacts: data.emergencyContacts.map((each) => ({
 			name: {
 				first: each['name-first'],
 				last: each['name-last'],

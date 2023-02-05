@@ -16,8 +16,8 @@ export const submitSignup = (values) => async (dispatch) => {
 	return data;
 };
 
-export const submitLogout = (values) => async (dispatch) => {
-	const { data } = await axios.post('/user/logout', values);
+export const submitLogout = () => async (dispatch) => {
+	const { data } = await axios.get('/user/logout');
 	return data;
 	// dispatch({ type: FETCH_USER, payload: data });
 };
@@ -96,7 +96,12 @@ export const sendReminder = (value) => async dispatch => {
 };
 
 
-
+export const updateProfile = (profileData) => async dispatch => {
+  console.log({profileData});
+  const { user } = await axios.put('/profile/update', profileData);
+  dispatch({ type: FETCH_USER, payload: user });
+  return user
+};
 
 
 
