@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import '../layout/House.css';
 import { connect } from 'react-redux';
 import Navigation from '../components/navigation/navigation';
 import MaterialTable from "material-table";
  
 const EmployeeProfiles = (props) => {
+		const navigate = useNavigate();
     console.log('props',props)
     const [columns, setColumns] = useState([
         { title: 'Name', field: 'name' },
@@ -35,8 +37,7 @@ const EmployeeProfiles = (props) => {
                     data={data}
                     onRowClick={(event, rowData) => {
                         console.log("rowData",rowData)
-                        window.location.href = '/personalInfo?userId=' + rowData.userId
-                        // props.history.push({pathname: '/personalInfo?userId=' + rowData.userId})
+												navigate( '/personalInfo?userId=' + rowData.userId)
                     }}
                 />
             </div>
