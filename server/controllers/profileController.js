@@ -152,9 +152,19 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 		reqUser: req.user,
 		reqBody: req.body,
 	});
-
 	// look up user so we know which profile id to find
-	const user = await userService.getUserById(req.user._id);
+	let user;
+	// if name or email changes, need to change the User model
+	if (req.body?.name || req.body?.email) {
+		user = await userService.updateUserById(req.user._id, {
+			name: {...req.body.name},	
+			email: req.body.email,
+		});
+	} else {
+		// else just fetch the User model
+		user = await userService.getUserById(req.user._id);
+	}
+
 	if (!user) throw { statusCode: 404, message: 'User not found' };
 	console.log('found user, should populate profile, which should have _id:', { user });
 

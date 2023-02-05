@@ -1,5 +1,41 @@
 // const House = require('../models/house.model');
 const { House } = require('../models');
+
+const DEEP_POPULATE_PATH =[
+		{
+			path: 'roommates',
+			model: 'User',
+			populate: [
+				{
+					path: 'profile',
+					model: 'Profile',
+					populate: {
+						path: 'documents',
+						model: 'Document',
+					},
+				},
+				{ path: 'invite', model: 'Invite' },
+			],
+		},
+		{
+			path: 'reports',
+			populate: [
+				{
+					path: 'comments',
+					model: 'Comment',
+					populate: {
+						path: 'createdBy',
+						model: 'User',
+					},
+				},
+				{
+					path: 'createdBy',
+					model: 'User',
+				},
+			],
+		},
+	] ;
+
 // CREATE house
 const createHouse = async (houseBody) => {
 	const promises = [];
@@ -53,24 +89,7 @@ const getHouseByIdAndPopulateFields = async (houseId) => {
 		throw { statusCode: 404, message: 'getHouseByIdAndPopulateFields: House not found' };
 	}
 
-	await house.populate([
-		{
-			path: 'roommates',
-			model: 'User',
-		},
-		{
-			path: 'reports',
-			model: 'Report',
-			populate: [
-				{
-					path: 'comments',
-					model: 'Comment',
-					populate: { path: 'createdBy', model: 'User' },
-				},
-				{ path: 'createdBy', model: 'User' },
-			],
-		},
-	]);
+	await house.populate(DEEP_POPULATE_PATH);
 
 	return house;
 };
@@ -81,40 +100,7 @@ const getHouseByIdAndPopulateUsers = async (houseId) => {
 		throw { statusCode: 404, message: 'getHouseByIdAndPopulateUsers: House not found' };
 	}
 	// populate EVERYTHING
-	await house.populate([
-		{
-			path: 'roommates',
-			model: 'User',
-			populate: [
-				{
-					path: 'profile',
-					model: 'Profile',
-					populate: {
-						path: 'documents',
-						model: 'Document',
-					},
-				},
-				{ path: 'invite', model: 'Invite' },
-			],
-		},
-		{
-			path: 'reports',
-			populate: [
-				{
-					path: 'comments',
-					model: 'Comment',
-					populate: {
-						path: 'createdBy',
-						model: 'User',
-					},
-				},
-				{
-					path: 'createdBy',
-					model: 'User',
-				},
-			],
-		},
-	]);
+	await house.populate(DEEP_POPULATE_PATH);
 
 	return house;
 };
@@ -194,6 +180,8 @@ const assignUserIdToHouse = async (userId) => {
 	return addUserIdToHouseId(userId, randomId);
 };
 
+const getAllHousesAndPopulate = () => House.find().populate(DEEP_POPULATE_PATH);
+
 module.exports = {
 	getHouseById,
 	getHouseByIdAndPopulateFields,
@@ -206,4 +194,5 @@ module.exports = {
 	addUserIdToHouseId,
 	getHouseByIdAndPopulateUsers,
 	addReportIdToHouseId,
+	getAllHousesAndPopulate,
 };

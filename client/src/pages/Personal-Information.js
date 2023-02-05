@@ -11,50 +11,71 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Navigation from '../components/navigation/navigation';
-import { dateMongoToSimple, daysRemaining, genderNiceString, genderUglyString } from '../utils/personalInfoHelpers';
+import {
+	dateMongoToSimple,
+	dateSimpleToMongo,
+	daysRemaining,
+	genderNiceString,
+	genderUglyString,
+} from '../utils/personalInfoHelpers';
 import fileDownload from '../utils/fileDownload';
 import filePreview from '../utils/filePreview';
-import DocumentPreview from './DocumentPreview';
+import DocumentRow from '../components/DocumentRow';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
+	docListContainer: {
+		width: '100%',
+		maxWidth: 360,
+		backgroundColor: theme.palette.background.paper,
+	},
 }));
-  
-function ListItemLink(props) {
-	return (
-		<ListItem
-			button
-			component="a"
-			{...props}
-		/>
-	);
-	return (
-		<ListItem
-			button
-			component="a"
-			{...props}
-		/>
-	);
-}
-// need to have Save and Cancel buttons on each section
-// so each state will be hold separately
 
-// When editing any input in the section, detect changes and show the Save and Cancel buttons for that section
-// Once saved, post edit to profile
-
-// editable: on edit ?? show the save/cancel buttons
-// editable: onSubmit, set the state for that key:val.
-// Then on save, do the post update
-// and on cancel, revert the state to original state (comes from auth.user.profile)
+const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit }) => {
+	return (
+		<div className="d-flex justify-content-between">
+			<div className="title">
+				<h2>{title}</h2>
+			</div>
+			<div>
+				{isEditing ? (
+					<>
+						<Button
+							color="primary"
+							variant="contained"
+							onClick={handleSubmit}
+							className="m-2"
+						>
+							Save
+						</Button>
+						<Button
+							color="secondary"
+							variant="contained"
+							onClick={handleCancel}
+							className="m-2"
+						>
+							Cancel
+						</Button>
+					</>
+				) : (
+					<Button
+						variant="contained"
+						onClick={handleEdit}
+						className="m-2"
+					>
+						Edit
+					</Button>
+				)}
+			</div>
+		</div>
+	);
+};
 
 const PersonalInformation = (props) => {
 	const classes = useStyles();
 	const { updateProfile } = props;
+
 	const [isEditingName, setIsEditingName] = React.useState(false);
+	const [oldName, setOldName] = React.useState({});
 	const [name, setName] = React.useState({
 		name: {
 			first: props.auth.user?.name.first,
@@ -67,10 +88,10 @@ const PersonalInformation = (props) => {
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
-	const [oldName, setOldName] = React.useState({});
 	const handleSubmitEditName = async () => {
-		// take name state, send update to profile
 		try {
+			// turn off editing
+			setIsEditingName(false);
 			const data = { ...name, gender: genderUglyString(name.gender) };
 			const { user, profile } = await updateProfile(data);
 			// update name state
@@ -85,26 +106,21 @@ const PersonalInformation = (props) => {
 				dateOfBirth: profile.dateOfBirth,
 				gender: profile.gender,
 			}));
-			console.log({ name });
-			// turn off editing
-			setIsEditingName(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 	const handleCancelEditName = () => {
-		// reset state to original state,
 		setName((prev) => ({ ...prev, ...oldName }));
-		// turn off editing
 		setIsEditingName(false);
 	};
 	const handleEditName = () => {
-		// save state
 		setOldName((prev) => ({ ...prev, ...name }));
-		// turn on editing
 		setIsEditingName(true);
 	};
 
+	const [isEditingAddress, setIsEditingAddress] = React.useState(false);
+	const [oldAddress, setOldAddress] = React.useState({});
 	const [address, setAddress] = React.useState({
 		line1: props.auth.user?.profile.address.line1,
 		line2: props.auth.user?.profile.address.line2,
@@ -112,37 +128,125 @@ const PersonalInformation = (props) => {
 		state: props.auth.user?.profile.address.state,
 		zipcode: props.auth.user?.profile.address.zipcode,
 	});
+	const handleSubmitEditAddress = async () => {
+		try {
+			setIsEditingAddress(false);
+			const data = { address };
+			const { user, profile } = await updateProfile(data);
+			setAddress((prev) => ({
+				...prev,
+				...profile.address,
+			}));
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditAddress = () => {
+		setAddress((prev) => ({ ...prev, ...oldAddress }));
+		setIsEditingAddress(false);
+	};
+	const handleEditAddress = () => {
+		setOldAddress((prev) => ({ ...prev, ...address }));
+		setIsEditingAddress(true);
+	};
 
+	const [oldContact, setOldContact] = React.useState({});
+	const [isEditingContact, setIsEditingContact] = React.useState(false);
 	const [contact, setContact] = React.useState({
 		phone: {
 			mobile: props.auth.user?.profile.phone.mobile,
-			work: props.auth.user?.profile.phone.work ?? '',
+			work: props.auth.user?.profile.phone.work ?? 'N/A',
 		},
 	});
+	const handleSubmitEditContact = async () => {
+		try {
+			setIsEditingContact(false);
+			const data = { ...contact };
+			const { user, profile } = await updateProfile(data);
+			setContact((prev) => ({
+				...prev,
+				phone: {
+					...profile.phone,
+				},
+			}));
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditContact = () => {
+		setContact((prev) => ({ ...prev, ...oldContact }));
+		setIsEditingContact(false);
+	};
+	const handleEditContact = () => {
+		setOldContact((prev) => ({ ...prev, ...contact }));
+		setIsEditingContact(true);
+	};
 
+	const [oldEmployment, setOldEmployment] = React.useState({});
+	const [isEditingEmployment, setIsEditingEmployment] = React.useState(false);
 	const [employment, setEmployment] = React.useState({
 		workAuth: {
 			title: props.auth.user?.profile?.workAuth.title,
 			startDate: props.auth.user?.profile?.workAuth.startDate,
 			endDate: props.auth.user?.profile?.workAuth.endDate,
-			daysRemaining: daysRemaining(props.auth.user?.profile?.workAuth.endDate),
 		},
 	});
-
-	const [econtact, setEcontact] = React.useState(
-		props.auth.user?.profile?.emergencyContacts.map((c) => [
-			{
-				name: {
-					first: c.name.first,
-					last: c.name.last,
-					middle: c.name?.middle ?? '',
+	const handleSubmitEditEmployment = async () => {
+		try {
+			setIsEditingEmployment(false);
+			const data = { ...employment };
+			const { user, profile } = await updateProfile(data);
+			setEmployment((prev) => ({
+				...prev,
+				workAuth: {
+					...profile.workAuth,
 				},
-				phone: c.phone,
-				email: c.email,
-				relationship: c.relationship,
+			}));
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditEmployment = () => {
+		setEmployment((prev) => ({ ...prev, ...oldEmployment }));
+		setIsEditingEmployment(false);
+	};
+	const handleEditEmployment = () => {
+		setOldEmployment((prev) => ({ ...prev, ...employment }));
+		setIsEditingEmployment(true);
+	};
+
+	const [isEditingEcontact, setIsEditingEcontact] = React.useState(false);
+	const [oldEcontact, setOldEcontact] = React.useState({});
+	const [econtact, setEcontact] = React.useState(
+		props.auth.user?.profile?.emergencyContacts.map((c) => ({
+			name: {
+				first: c.name.first,
+				last: c.name.last,
+				middle: c.name?.middle ?? '',
 			},
-		])
+			phone: c.phone,
+			email: c.email,
+			relationship: c.relationship,
+		}))
 	);
+	const handleSubmitEditEcontact = async () => {
+		try {
+			setIsEditingEcontact(false);
+			const data = { emergencyContacts: econtact };
+			const { user, profile } = await updateProfile(data);
+			setEcontact(() => [...profile.emergencyContacts]);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditEcontact = () => {
+		setEcontact((prev) => ({ ...prev, ...oldEcontact }));
+		setIsEditingEcontact(false);
+	};
+	const handleEditEcontact = () => {
+		setOldEcontact((prev) => ({ ...prev, ...econtact }));
+		setIsEditingEcontact(true);
+	};
 
 	return (
 		<>
@@ -160,19 +264,14 @@ const PersonalInformation = (props) => {
 				<hr />
 				<div className="content">
 					<div className="row my-5">
-						<div className="title">
-							<h2>Name</h2>
-						</div>
-						<div className="buttons-container">
-							{isEditingName ? (
-								<>
-									<Button onClick={handleSubmitEditName}>Save</Button>
-									<Button onClick={handleCancelEditName}>Cancel</Button>
-								</>
-							) : (
-								<Button onClick={handleEditName}>Edit</Button>
-							)}
-						</div>
+						<SectionTitle
+							title="Name"
+							isEditing={isEditingName}
+							handleCancel={handleCancelEditName}
+							handleSubmit={handleSubmitEditName}
+							handleEdit={handleEditName}
+						/>
+
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -186,7 +285,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name.first}
+									initialValue={name.name.first}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -212,7 +311,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name.last}
+									initialValue={name.name.last}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -238,7 +337,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name?.middle ?? ''}
+									initialValue={name.name.middle ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -264,7 +363,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name?.preferred ?? ''}
+									initialValue={name.name.preferred ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -290,7 +389,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.email}
+									initialValue={name.email}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -314,7 +413,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={'' + props.auth.user?.profile.ssn}
+									initialValue={'' + name.ssn}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -338,7 +437,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={dateMongoToSimple(props.auth.user?.profile.dateOfBirth)}
+									initialValue={dateMongoToSimple(name.dateOfBirth)}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -362,7 +461,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={genderNiceString(props.auth.user?.profile.gender)}
+									initialValue={genderNiceString(name.gender)}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -376,52 +475,35 @@ const PersonalInformation = (props) => {
 									type="select"
 									validate={null}
 								/>
-								{/* <Editable
-									ajax={null}
-									alwaysEditing={false}
-									className={null}
-									disabled={false}
-									editText="Edit"
-									id={null}
-									initialValue={genderNiceString(props.auth.user?.profile.gender)}
-									isValueClickable={false}
-									label={null}
-									mode="inline"
-									onSubmit={(val) => setName(prev => ({...prev, gender: val }))}
-									onValidated={null}
-									options={null}
-									placement="top"
-									renderCancelElement={null}
-									renderConfirmElement={null}
-									showText
-									type="select"
-									validate={null}
-								/> */}
 							</div>
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Address</h2>
-						</div>
+						<SectionTitle
+							title="Address"
+							isEditing={isEditingAddress}
+							handleCancel={handleCancelEditAddress}
+							handleSubmit={handleSubmitEditAddress}
+							handleEdit={handleEditAddress}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
 						>
 							<div className="col-3 mx-auto">
-								<label>Building/apt:</label>
+								<label>Street name:</label>
 								<Editable
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address?.line2 ?? ''}
+									initialValue={address.line1}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, line1: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -433,19 +515,19 @@ const PersonalInformation = (props) => {
 								/>
 							</div>
 							<div className="col-3 mx-auto">
-								<label>Street name:</label>
+								<label>Building/apt:</label>
 								<Editable
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.line1}
+									initialValue={address.line2}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, line2: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -462,14 +544,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.city}
+									initialValue={address.city}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, city: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -486,14 +568,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.state}
+									initialValue={address.state}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, state: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -510,14 +592,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.zipcode}
+									initialValue={address.zipcode}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, zipcode: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -531,9 +613,13 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Contact Info</h2>
-						</div>
+						<SectionTitle
+							title="Contact Info"
+							isEditing={isEditingContact}
+							handleCancel={handleCancelEditContact}
+							handleSubmit={handleSubmitEditContact}
+							handleEdit={handleEditContact}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -544,14 +630,16 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingContact}
 									editText="Edit"
 									id={null}
-									initialValue={'' + props.auth.user?.profile.phone.mobile}
+									initialValue={'' + contact.phone.mobile}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) =>
+										setContact((prev) => ({ ...prev, phone: { ...prev.phone, mobile: val } }))
+									}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -568,14 +656,16 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingContact}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.phone?.work ?? 'None provided'}
+									initialValue={'' + (contact.phone.work ?? 'N/A')}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) =>
+										setContact((prev) => ({ ...prev, phone: { ...prev.phone, work: val } }))
+									}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -589,9 +679,13 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Employment</h2>
-						</div>
+						<SectionTitle
+							title="Employment"
+							isEditing={isEditingEmployment}
+							handleCancel={handleCancelEditEmployment}
+							handleSubmit={handleSubmitEditEmployment}
+							handleEdit={handleEditEmployment}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -602,14 +696,16 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile?.workAuth.title ?? ''}
+									initialValue={employment.workAuth.title ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) =>
+										setEmployment((prev) => ({ workAuth: { ...prev.workAuth, title: val } }))
+									}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -626,16 +722,18 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
-									initialValue={
-										dateMongoToSimple(props.auth.user?.profile?.workAuth.startDate) ?? ''
-									}
+									initialValue={dateMongoToSimple(employment.workAuth.startDate) ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) =>
+										setEmployment((prev) => ({
+											workAuth: { ...prev.workAuth, startDate: dateSimpleToMongo(val) },
+										}))
+									}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -650,16 +748,19 @@ const PersonalInformation = (props) => {
 								<label>End date:</label>
 								<Editable
 									ajax={null}
-									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
-									initialValue={dateMongoToSimple(props.auth.user?.profile?.workAuth.endDate) ?? ''}
+									initialValue={dateMongoToSimple(employment.workAuth.endDate) ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) =>
+										setEmployment((prev) => ({
+											workAuth: { ...prev.workAuth, endDate: dateSimpleToMongo(val) },
+										}))
+									}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -673,19 +774,16 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Emergency contacts</h2>
-						</div>
-						{props.auth.user?.profile.emergencyContacts.map((contact, i) => (
-							<React.Fragment
-								key={
-									i +
-									Object.values(contact.name)
-										.map((w) => w.slice(0, 1))
-										.join('')
-								}
-							>
-								<h5 className="ml-2">Contact #{i}</h5>
+						<SectionTitle
+							title="Emergency Contacts"
+							isEditing={isEditingEcontact}
+							handleCancel={handleCancelEditEcontact}
+							handleSubmit={handleSubmitEditEcontact}
+							handleEdit={handleEditEcontact}
+						/>
+						{econtact.map((contact, i) => (
+							<React.Fragment key={i}>
+								<h5 className="ml-2">Contact #{i + 1}</h5>
 								<Paper
 									variant="outlined"
 									className="document-container my-2"
@@ -696,14 +794,23 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name.first}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.first = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -720,14 +827,23 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name.last}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.last = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -744,14 +860,23 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name?.middle}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.middle = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -768,14 +893,23 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.phone}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.phone = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -792,14 +926,23 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.email}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.email = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -823,7 +966,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.relationship = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -836,7 +988,8 @@ const PersonalInformation = (props) => {
 									</div>
 								</Paper>
 							</React.Fragment>
-						))}
+						))}{' '}
+						{/* end contacts map */}
 					</div>
 					<div className="row my-5">
 						<div className="title">
@@ -846,31 +999,37 @@ const PersonalInformation = (props) => {
 							variant="outlined"
 							className="document-container"
 						>
-							<div className={classes.root}>
+							<div className={classes.docListContainer}>
 								<List
 									component="nav"
 									aria-label="secondary mailbox folders"
 								>
-									<ListItem button>
-										<ListItemText primary="Driver's license" />
-										<ButtonGroup
-											color="primary"
-											aria-label="outlined primary button group"
-										>
-											<Button>Download</Button>
-											<Button>Preview</Button>
-										</ButtonGroup>
-									</ListItem>
-									<ListItemLink href="#simple-list">
-										<ListItemText primary="Work authorization" />
-										<ButtonGroup
-											color="primary"
-											aria-label="outlined primary button group"
-										>
-											<Button>Download</Button>
-											<Button>Preview</Button>
-										</ButtonGroup>
-									</ListItemLink>
+									{/* Driver License */}
+									{props.auth.user?.profile?.license.link && (
+										<DocumentRow
+											link={props.auth.user.profile.license.link}
+											user={props.auth.user}
+											title="Driver's License"
+										/>
+									)}
+									{/* Documents */}
+									{props.auth.user?.profile?.documents.length > 0 &&
+										props.auth.user.profile.documents.map((i, doc) => (
+											<DocumentRow
+												key={doc}
+												link={props.auth.user.profile.documents[doc].link}
+												user={props.auth.user}
+												title={props.auth.user.profile.documents[doc].type}
+											/>
+										))}
+									{/* Profile Photo */}
+									{props.auth.user?.profile?.photo && (
+										<DocumentRow
+											link={props.auth.user.profile.photo}
+											user={props.auth.user}
+											title="Profile Photo"
+										/>
+									)}
 								</List>
 							</div>
 						</Paper>
