@@ -137,7 +137,7 @@ const OnboardingViewApp = (props) => {
                     </div>
                     <Paper variant="outlined" className="document-container">
                         <div className="col-3 mx-auto">
-                            <label>Title</label>
+                            <label>Title:</label>
                             <p>{workAuthNice(data.profile.workAuth.title)}</p>
                         </div>
                         <div className="col-3 mx-auto">
