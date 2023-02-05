@@ -15,6 +15,7 @@ function NavSettings(props) {
         const fn = submitLogout()
         fn().then((res)=>{
 					navigate('/login');
+					props.handleClose();
         });
       } catch (err) {
         console.log(err);
@@ -24,12 +25,16 @@ function NavSettings(props) {
     <>
       <Link 
         className='onboardingLink'
-        to={{ pathname : '/onboardingApp' , state : props.data}}>
+        to={{ pathname : '/onboardingApp' , state : props.data}}
+				onClick={props.handleClose}
+				>
         Onboarding Application
       </Link>
       <Link 
         className='profileLink'
-        to={{ pathname : '/personalInfo' , state : props.data}}>
+        to={{ pathname : '/personalInfo' , state : props.data}}
+				onClick={props.handleClose}
+				>
         Profile
       </Link>
       <Logout onClick={handleSubmit}>

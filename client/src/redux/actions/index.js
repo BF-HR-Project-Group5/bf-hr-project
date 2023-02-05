@@ -16,8 +16,8 @@ export const submitSignup = (values) => async (dispatch) => {
 	return data;
 };
 
-export const submitLogout = (values) => async (dispatch) => {
-	const { data } = await axios.post('/user/logout', values);
+export const submitLogout = () => async (dispatch) => {
+	const { data } = await axios.get('/user/logout');
 	return data;
 	// dispatch({ type: FETCH_USER, payload: data });
 };

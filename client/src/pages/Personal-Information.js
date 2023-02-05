@@ -11,7 +11,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Navigation from '../components/navigation/navigation';
-import { dateMongoToSimple, daysRemaining, genderNiceString } from '../utils/personalInfoHelpers';
+import { dateMongoToSimple, daysRemaining, genderNiceString, genderUglyString } from '../utils/personalInfoHelpers';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -57,26 +57,25 @@ const PersonalInformation = (props) => {
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
-	const [oldName, setOldName] = React.useState({
-
-	})
+	const [oldName, setOldName] = React.useState({});
 	const handleSubmitEditName = async () => {
 		// take name state, send update to profile
 		try {
-			const {user, profile} = await updateProfile(name);
+			const data = { ...name, gender: genderUglyString(name.gender) };
+			const { user, profile } = await updateProfile(data);
 			// update name state
-			setName(prev => ({
+			setName((prev) => ({
 				...prev,
 				name: {
 					...prev.name,
-					...user.name
+					...user.name,
 				},
 				email: user.email,
 				ssn: profile.ssn,
 				dateOfBirth: profile.dateOfBirth,
 				gender: profile.gender,
 			}));
-			console.log({name});
+			console.log({ name });
 			// turn off editing
 			setIsEditingName(false);
 		} catch (err) {
@@ -85,17 +84,16 @@ const PersonalInformation = (props) => {
 	};
 	const handleCancelEditName = () => {
 		// reset state to original state,
-		setName(prev => ({...prev, ...oldName}));
+		setName((prev) => ({ ...prev, ...oldName }));
 		// turn off editing
 		setIsEditingName(false);
 	};
 	const handleEditName = () => {
 		// save state
-		setOldName(prev => ({...prev, ...name}));
+		setOldName((prev) => ({ ...prev, ...name }));
 		// turn on editing
 		setIsEditingName(true);
-	}
-	
+	};
 
 	const [address, setAddress] = React.useState({
 		line1: props.auth.user?.profile.address.line1,
