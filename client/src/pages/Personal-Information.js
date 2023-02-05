@@ -155,7 +155,7 @@ const PersonalInformation = (props) => {
 	const [contact, setContact] = React.useState({
 		phone: {
 			mobile: props.auth.user?.profile.phone.mobile,
-			work: props.auth.user?.profile.phone.work ?? '',
+			work: props.auth.user?.profile.phone.work ?? 'N/A',
 		},
 	});
 	const handleSubmitEditContact = async () => {
@@ -659,7 +659,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingContact}
 									editText="Edit"
 									id={null}
-									initialValue={'' + (contact.phone.work ?? 'None provided')}
+									initialValue={'' + (contact.phone.work ?? 'N/A')}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
