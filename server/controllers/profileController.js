@@ -270,7 +270,7 @@ const rejectProfile = catchAsync(async (req, res) => {
 	const user = await userService.getUserById(userId);
 	if (!user) throw { statusCode: 404, message: 'User not found' };
 
-	await profileService.rejectProfileId(user?.profile, feedback);
+	await profileService.rejectProfileIdWithFeedback(user?.profile, feedback);
 
 	const updatedUser = await userService.getUserByIdAndPopulate(userId);
 
