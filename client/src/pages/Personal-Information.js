@@ -30,16 +30,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function ListItemLink(props) {
-	return (
-		<ListItem
-			button
-			component="a"
-			{...props}
-		/>
-	);
-}
-
 const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit }) => {
 	return (
 		<div className="d-flex justify-content-between">
@@ -998,7 +988,8 @@ const PersonalInformation = (props) => {
 									</div>
 								</Paper>
 							</React.Fragment>
-						))} {/* end contacts map */}
+						))}{' '}
+						{/* end contacts map */}
 					</div>
 					<div className="row my-5">
 						<div className="title">
@@ -1014,11 +1005,31 @@ const PersonalInformation = (props) => {
 									aria-label="secondary mailbox folders"
 								>
 									{/* Driver License */}
-                                    {props.auth.user?.profile?.license.link && <DocumentRow link={props.auth.user.profile.license.link} user={props.auth.user} title="Driver's License" />}
-                                    {/* Documents */}
-                                    {props.auth.user?.profile?.documents.length > 0 && props.auth.user.profile.documents.map((i,doc) => <DocumentRow key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />)}
-                                    {/* Profile Photo */}
-                                    {props.auth.user?.profile?.photo && <DocumentRow link={props.auth.user.profile.photo} user={props.auth.user} title="Profile Photo" /> }
+									{props.auth.user?.profile?.license.link && (
+										<DocumentRow
+											link={props.auth.user.profile.license.link}
+											user={props.auth.user}
+											title="Driver's License"
+										/>
+									)}
+									{/* Documents */}
+									{props.auth.user?.profile?.documents.length > 0 &&
+										props.auth.user.profile.documents.map((i, doc) => (
+											<DocumentRow
+												key={doc}
+												link={props.auth.user.profile.documents[doc].link}
+												user={props.auth.user}
+												title={props.auth.user.profile.documents[doc].type}
+											/>
+										))}
+									{/* Profile Photo */}
+									{props.auth.user?.profile?.photo && (
+										<DocumentRow
+											link={props.auth.user.profile.photo}
+											user={props.auth.user}
+											title="Profile Photo"
+										/>
+									)}
 								</List>
 							</div>
 						</Paper>
