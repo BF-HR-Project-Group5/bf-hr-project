@@ -18,8 +18,8 @@ export const submitSignup = (values) => async (dispatch) => {
 
 export const submitLogout = () => async (dispatch) => {
 	const { data } = await axios.get('/user/logout');
+	dispatch({ type: FETCH_USER, payload: null });
 	return data;
-	// dispatch({ type: FETCH_USER, payload: data });
 };
 
 export const fetchHouse = (values) => async (dispatch) => {

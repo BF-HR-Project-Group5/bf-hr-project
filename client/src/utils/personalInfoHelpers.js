@@ -1,5 +1,10 @@
 exports.dateMongoToSimple = (date) => date.split('T')[0].replace('-', '/');
-exports.dateSimpleToMongo = (date) => date.replace('/','-');
+exports.dateSimpleToMongo = (date) => {
+	const newDate = new Date(date).toISOString();
+	console.log('dateSimpleToMongo:', {date, newDate,});
+
+	return newDate.split('T')[0].replace('-', '/');
+}
 
 exports.genderNiceString = (gender) =>
 	gender !== 'NO_RESPONSE'
