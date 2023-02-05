@@ -10,19 +10,19 @@ import fileDownload from '../utils/fileDownload';
 import filePreview from '../utils/filePreview';
 import { documentApprove, documentReject, sendReminder } from '../redux/actions/index';
 
+const columns = [
+        { title: 'ID', field: '_id', editable: 'never'},
+        { title: 'Status', field: 'status', editable: 'never'},
+        { title: 'Updated Time', field: 'updatedAt', editable: 'never'},
+        { title: 'Feedback', field: 'feedback', initialEditValue: 'initial edit value'},
+    ]
+
 const HrVisaStatusDoc = (props) => {
     console.log('props',props)
     const location = useLocation();
     const {documentApprove, documentReject, sendReminder} = props
     const profile = location.state.profile
     const [documents, setDocuments] = useState(profile.documents)
-
-    const [columns, setColumns] = useState([
-        { title: 'ID', field: '_id', editable: 'never'},
-        { title: 'Status', field: 'status', editable: 'never'},
-        { title: 'Updated Time', field: 'updatedAt', editable: 'never'},
-        { title: 'Feedback', field: 'feedback', initialEditValue: 'initial edit value'},
-    ]);
     
     // Display Download Button and Preview Button for any current Step 
     const showDownloadButton = ()=> {
@@ -30,8 +30,10 @@ const HrVisaStatusDoc = (props) => {
             icon: () => <ArrowDownwardIcon />,
             tooltip: 'Download document',
             onClick: (event, rowData) => {
-                fileDownload('https://bf-hr-project.s3.us-west-2.amazonaws.com/fakeWorkAuth.pdf','test.pdf')
-                // fileDownload(rowData.link,'test.jpg')
+							const split = rowData.link.split('.');
+							const ext = split[split.length - 1];
+							console.log({event, rowData});
+                fileDownload(rowData.link,`${location.state.name.first}${location.state.name.last}${rowData.type}.${ext}`)
             }
         }
     }
@@ -41,8 +43,8 @@ const HrVisaStatusDoc = (props) => {
             icon: () => <VisibilityIcon />,
             tooltip: 'Preview document',
             onClick: (event, rowData) => {
-                filePreview('https://bf-hr-project.s3.us-west-2.amazonaws.com/fakeWorkAuth.pdf')
-                // filePreview(rowData.link)
+								// console.log({event, rowData});
+                filePreview(rowData.link)
             }
         }
     }
@@ -53,6 +55,7 @@ const HrVisaStatusDoc = (props) => {
                 icon: () => <SendIcon />,
                 tooltip: 'Notify employee',
                 onClick: (event, rowData) => {
+										// console.log({event, rowData});
                     console.log('location',location)
                     const promise = sendReminder(location.state._id);
                     promise.then((res)=>{
@@ -69,6 +72,7 @@ const HrVisaStatusDoc = (props) => {
                 icon: () => <ThumbUpIcon />,
                 tooltip: 'Approve',
                 onClick: (event, rowData) => {
+								// console.log({event, rowData});
                     try {
                         const promise = documentApprove(rowData._id);
                         promise.then((res)=>{
@@ -93,6 +97,7 @@ const HrVisaStatusDoc = (props) => {
         if(profile.nextStep.indexOf('WAIT') > 0){
             return {
                 onRowUpdate: (newData, oldData) =>{
+							console.log({newData, oldData});
                     return new Promise((resolve, reject) => {
                         setTimeout(() => {
                             const dataUpdate = [...documents];
