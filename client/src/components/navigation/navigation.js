@@ -25,8 +25,23 @@ function Navigation({ auth }) {
     return (
         <HeaderWrapper>
           <Nav>
+					{auth?.user.role === 'hr' ? (
+					<>
+						<Link to="/home">Home</Link>
 						<Link to="/housing">Housing</Link>
 						<Link to="/onboardingApp">OnboardingApp</Link>
+						<Link to="/employeeProfiles">Employee Profiles</Link>
+						<Link to="/hrVisaStatus">Visa Status Management</Link>
+						<Link to="/hiringManagement">Hiring Management</Link>
+					</>
+				) : auth?.user.role === 'user' ? (
+					<>
+						<Link to="/housing">Housing</Link>
+						<Link to="/onboardingApp">Onboarding App</Link>
+						<Link to="/personalInfo">Profile</Link>
+						<Link to="/visaStatus">Visa Status Management</Link>
+					</>
+				) : null}
             <Link to="/">
               <Title>
                 <Logo src="/assets/logo.png"/>
