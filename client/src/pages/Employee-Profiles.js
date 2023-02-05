@@ -1,4 +1,4 @@
-import React, { useState,  useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../layout/House.css';
 import { connect } from 'react-redux';
@@ -21,28 +21,28 @@ const EmployeeProfiles = (props) => {
 	const [data, setData] = useState([]);
 	const [resultCount, setResultCount] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [searchTerm, setSearchTerm] = useState('');
 	const tableRef = useRef();
+	// user format for table:
 	// { userId :'23545', name: 'Tao Yang', ssn: '1234568', workAuthTitle: 'OPT', phoneNumber:'13127458784', email: '55656@gmail.com' }
 	useEffect(() => {
 		(async function () {
 			try {
 				const response = await props.fetchAllProfiles();
-				// console.log('response', response);
 				let users = [];
 				response.users.forEach((item, index) => {
-					// console.log('item', item);
 					if (item?.profile) users.push(item);
 				});
 				users.sort((a, b) => a.name.last - b.name.last);
-				const adjustedUsers = users.map(u => ({
+				const adjustedUsers = users.map((u) => ({
 					userId: u._id,
 					name: `${u.name.preferred ? u.name.preferred : u.name.first} ${u.name.last}`,
 					ssn: u.profile.ssn,
 					workAuthTitle: u.profile.workAuth.title,
 					phone: u.profile.phone.mobile,
 					email: u.email,
-				}))
-				console.log('sorted:',{users, adjustedUsers});
+				}));
+				console.log('sorted:', { users, adjustedUsers });
 				setData(adjustedUsers);
 				setResultCount(adjustedUsers.length);
 				setLoading(false);
@@ -63,6 +63,12 @@ const EmployeeProfiles = (props) => {
 				<div className="container">
 					{!loading && (
 						<>
+							<p className="text-center mb-3">
+								{!loading &&
+									`${searchTerm !== '' ? `Searching for "${searchTerm}": ` : ''}${
+										resultCount === 1 ? '1 result' : `${resultCount} results`
+									} found.`}
+							</p>
 							<MaterialTable
 								tableRef={tableRef}
 								title="Employees List"
@@ -73,12 +79,14 @@ const EmployeeProfiles = (props) => {
 									navigate('/personalInfo?userId=' + rowData.userId);
 								}}
 								onSearchChange={() => {
-									setResultCount(tableRef.current.DataManager.filteredData.length);
+									console.log('onSearchChange state, current:', {
+										state: tableRef.current?.state,
+										current: tableRef.current.dataManager,
+									});
+									setResultCount(tableRef.current?.dataManager?.searchedData?.length ?? 0);
+									setSearchTerm(tableRef.current?.dataManager?.searchText ?? '');
 								}}
 							/>
-							<p>
-								{!loading && `${resultCount === 1 ? '1 result' : `${resultCount} results`} found.`}
-							</p>
 						</>
 					)}
 				</div>
@@ -91,6 +99,4 @@ const mapStateToProps = ({ auth }) => ({
 	auth,
 });
 
-export default connect(mapStateToProps, 
-    {fetchAllProfiles}
-	)(EmployeeProfiles);
+export default connect(mapStateToProps, { fetchAllProfiles })(EmployeeProfiles);
