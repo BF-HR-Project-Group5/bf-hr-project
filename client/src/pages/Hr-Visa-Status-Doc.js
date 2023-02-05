@@ -30,9 +30,9 @@ const HrVisaStatusDoc = (props) => {
             icon: () => <ArrowDownwardIcon />,
             tooltip: 'Download document',
             onClick: (event, rowData) => {
-							const split = rowData.link.split('.');
-							const ext = split[split.length - 1];
-							console.log({event, rowData});
+								const split = rowData.link.split('.');
+								const ext = split[split.length - 1];
+								console.log({event, rowData});
                 fileDownload(rowData.link,`${location.state.name.first}${location.state.name.last}${rowData.type}.${ext}`)
             }
         }
