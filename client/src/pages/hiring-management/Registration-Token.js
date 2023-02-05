@@ -33,8 +33,18 @@ const RegistrationToken = (props) => {
     const [allInvites,setAllInvites] = useState([])
     const [curInvites,setCurInvites] = useState({})
     const {sendInvites,getAllInvites} = props
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
+		// on mount, fetch the invites
+    useEffect(()=>{
+        const promise = getAllInvites()
+        promise.then((res)=>{
+            console.log('res',res)
+            setAllInvites(res.invites)
+        })
+    },[])
+
+		// when adding/changing invites, fetch again
     useEffect(()=>{
         const promise = getAllInvites()
         promise.then((res)=>{
@@ -42,6 +52,7 @@ const RegistrationToken = (props) => {
             setAllInvites(res.invites)
         })
     },[curInvites])
+
 
     const onSubmit = (data) => {
         console.log(data)
@@ -51,6 +62,7 @@ const RegistrationToken = (props) => {
         promise.then((res)=>{
             console.log('res',res)
             setCurInvites(res)
+						reset();
         })
     };
 

@@ -15,7 +15,7 @@ const createHouse = catchAsync(async (req, res) => {
 const getAllHouses = catchAsync(async (req, res) => {
     console.log('get list of houses controller:, ', { reqUser: req.user });   
     // const options = pick(req.query, ['sortBy']);
-    const allHouses = await houseService.queryHouses();
+    const allHouses = await houseService.getAllHousesAndPopulate();
     console.log('all Houses', allHouses);
     return res.status(200).json({allHouses});
 })
