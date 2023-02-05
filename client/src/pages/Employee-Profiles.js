@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect, useRef  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../layout/House.css';
 import { connect } from 'react-redux';
 import Navigation from '../components/navigation/navigation';
 import MaterialTable from 'material-table';
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { fetchAllProfiles } from '../redux/actions';
 
 const columns = [
 	{ title: 'Name', field: 'name' },
@@ -23,20 +22,29 @@ const EmployeeProfiles = (props) => {
 	const [resultCount, setResultCount] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const tableRef = useRef();
-
+	// { userId :'23545', name: 'Tao Yang', ssn: '1234568', workAuthTitle: 'OPT', phoneNumber:'13127458784', email: '55656@gmail.com' }
 	useEffect(() => {
 		(async function () {
 			try {
 				const response = await props.fetchAllProfiles();
-				console.log('response', response);
+				// console.log('response', response);
 				let users = [];
 				response.users.forEach((item, index) => {
-					console.log('item', item);
-					if (item.profile) users.push(item);
+					// console.log('item', item);
+					if (item?.profile) users.push(item);
 				});
-				users.sort((a, b) => a.profile.name.last - b.profile.name.last);
-				setData(users);
-				setResultCount(users.length);
+				users.sort((a, b) => a.name.last - b.name.last);
+				const adjustedUsers = users.map(u => ({
+					userId: u._id,
+					name: `${u.name.preferred ? u.name.preferred : u.name.first} ${u.name.last}`,
+					ssn: u.profile.ssn,
+					workAuthTitle: u.profile.workAuth.title,
+					phone: u.profile.phone.mobile,
+					email: u.email,
+				}))
+				console.log('sorted:',{users, adjustedUsers});
+				setData(adjustedUsers);
+				setResultCount(adjustedUsers.length);
 				setLoading(false);
 			} catch (err) {
 				console.log(err);
