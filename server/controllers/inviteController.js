@@ -47,11 +47,11 @@ const inviteNewEmployee = catchAsync(async (req, res) => {
 });
 
 
-const getAllInvites = catchAsync((req, res) => {
+const getAllInvites = catchAsync(async (req, res) => {
 	console.log('getting all invites');
 	// get all invites
-	const invites = inviteService.getAllInvites();
-	return res.status(200).send({invites});
+	const invites = await inviteService.getAllInvites();
+	return res.status(200).send({invites, totalResults: invites.length});
 })
 
 module.exports = { inviteNewEmployee, getAllInvites };
