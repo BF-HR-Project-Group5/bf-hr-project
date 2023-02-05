@@ -249,18 +249,17 @@ const PersonalInformation = (props) => {
 	const [isEditingEcontact, setIsEditingEcontact] = React.useState(false);
 	const [oldEcontact, setOldEcontact] = React.useState({});
 	const [econtact, setEcontact] = React.useState(
-		props.auth.user?.profile?.emergencyContacts
-			.map((c) => ({
-				name: {
-					first: c.name.first,
-					last: c.name.last,
-					middle: c.name?.middle ?? '',
-				},
-				phone: c.phone,
-				email: c.email,
-				relationship: c.relationship,
-			}))
-			// .reduce((o, key, index) => Object.assign(o, { ['' + index]: key }), {})
+		props.auth.user?.profile?.emergencyContacts.map((c) => ({
+			name: {
+				first: c.name.first,
+				last: c.name.last,
+				middle: c.name?.middle ?? '',
+			},
+			phone: c.phone,
+			email: c.email,
+			relationship: c.relationship,
+		}))
+		// .reduce((o, key, index) => Object.assign(o, { ['' + index]: key }), {})
 	);
 	// ok so make it an object, so we can keep track of which index is which I guess
 	const handleSubmitEditEcontact = async () => {
@@ -838,12 +837,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [
-													...(prev.splice(i, 1)),
-													{ ...prev[i], name: { ...prev[i].name, first: val } },
-												])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.first = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -867,12 +870,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [
-													...(prev.splice(i, 1)),
-													{ ...prev[i], name: { ...prev[i].name, last: val } },
-												])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.last = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -896,12 +903,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [
-													...(prev.splice(i, 1)),
-													{ ...prev[i], name: { ...prev[i].name, middle: val } },
-												])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.name.middle = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -925,9 +936,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [...(prev.splice(i, 1)), { ...prev[i], phone: val }])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.phone = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -951,9 +969,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [...(prev.splice(i, 1)), { ...prev[i], email: val }])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.email = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -977,9 +1002,16 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={(val) =>
-												setEcontact((prev) => [...(prev.splice(i, 1)), { ...prev[i], relationship: val }])
-											}
+											onSubmit={(val) => {
+												const econtactBeingEdited = econtact[i];
+
+												const econtactCopy = [...econtact];
+												econtactCopy.splice(i, 1);
+
+												econtactBeingEdited.relationship = val;
+
+												setEcontact((prev) => [...econtactCopy, econtactBeingEdited]);
+											}}
 											onValidated={null}
 											options={null}
 											placement="top"
