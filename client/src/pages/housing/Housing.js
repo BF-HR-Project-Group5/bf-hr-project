@@ -57,13 +57,13 @@ const Housing = (props) => {
         <div className='container'>
           <AppBar position="static" color="default">
               <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="scrollable"
-              scrollButtons="auto"
-              aria-label="scrollable auto tabs example"
+                value={value}
+                onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
               >
                   <Tab label="House Details" {...a11yProps(0)} />
                   <Tab label="Facility Reports" {...a11yProps(1)} />

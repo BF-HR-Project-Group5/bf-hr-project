@@ -17,20 +17,13 @@ import filePreview from '../utils/filePreview';
 import DocumentPreview from './DocumentPreview';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		width: '100%',
-		maxWidth: 360,
-		backgroundColor: theme.palette.background.paper,
-	},
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
 }));
-
-	root: {
-		width: '100%',
-		maxWidth: 360,
-		backgroundColor: theme.palette.background.paper,
-	},
-}));
-
+  
 function ListItemLink(props) {
 	return (
 		<ListItem
