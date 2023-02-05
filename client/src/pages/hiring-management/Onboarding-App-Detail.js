@@ -13,7 +13,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {useLocation} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
-import { rejectProfile } from '../../redux/actions/index';
+import { rejectProfile, approveProfile } from '../../redux/actions/index';
+import { object } from 'yup';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,22 +29,34 @@ function ListItemLink(props) {
 }
 
 const OnboardingViewApp = (props) => {
-    const {rejectProfile} = props
+    const location = useLocation();
+    const {rejectProfile,approveProfile} = props
     const [feedback, setFeedback] = useState('feedback');
     const [show, setShow] = useState(false);
+    const [data, setData] = useState(location.state);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const classes = useStyles();
-    const location = useLocation();
-    const data = location.state
-    console.log('props',props)
-    console.log('location',location)
     console.log('data',data)
 
-    const handleSaveFeedBack = ()=>{
+    const handleRejectFeedBack = ()=>{
         const promise = rejectProfile({'userId':data._id,"feedback":feedback});
         promise.then((res)=>{
             console.log('res',res)
+            let data_ = Object.assign({},data)
+            data_.profile.status = 'REJECTED'
+            setData(data_)
+            handleClose()
+        })
+    }
+
+    const handleApproveFeedback = ()=>{
+        const promise = approveProfile({'userId':data._id});
+        promise.then((res)=>{
+            console.log('res',res)
+            let data_ = Object.assign({},data)
+            data_.profile.status = 'APPROVED'
+            setData(data_)
             handleClose()
         })
     }
@@ -72,6 +85,7 @@ const OnboardingViewApp = (props) => {
                                 className='approveBtn'
                                 variant="contained" 
                                 color="primary"
+                                onClick={handleApproveFeedback}
                             >
                                 Approve  
                             </Button>
@@ -200,15 +214,15 @@ const OnboardingViewApp = (props) => {
                         <h2>License</h2>
                     </div>
                     <Paper variant="outlined" className="document-container">
-                        <div className="col-3 mx-auto">
+                        <div className="col-6 mx-auto">
                             <label>Number:</label>
                             <p>{data.profile.license.number}</p>
                         </div>
-                        <div className="col-3 mx-auto">
+                        <div className="col-6 mx-auto">
                             <label>Expiration:</label>
                             <p>{data.profile.license.expiration}</p>
                         </div>
-                        <div className="col-3 mx-auto">
+                        <div className="col-6 mx-auto">
                             <label>Link:</label>
                             <p>{data.profile.license.link}</p>
                         </div>
@@ -249,7 +263,7 @@ const OnboardingViewApp = (props) => {
                     <div className="title">
                         <h2>Emergency Contact</h2>
                     </div>
-                    {data.profile.emergencyContact.map((item,index) => {
+                    {data.profile.emergencyContact?.map((item,index) => {
                         return (
                             <Paper key={index} variant="outlined" className="document-container">
                                 <div className="col-3 mx-auto">
@@ -303,7 +317,7 @@ const OnboardingViewApp = (props) => {
                     <Button onClick={handleClose}>
                         Close
                     </Button>
-                    <Button onClick={handleSaveFeedBack}>
+                    <Button onClick={handleRejectFeedBack}>
                         Save Changes
                     </Button>
                     </Modal.Footer>
@@ -319,5 +333,5 @@ const mapStateToProps = ({ auth }) => ({
 
 export default connect(
     mapStateToProps,
-    {rejectProfile}
+    {rejectProfile,approveProfile}
 )(OnboardingViewApp);

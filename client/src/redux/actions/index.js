@@ -115,19 +115,12 @@ export const rejectProfile = (value) => async dispatch => {
   // dispatch({ type: FETCH_HOUSE, payload: data });
 };
 
-// /profiles/:userId/reject (POST)
-// 			(for rejecting a profile)
-// 			params: {
-// 				:userId
-// 			}
-// 			body: {
-// 				feedback: string
-// 			}
-// 			returns: {
-// 				user
-// 			}
-
-
+export const approveProfile = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/profiles/' + value.userId + '/approve');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
 
 export const updateProfile = (profileData) => async dispatch => {
   console.log({profileData});

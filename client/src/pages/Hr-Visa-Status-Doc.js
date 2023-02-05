@@ -101,7 +101,7 @@ const HrVisaStatusDoc = (props) => {
                             const promise = documentReject(newData);
                             promise.then((res)=>{
                                 console.log('res',res)
-                                setDocuments([...dataUpdate]);
+                                setDocuments(dataUpdate);
                             })
                             resolve();
                         }, 1000);
