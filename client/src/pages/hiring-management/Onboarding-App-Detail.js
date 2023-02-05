@@ -15,6 +15,7 @@ import {useLocation} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import { rejectProfile, approveProfile } from '../../redux/actions/index';
 import { object } from 'yup';
+import { citizenTypeNice, dateMongoToSimple, daysRemaining, genderNiceString, workAuthNice } from '../../utils/personalInfoHelpers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -128,29 +129,31 @@ const OnboardingViewApp = (props) => {
                         </div>
                     </Paper>
                 </div>
+								{data.profile?.workAuth && 
                 <div className="row my-3">
                     <div className="title">
-                        <h2>Work authorisation</h2>
+                        <h2>Work Authorization</h2>
                     </div>
                     <Paper variant="outlined" className="document-container">
                         <div className="col-3 mx-auto">
                             <label>Title</label>
-                            <p>{data.profile.workAuth.title}</p>
+                            <p>{workAuthNice(data.profile.workAuth.title)}</p>
                         </div>
                         <div className="col-3 mx-auto">
                             <label>Start date:</label>
-                            <p>{data.profile.workAuth.startDate}</p>
+                            <p>{dateMongoToSimple(data.profile.workAuth.startDate)}</p>
                         </div>
                         <div className="col-3 mx-auto">
                             <label>End date:</label>
-                            <p>{data.profile.workAuth.endDate}</p>
+                            <p>{dateMongoToSimple(data.profile.workAuth.endDate)}</p>
                         </div>
                         <div className="col-3 mx-auto">
                             <label>Days Remaining:</label>
-                            <p>{data.profile.workAuth.daysRemaining}</p>
+                            <p>{daysRemaining(data.profile.workAuth.endDate)}</p>
                         </div>
                     </Paper>
                 </div>
+								}
                 <div className="row my-3">
                     <div className="title">
                         <h2>Address</h2>
@@ -198,11 +201,11 @@ const OnboardingViewApp = (props) => {
                     <Paper variant="outlined" className="document-container">
                         <div className="col-4 mx-auto">
                             <label>Gender:</label>
-                            <p>{data.profile.gender}</p>
+                            <p>{genderNiceString(data.profile.gender)}</p>
                         </div>
                         <div className="col-4 mx-auto">
                             <label>Date of Birth:</label>
-                            <p>{data.profile.dateOfBirth}</p>
+                            <p>{dateMongoToSimple(data.profile.dateOfBirth)}</p>
                         </div>
                         <div className="col-4 mx-auto">
                             <label>Social Security Number:</label>
@@ -210,11 +213,7 @@ const OnboardingViewApp = (props) => {
                         </div>
                         <div className="col-4 mx-auto">
                             <label>Citizen Type:</label>
-                            <p>{data.profile.ssn}</p>
-                        </div>
-                        <div className="col-4 mx-auto">
-                            <label>Citizen Type:</label>
-                            <p>{data.profile.citizenType}</p>
+                            <p>{citizenTypeNice(data.profile.citizenType)}</p>
                         </div>
                     </Paper>
                 </div>
@@ -229,7 +228,7 @@ const OnboardingViewApp = (props) => {
                         </div>
                         <div className="col-6 mx-auto">
                             <label>Expiration:</label>
-                            <p>{data.profile.license.expiration}</p>
+                            <p>{dateMongoToSimple(data.profile.license.expiration)}</p>
                         </div>
                         <div className="col-6 mx-auto">
                             <label>Link:</label>
