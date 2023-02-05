@@ -23,7 +23,7 @@ import filePreview from '../utils/filePreview';
 import DocumentPreview from './DocumentPreview';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
+	docListContainer: {
 		width: '100%',
 		maxWidth: 360,
 		backgroundColor: theme.palette.background.paper,
@@ -998,7 +998,7 @@ const PersonalInformation = (props) => {
 									</div>
 								</Paper>
 							</React.Fragment>
-						))}
+						))} {/* end contacts map */}
 					</div>
 					<div className="row my-5">
 						<div className="title">
@@ -1008,7 +1008,7 @@ const PersonalInformation = (props) => {
 							variant="outlined"
 							className="document-container"
 						>
-							<div className={classes.root}>
+							<div className={classes.docListContainer}>
 								<List
 									component="nav"
 									aria-label="secondary mailbox folders"
