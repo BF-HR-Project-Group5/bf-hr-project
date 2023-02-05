@@ -11,19 +11,17 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Navigation from '../components/navigation/navigation';
-import { dateMongoToSimple, daysRemaining, genderNiceString, genderUglyString } from '../utils/personalInfoHelpers';
+import {
+	dateMongoToSimple,
+	daysRemaining,
+	genderNiceString,
+	genderUglyString,
+} from '../utils/personalInfoHelpers';
 import fileDownload from '../utils/fileDownload';
 import filePreview from '../utils/filePreview';
 import DocumentPreview from './DocumentPreview';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		width: '100%',
-		maxWidth: 360,
-		backgroundColor: theme.palette.background.paper,
-	},
-}));
-
 	root: {
 		width: '100%',
 		maxWidth: 360,
@@ -39,14 +37,8 @@ function ListItemLink(props) {
 			{...props}
 		/>
 	);
-	return (
-		<ListItem
-			button
-			component="a"
-			{...props}
-		/>
-	);
 }
+
 // need to have Save and Cancel buttons on each section
 // so each state will be hold separately
 
@@ -167,18 +159,41 @@ const PersonalInformation = (props) => {
 				<hr />
 				<div className="content">
 					<div className="row my-5">
-						<div className="title">
-							<h2>Name</h2>
-						</div>
-						<div className="buttons-container">
-							{isEditingName ? (
-								<>
-									<Button onClick={handleSubmitEditName}>Save</Button>
-									<Button onClick={handleCancelEditName}>Cancel</Button>
-								</>
-							) : (
-								<Button onClick={handleEditName}>Edit</Button>
-							)}
+						<div className="d-flex justify-content-between">
+							<div className="title">
+								<h2>Name</h2>
+							</div>
+							<div>
+								{isEditingName ? (
+									<>
+										<Button
+											color="primary"
+											variant="contained"
+											onClick={handleSubmitEditName}
+											className="m-2"
+										>
+											Save
+										</Button>
+										<Button
+											color="warning"
+											variant="contained"
+											onClick={handleCancelEditName}
+											className="m-2"
+										>
+											Cancel
+										</Button>
+									</>
+								) : (
+									<Button
+									
+										variant="contained"
+										onClick={handleEditName}
+										className="m-2"
+									>
+										Edit
+									</Button>
+								)}
+							</div>
 						</div>
 						<Paper
 							variant="outlined"
@@ -193,7 +208,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name.first}
+									initialValue={name.name.first}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -219,7 +234,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name.last}
+									initialValue={name.name.last}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -245,7 +260,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name?.middle ?? ''}
+									initialValue={name.name.middle ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -271,7 +286,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.name?.preferred ?? ''}
+									initialValue={name.name.preferred ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -297,7 +312,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user.email}
+									initialValue={name.email}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -321,7 +336,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={'' + props.auth.user?.profile.ssn}
+									initialValue={name.ssn}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -345,7 +360,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={dateMongoToSimple(props.auth.user?.profile.dateOfBirth)}
+									initialValue={dateMongoToSimple(name.dateOfBirth)}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -369,7 +384,7 @@ const PersonalInformation = (props) => {
 									disabled={!isEditingName}
 									editText="Edit"
 									id={null}
-									initialValue={genderNiceString(props.auth.user?.profile.gender)}
+									initialValue={genderNiceString(name.gender)}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
@@ -383,27 +398,6 @@ const PersonalInformation = (props) => {
 									type="select"
 									validate={null}
 								/>
-								{/* <Editable
-									ajax={null}
-									alwaysEditing={false}
-									className={null}
-									disabled={false}
-									editText="Edit"
-									id={null}
-									initialValue={genderNiceString(props.auth.user?.profile.gender)}
-									isValueClickable={false}
-									label={null}
-									mode="inline"
-									onSubmit={(val) => setName(prev => ({...prev, gender: val }))}
-									onValidated={null}
-									options={null}
-									placement="top"
-									renderCancelElement={null}
-									renderConfirmElement={null}
-									showText
-									type="select"
-									validate={null}
-								/> */}
 							</div>
 						</Paper>
 					</div>
