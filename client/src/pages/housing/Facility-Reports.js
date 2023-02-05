@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,13 +17,11 @@ import { Paper } from '@material-ui/core';
 import * as yup from "yup";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { Formik } from 'formik';
 import Button from 'react-bootstrap/Button';
 import { createReport } from '../../redux/actions/index';
 import { fetchHouse } from '../../redux/actions/index';
-import { Link, withRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const yupSchema = yup.object().shape({

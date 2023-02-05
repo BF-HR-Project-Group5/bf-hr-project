@@ -16,10 +16,10 @@ export const submitSignup = (values) => async (dispatch) => {
 	return data;
 };
 
-export const submitLogout = (values) => async (dispatch) => {
-	const { data } = await axios.post('/user/logout', values);
+export const submitLogout = () => async (dispatch) => {
+	const { data } = await axios.get('/user/logout');
+	dispatch({ type: FETCH_USER, payload: null });
 	return data;
-	// dispatch({ type: FETCH_USER, payload: data });
 };
 
 export const fetchHouse = (values) => async (dispatch) => {
@@ -66,7 +66,6 @@ export const updateComment = (commentData) => async dispatch => {
 };
 
 export const fetchAllProfiles = (value) => async dispatch => {
-  // /profiles/all
   console.log('value',value)
   const { data } = await axios.get('/profiles/all');
   return data
@@ -95,8 +94,40 @@ export const sendReminder = (value) => async dispatch => {
   // dispatch({ type: FETCH_HOUSE, payload: data });
 };
 
+export const sendInvites = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/invites/send', value);
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
 
+export const getAllInvites = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/invites');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
 
+export const rejectProfile = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/profiles/' + value.userId + '/reject', {'feedback':value.feedback});
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const approveProfile = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/profiles/' + value.userId + '/approve');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const updateProfile = (profileData) => async dispatch => {
+  console.log({profileData});
+  const { user } = await axios.put('/profile/update', profileData);
+  dispatch({ type: FETCH_USER, payload: user });
+  return user
+};
 
 
 

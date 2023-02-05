@@ -90,24 +90,24 @@ const HrVisaStatusDoc = (props) => {
            If the next step involves waiting for HR approval, show the uploaded document that requires approval. Allow the HR to
            view a preview of that document in the browser.
         */
-            if(profile.nextStep.indexOf('WAIT') > 0){
-                return {
-                    onRowUpdate: (newData, oldData) =>{
-                        return new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                const dataUpdate = [...documents];
-                                const index = oldData.tableData.id;
-                                dataUpdate[index] = newData;
-                                setDocuments([...dataUpdate]);
-                                const promise = documentReject(newData);
-                                promise.then((res)=>{
-                                    console.log('res',res)
-                                })
-                                resolve();
-                            }, 1000);
-                        })
-                    }
+        if(profile.nextStep.indexOf('WAIT') > 0){
+            return {
+                onRowUpdate: (newData, oldData) =>{
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            const dataUpdate = [...documents];
+                            const index = oldData.tableData.id;
+                            dataUpdate[index] = newData;
+                            const promise = documentReject(newData);
+                            promise.then((res)=>{
+                                console.log('res',res)
+                                setDocuments(dataUpdate);
+                            })
+                            resolve();
+                        }, 1000);
+                    })
                 }
+            }
         }
     }
     
@@ -120,7 +120,7 @@ const HrVisaStatusDoc = (props) => {
             actions={[showDownloadButton, showPreviewButton, showNotifyButton, showApproveButton]}
             editable={showRejectButton()}
         />
-    </div>
+        </div>
     )
 }
 

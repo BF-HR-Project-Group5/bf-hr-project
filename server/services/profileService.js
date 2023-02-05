@@ -5,27 +5,31 @@ const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
+
 	const isNotVisa = profileBody.citizenType !== 'VISA';
 	if (isNotVisa) {
 		// is citizen or green card
 		// complete with documents
-		const stepInt = config.application.steps.length - 1;
-		const stepString = config.application.steps[stepInt];
-		profileBody.currentStepInt = stepInt;
-		profileBody.currentStep = stepString;
+		const completedStepInt = config.application.nextStepCode.length - 1;
+		const stepCodeString = config.application.nextStepCode[completedStepInt];
+
+		profileBody.currentStepInt = completedStepInt;
+		profileBody.nextStep = stepCodeString;
+
 	} else {
 		const isNotOPT = profileBody?.document?.type === config.document.types[0];
 		if (isNotOPT) {
 			// they uploaded something other than OPT receipt
 			// complete with documents
-			const stepInt = config.application.steps.length - 1;
-			const stepString = config.application.steps[stepInt];
-			profileBody.currentStepInt = stepInt;
-			profileBody.currentStep = stepString;
+			const completedStepInt = config.application.nextStepCode.length - 1;
+			const stepCodeString = config.application.nextStepCode[completedStepInt];
+
+			profileBody.currentStepInt = completedStepInt;
+			profileBody.nextStep = stepCodeString;
 		} else {
 			// they uploaded an OPT receipt
 			profileBody.currentStepInt = 0;
-			profileBody.currentStep = config.application.steps[0];
+			profileBody.currentStep = config.application.nextStepCode[0];
 		}
 	}
 	return Profile.create(profileBody);
@@ -100,37 +104,26 @@ const getProfileByIdAndPopulate = async (profileId) => {
 	});
 };
 
-// figure out what the "next step" is for documents
-const getUserNextStepForProfileId = async (profileId) => {
-	const profile = await getProfileById(profileId);
-	if (!profile) {
-		throw { statusCode: 404, message: 'getNextStepForProfileId: Profile not found' };
-	}
-
-	// return the nextStep for the profile.currentStep
-	const currentStep = profile.currentStep;
-	return config.application.nextSteps[currentStep].user;
-};
-
 const putStepToNextForProfileId = async (profileId) => {
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'putStepToNextForProfileId: Profile not found' };
 	}
-	const isAlreadyComplete = profile.currentStepInt === config.application.steps.length - 1;
+
+	const isAlreadyComplete = profile.currentStepInt === config.application.nextStepCode.length - 1;
 	if (isAlreadyComplete) return profile;
 
 	// if NOT already complete...
-	// get int of current (previous) step
-	const currentStepInt = profile.currentStepInt;
 	// get next int, get next step string
-	const nextStepInt = currentStepInt++;
-	const nextStep = config.application.steps[nextStepInt];
+	const nextInt = profile.currentStepInt++;
+	const nextCode = config.application.nextStepCode[nextStepInt];
 
 	// save next int and string
-	profile.currentStep = nextStep;
-	profile.currentStepInt = nextStepInt;
+	profile.currentStepInt = nextInt;
+	profile.nextStep = nextCode;
+
 	await profile.save();
+
 	return profile;
 };
 
@@ -143,6 +136,5 @@ module.exports = {
 	addDocumentIdToProfileId,
 	approveProfileId,
 	rejectProfileIdWithFeedback,
-	getUserNextStepForProfileId,
 	putStepToNextForProfileId,
 };

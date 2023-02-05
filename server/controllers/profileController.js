@@ -13,6 +13,7 @@ const documentService = require('../services/documentService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
 const { objectValuesToRegex } = require('../utils/regexHelpers');
+const { config } = require( '../config/constants' );
 
 // already logged in, so we have req.user
 // this needs to update the profile, and update the user.name
@@ -145,14 +146,25 @@ const getProfile = catchAsync(async (req, res) => {
 });
 
 // take the req.user, look up profile, put edit to profile
+// When updating, should fail if profile.status === 'PENDING'
 const putUpdateProfile = catchAsync(async (req, res) => {
 	console.log('putUpdateProfile controller, get current user profile:', {
 		reqUser: req.user,
 		reqBody: req.body,
 	});
-
 	// look up user so we know which profile id to find
-	const user = await userService.getUserById(req.user._id);
+	let user;
+	// if name or email changes, need to change the User model
+	if (req.body?.name || req.body?.email) {
+		user = await userService.updateUserById(req.user._id, {
+			name: {...req.body.name},	
+			email: req.body.email,
+		});
+	} else {
+		// else just fetch the User model
+		user = await userService.getUserById(req.user._id);
+	}
+
 	if (!user) throw { statusCode: 404, message: 'User not found' };
 	console.log('found user, should populate profile, which should have _id:', { user });
 
@@ -161,16 +173,8 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 	console.log('found profile:', { profile });
 
-	return res.status(200).json({ user, profile });
-});
-
-// the user gets their profile status AKA next step
-const getProfileNextStep = catchAsync(async (req, res) => {
-	// get the profile, get the user
-	const userId = req.user._id;
-	const user = await userService.getUserById(userId);
-	const nextStepForUser = await profileService.getUserNextStepForProfileId(user.profile._id);
-	return res.status(200).json({ nextStep: nextStepForUser });
+	const updatedUser = await userService.getUserByIdAndPopulate(user._id);
+	return res.status(200).json({ user: updatedUser, profile });
 });
 
 // should be auth and authHr protected
@@ -237,10 +241,11 @@ const sendReminderToProfile = catchAsync(async (req, res) => {
 	console.log('sendReminder to userId:', { reqParam: req.params });
 	const userId = req.params.userId;
 	// get user, and profile id
-	const user = await userService.getUserById(userId);
+	const user = await userService.getUserByIdAndPopulate(userId);
+	const nextStepCode = user?.profile?.nextStep;
+	const nextSteps = config.application.nextStepsObj[nextStepCode];
 
-	let nextSteps = await profileService.getUserNextStepForProfileId(user?.profile);
-	console.log({ nextSteps });
+	console.log({ nextStepCode, nextSteps });
 	// example:
 	// nextSteps === {user: 'Please wait for HR to approve your OPT receipt.', hr: 'OPT receipt needs approval'};
 
@@ -275,7 +280,7 @@ const rejectProfile = catchAsync(async (req, res) => {
 	const user = await userService.getUserById(userId);
 	if (!user) throw { statusCode: 404, message: 'User not found' };
 
-	await profileService.rejectProfileId(user?.profile, feedback);
+	await profileService.rejectProfileIdWithFeedback(user?.profile, feedback);
 
 	const updatedUser = await userService.getUserByIdAndPopulate(userId);
 
@@ -292,7 +297,6 @@ module.exports = {
 	queryProfiles,
 	queryVisaProfiles,
 	sendReminderToProfile,
-	getProfileNextStep,
 	rejectProfile,
 	approveProfile,
 };

@@ -43,7 +43,7 @@ function Navigation({ auth }) {
                     color="primary"
                     onClick={(auth) => setOn(!on)}
                     />
-                  {on && <NavSettings data={auth}/>}
+                  {on && <NavSettings handleClose={() => setOn(false)}data={auth}/>}
                 </>
               ) : (
                 <>

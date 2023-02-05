@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import { Logout, Text, ProfileStyled } from '../styled-components/header/header-settings';
 import { useHistory,Route,useLocation,useParams,useMatch, Link } from 'react-router-dom';
 import { createBrowserHistory } from 'history'
@@ -6,13 +7,15 @@ import { submitLogout } from '../../redux/actions/index';
 
 function NavSettings(props) {
     console.log('props',props)
+		const navigate = useNavigate();
 
     const handleSubmit = async(e)=>{
       e.preventDefault() 
       try {
         const fn = submitLogout()
         fn().then((res)=>{
-          window.location.href = '/login'
+					navigate('/login');
+					props.handleClose();
         });
       } catch (err) {
         console.log(err);
@@ -22,12 +25,16 @@ function NavSettings(props) {
     <>
       <Link 
         className='onboardingLink'
-        to={{ pathname : '/onboardingApp' , state : props.data}}>
+        to={{ pathname : '/onboardingApp' , state : props.data}}
+				onClick={props.handleClose}
+				>
         Onboarding Application
       </Link>
       <Link 
         className='profileLink'
-        to={{ pathname : '/personalInfo' , state : props.data}}>
+        to={{ pathname : '/personalInfo' , state : props.data}}
+				onClick={props.handleClose}
+				>
         Profile
       </Link>
       <Logout onClick={handleSubmit}>

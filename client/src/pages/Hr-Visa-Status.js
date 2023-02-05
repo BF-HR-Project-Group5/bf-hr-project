@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,12 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Paper } from '@material-ui/core';
-import Col from 'react-bootstrap/Col';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
 import {Button} from '@material-ui/core';
 import { fetchAllProfiles } from '../redux/actions/index';
-import { Link, withRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 
@@ -58,10 +48,10 @@ const HrVisaStatus = (props) => {
           })()
       }, []);
 
-      const handleClick = (index,row,e)=> {
+    const handleClick = (index,row,e)=> {
         console.log('data',row)
         navigate('/hrVisaStatus/doc',{state:row});
-      }
+    }
                        
     return (
         <div className="container">
