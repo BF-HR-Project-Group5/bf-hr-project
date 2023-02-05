@@ -63,7 +63,7 @@ const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit
 						<Button
 							color="primary"
 							variant="contained"
-							onClick={() => handleSubmit()}
+							onClick={handleSubmit}
 							className="m-2"
 						>
 							Save
@@ -71,7 +71,7 @@ const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit
 						<Button
 							color="warning"
 							variant="contained"
-							onClick={() => handleCancel()}
+							onClick={handleCancel}
 							className="m-2"
 						>
 							Cancel
@@ -80,7 +80,7 @@ const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit
 				) : (
 					<Button
 						variant="contained"
-						onClick={() => handleEdit()}
+						onClick={handleEdit}
 						className="m-2"
 					>
 						Edit
