@@ -40,17 +40,6 @@ function ListItemLink(props) {
 	);
 }
 
-// need to have Save and Cancel buttons on each section
-// so each state will be hold separately
-
-// When editing any input in the section, detect changes and show the Save and Cancel buttons for that section
-// Once saved, post edit to profile
-
-// editable: on edit ?? show the save/cancel buttons
-// editable: onSubmit, set the state for that key:val.
-// Then on save, do the post update
-// and on cancel, revert the state to original state (comes from auth.user.profile)
-
 const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit }) => {
 	return (
 		<div className="d-flex justify-content-between">
@@ -110,8 +99,8 @@ const PersonalInformation = (props) => {
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
 	const handleSubmitEditName = async () => {
-		// take name state, send update to profile
 		try {
+			// turn off editing
 			setIsEditingName(false);
 			const data = { ...name, gender: genderUglyString(name.gender) };
 			const { user, profile } = await updateProfile(data);
@@ -127,7 +116,6 @@ const PersonalInformation = (props) => {
 				dateOfBirth: profile.dateOfBirth,
 				gender: profile.gender,
 			}));
-			// turn off editing
 		} catch (err) {
 			console.error(err);
 		}
@@ -151,17 +139,14 @@ const PersonalInformation = (props) => {
 		zipcode: props.auth.user?.profile.address.zipcode,
 	});
 	const handleSubmitEditAddress = async () => {
-		// take name state, send update to profile
 		try {
 			setIsEditingAddress(false);
 			const data = { address };
 			const { user, profile } = await updateProfile(data);
-			// update name state
 			setAddress((prev) => ({
 				...prev,
 				...profile.address,
 			}));
-			// turn off editing
 		} catch (err) {
 			console.error(err);
 		}
@@ -184,19 +169,16 @@ const PersonalInformation = (props) => {
 		},
 	});
 	const handleSubmitEditContact = async () => {
-		// take name state, send update to profile
 		try {
 			setIsEditingContact(false);
 			const data = { ...contact };
 			const { user, profile } = await updateProfile(data);
-			// update name state
 			setContact((prev) => ({
 				...prev,
 				phone: {
 					...profile.phone,
 				},
 			}));
-			// turn off editing
 		} catch (err) {
 			console.error(err);
 		}
@@ -220,19 +202,16 @@ const PersonalInformation = (props) => {
 		},
 	});
 	const handleSubmitEditEmployment = async () => {
-		// take name state, send update to profile
 		try {
 			setIsEditingEmployment(false);
 			const data = { ...employment };
 			const { user, profile } = await updateProfile(data);
-			// update name state
 			setEmployment((prev) => ({
 				...prev,
 				workAuth: {
 					...profile.workAuth,
 				},
 			}));
-			// turn off editing
 		} catch (err) {
 			console.error(err);
 		}
@@ -259,18 +238,13 @@ const PersonalInformation = (props) => {
 			email: c.email,
 			relationship: c.relationship,
 		}))
-		// .reduce((o, key, index) => Object.assign(o, { ['' + index]: key }), {})
 	);
-	// ok so make it an object, so we can keep track of which index is which I guess
 	const handleSubmitEditEcontact = async () => {
-		// take name state, send update to profile
 		try {
 			setIsEditingEcontact(false);
 			const data = { emergencyContacts: econtact };
 			const { user, profile } = await updateProfile(data);
-			// update name state
 			setEcontact(() => [...profile.emergencyContacts]);
-			// turn off editing
 		} catch (err) {
 			console.error(err);
 		}
