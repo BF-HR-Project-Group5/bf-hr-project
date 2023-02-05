@@ -8,6 +8,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Navigation from '../components/navigation/navigation';
+import ManagedDocument from "../components/ManagedDocument";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,14 +23,25 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-  function getSteps() {
+  function getSteps(props) {
     return ['OPT Receipt', 'OPT EAD', 'I-983', 'I-20'];
   }
   
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return 'Please upload a copy of your OPT EAD...';
+        // return 'Please upload a copy of your OPT EAD...';
+        // map through documents to find OPT EAD
+        {props.auth.user?.profile?.documents.length > 1 && props.auth.user.profile.documents.map((i,doc) => 
+          {
+            console.log("doc", doc)   
+          }
+        // <DocumentRow key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
+        )}
+        // <ManagedDocument document={props.auth.user?.profile?.document} />
+            // doc.type == 'OPT Receipt' ? 
+            // <ManagedDocument key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
+            // : "No record of OPT Receipt"
       case 1:
         return 'Please download and fill out the I-983 form';
       case 2:
