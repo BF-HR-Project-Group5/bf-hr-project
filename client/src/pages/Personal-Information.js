@@ -1,8 +1,8 @@
 import { Paper, ButtonGroup, Button } from '@material-ui/core';
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
-import Editable from 'react-bootstrap-editable'
+import Editable from 'react-bootstrap-editable';
 import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../layout/Personal-Information.css';
@@ -16,22 +16,27 @@ import filePreview from '../utils/filePreview';
 import DocumentRow from '../components/DocumentRow';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
-    },
+	root: {
+		width: '100%',
+		maxWidth: 360,
+		backgroundColor: theme.palette.background.paper,
+	},
 }));
 
 function ListItemLink(props) {
-    return <ListItem button component="a" {...props} />;
+	return (
+		<ListItem
+			button
+			component="a"
+			{...props}
+		/>
+	);
 }
 // need to have Save and Cancel buttons on each section
 // so each state will be hold separately
 
 // When editing any input in the section, detect changes and show the Save and Cancel buttons for that section
 // Once saved, post edit to profile
-
 
 const PersonalInformation = (props) => {
     const classes = useStyles();
@@ -689,11 +694,7 @@ const PersonalInformation = (props) => {
 }
 
 const mapStateToProps = ({ auth }) => ({
-    auth
+	auth,
 });
 
-
-export default connect(
-    mapStateToProps,
-    { submitLogin }
-)(PersonalInformation);
+export default connect(mapStateToProps, { submitLogin })(PersonalInformation);
