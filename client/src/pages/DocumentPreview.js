@@ -5,22 +5,27 @@ import { submitLogin } from '../redux/actions/index';
 function DocumentPreview(props) {
 	console.log("DocumentPreview", { props });
 
-	const link = props.auth.user.profile.license.link;
-	console.log("Link", link);
-	let image;
-	if (link.endsWith('jpg') || link.endsWith('png') || link.endsWith('jpeg') || link.endsWith('gif') || link.endsWith('svg')) {
-		image = link
-	}
+	const linkDL = props.auth.user.profile.license.link;
+	const linkWorkAuth = props.auth.user.profile.documents[0].link;
+	console.log("Link", linkDL);
+	console.log("Work", linkWorkAuth);
+	
 	return (
 		<>
 			{
-				link.endsWith('jpg') || link.endsWith('png') || link.endsWith('jpeg') || link.endsWith('gif') || link.endsWith('svg') ? (
-					<img src={link} />
+				linkDL ? (
+					<img src={linkDL} />
 				)
 					:
-					<div id='viewer' style={{ "width": "1024px", "height": "600px", "margin": "0 auto" }}>{link}</div>
+					<div id='viewer' style={{ "width": "1024px", "height": "600px", "margin": "0 auto" }}>{linkDL}</div>
 			}
-
+			{
+				linkWorkAuth ? (
+					<img src={linkWorkAuth} />
+				)
+					: 
+					<div id='viewer' style={{ "width": "1024px", "height": "600px", "margin": "0 auto" }}>{linkWorkAuth}</div>
+			}
 		</>
 	)
 }

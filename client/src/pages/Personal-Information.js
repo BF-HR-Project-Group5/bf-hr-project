@@ -38,6 +38,7 @@ const PersonalInformation = (props) => {
   
   const [ clicked, setClicked ] = useState(false);
 
+
   return (
       <>
     <Navigation />
@@ -679,8 +680,12 @@ const PersonalInformation = (props) => {
                                         onClick={(e) => {
                                             e.preventDefault();  
                                             let link = props.auth.user.profile.license.link
-                                            let endTag = link.substring(link.length-4, link.length)
-                                            fileDownload(props.auth.user.profile.license.link, `${props.auth.user.name.last}${props.auth.user.name.first}DL${endTag}`)
+                                            let splitLink = link.split(".")
+                                            // console.log("link",link.split("."))
+                                            const endTag = splitLink[splitLink.length - 1]
+                                            // console.log("endTag",endTag)
+                                            // let endTag = link.substring(link.length-4, link.length)
+                                            fileDownload(props.auth.user.profile.license.link, `${props.auth.user.name.last}${props.auth.user.name.first}DL.${endTag}`)
                                         }}
                                     >
                                         Download</Button>
@@ -699,15 +704,34 @@ const PersonalInformation = (props) => {
                                     <Button
                                         onClick={(e) => {
                                             e.preventDefault();  
-                                            let link = props.auth.user.profile.documents[0].link
-                                            let endTag = link.substring(link.length-4, link.length)
-                                            fileDownload(props.auth.user.profile.documents[0].link, `${props.auth.user.name.last}${props.auth.user.name.first}WorkAuth${endTag}`)
+                                            let documents = props.auth.user.profile.documents
+                                            console.log("doc", documents)
+                                            documents.map((i,doc) => {
+                                                console.log(i,doc)
+                                                let link = props.auth.user.profile.documents[doc].link
+                                                let splitLink = link.split(".")
+                                                console.log("link",link.split("."))
+                                                const endTag = splitLink[splitLink.length - 1]
+                                                // let endTag = link.substring(link.length-4, link.length)
+                                                fileDownload(props.auth.user.profile.documents[doc].link, `${props.auth.user.name.last}${props.auth.user.name.first}WorkAuth.${endTag}`)
+                                            })
                                         }}
                                     >Download</Button>
                                     <Button
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            filePreview(props.auth.user.profile.documents[0].link)
+                                            let documents = props.auth.user.profile.documents
+                                            console.log("doc", documents)
+                                            documents.map((i,doc) => {
+                                                console.log(i,doc)
+                                                let link = props.auth.user.profile.documents[doc].link
+                                                let splitLink = link.split(".")
+                                                console.log("link",link.split("."))
+                                                const endTag = splitLink[splitLink.length - 1]
+                                                // let endTag = link.substring(link.length-4, link.length)
+                                                filePreview(props.auth.user.profile.documents[doc].link)
+                                            })
+
                                             setClicked(!clicked);
                                         }}
                                     >Preview</Button>
