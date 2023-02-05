@@ -119,10 +119,6 @@ function App(props) {
 						}
 					/>
 					<Route
-						path="*"
-						element={<h1>404! Not Found!</h1>}
-					/>
-					<Route
 						path="/hrVisaStatus"
 						exact
 						element={
@@ -166,6 +162,10 @@ function App(props) {
 								<OnboardingAppDetail />
 							</RequireAuthOrHr>
 						}
+					/>
+					<Route
+						path="*"
+						element={<h1>404! Not Found!</h1>}
 					/>
 				</Routes>
 			</Suspense>
