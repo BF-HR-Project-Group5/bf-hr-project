@@ -10,7 +10,6 @@ function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
 }
 
-
 const DocumentRow = (props) => {
 
     return (
@@ -35,7 +34,6 @@ const DocumentRow = (props) => {
                         onClick={(e) => {
                             e.preventDefault();
                             filePreview(props.link)
-                            // setClicked(!clicked);
                         }}
                     >
                         Preview
