@@ -13,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Navigation from '../components/navigation/navigation';
 import {
 	dateMongoToSimple,
+	dateSimpleToMongo,
 	daysRemaining,
 	genderNiceString,
 	genderUglyString,
@@ -50,10 +51,52 @@ function ListItemLink(props) {
 // Then on save, do the post update
 // and on cancel, revert the state to original state (comes from auth.user.profile)
 
+const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit }) => {
+	return (
+		<div className="d-flex justify-content-between">
+			<div className="title">
+				<h2>{title}</h2>
+			</div>
+			<div>
+				{isEditing ? (
+					<>
+						<Button
+							color="primary"
+							variant="contained"
+							onClick={() => {handleSubmit();}}
+							className="m-2"
+						>
+							Save
+						</Button>
+						<Button
+							color="warning"
+							variant="contained"
+							onClick={() => handleCancel()}
+							className="m-2"
+						>
+							Cancel
+						</Button>
+					</>
+				) : (
+					<Button
+						variant="contained"
+						onClick={() => handleEdit()}
+						className="m-2"
+					>
+						Edit
+					</Button>
+				)}
+			</div>
+		</div>
+	);
+};
+
 const PersonalInformation = (props) => {
 	const classes = useStyles();
 	const { updateProfile } = props;
+
 	const [isEditingName, setIsEditingName] = React.useState(false);
+	const [oldName, setOldName] = React.useState({});
 	const [name, setName] = React.useState({
 		name: {
 			first: props.auth.user?.name.first,
@@ -66,10 +109,10 @@ const PersonalInformation = (props) => {
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
-	const [oldName, setOldName] = React.useState({});
 	const handleSubmitEditName = async () => {
 		// take name state, send update to profile
 		try {
+			setIsEditingName(false);
 			const data = { ...name, gender: genderUglyString(name.gender) };
 			const { user, profile } = await updateProfile(data);
 			// update name state
@@ -84,26 +127,22 @@ const PersonalInformation = (props) => {
 				dateOfBirth: profile.dateOfBirth,
 				gender: profile.gender,
 			}));
-			console.log({ name });
 			// turn off editing
-			setIsEditingName(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 	const handleCancelEditName = () => {
-		// reset state to original state,
 		setName((prev) => ({ ...prev, ...oldName }));
-		// turn off editing
 		setIsEditingName(false);
 	};
 	const handleEditName = () => {
-		// save state
 		setOldName((prev) => ({ ...prev, ...name }));
-		// turn on editing
 		setIsEditingName(true);
 	};
 
+	const [isEditingAddress, setIsEditingAddress] = React.useState(false);
+	const [oldAddress, setOldAddress] = React.useState({});
 	const [address, setAddress] = React.useState({
 		line1: props.auth.user?.profile.address.line1,
 		line2: props.auth.user?.profile.address.line2,
@@ -111,23 +150,104 @@ const PersonalInformation = (props) => {
 		state: props.auth.user?.profile.address.state,
 		zipcode: props.auth.user?.profile.address.zipcode,
 	});
+	const handleSubmitEditAddress = async () => {
+		// take name state, send update to profile
+		try {
+			setIsEditingAddress(false);
+			const data = { address };
+			const { user, profile } = await updateProfile(data);
+			// update name state
+			setAddress((prev) => ({
+				...prev,
+				...profile.address,
+			}));
+			// turn off editing
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditAddress = () => {
+		setAddress((prev) => ({ ...prev, ...oldAddress }));
+		setIsEditingAddress(false);
+	};
+	const handleEditAddress = () => {
+		setOldAddress((prev) => ({ ...prev, ...address }));
+		setIsEditingAddress(true);
+	};
 
+	const [oldContact, setOldContact] = React.useState({});
+	const [isEditingContact, setIsEditingContact] = React.useState(false);
 	const [contact, setContact] = React.useState({
 		phone: {
 			mobile: props.auth.user?.profile.phone.mobile,
 			work: props.auth.user?.profile.phone.work ?? '',
 		},
 	});
+	const handleSubmitEditContact = async () => {
+		// take name state, send update to profile
+		try {
+			setIsEditingContact(false);
+			const data = { ...contact };
+			const { user, profile } = await updateProfile(data);
+			// update name state
+			setContact((prev) => ({
+				...prev,
+				phone: {
+					...profile.phone,
+				},
+			}));
+			// turn off editing
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditContact = () => {
+		setContact((prev) => ({ ...prev, ...oldContact }));
+		setIsEditingContact(false);
+	};
+	const handleEditContact = () => {
+		setOldContact((prev) => ({ ...prev, ...contact }));
+		setIsEditingContact(true);
+	};
 
+	const [oldEmployment, setOldEmployment] = React.useState({});
+	const [isEditingEmployment, setIsEditingEmployment] = React.useState(false);
 	const [employment, setEmployment] = React.useState({
 		workAuth: {
 			title: props.auth.user?.profile?.workAuth.title,
 			startDate: props.auth.user?.profile?.workAuth.startDate,
 			endDate: props.auth.user?.profile?.workAuth.endDate,
-			daysRemaining: daysRemaining(props.auth.user?.profile?.workAuth.endDate),
 		},
 	});
+	const handleSubmitEditEmployment = async () => {
+		// take name state, send update to profile
+		try {
+			setIsEditingEmployment(false);
+			const data = { ...employment };
+			const { user, profile } = await updateProfile(data);
+			// update name state
+			setEmployment((prev) => ({
+				...prev,
+				workAuth: {
+					...profile.workAuth,
+				},
+			}));
+			// turn off editing
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditEmployment = () => {
+		setEmployment((prev) => ({ ...prev, ...oldEmployment }));
+		setIsEditingEmployment(false);
+	};
+	const handleEditEmployment = () => {
+		setOldEmployment((prev) => ({ ...prev, ...employment }));
+		setIsEditingEmployment(true);
+	};
 
+	const [isEditingEcontact, setIsEditingEcontact] = React.useState(false);
+	const [oldEcontact, setOldEcontact] = React.useState({});
 	const [econtact, setEcontact] = React.useState(
 		props.auth.user?.profile?.emergencyContacts.map((c) => [
 			{
@@ -142,6 +262,27 @@ const PersonalInformation = (props) => {
 			},
 		])
 	);
+	const handleSubmitEditEcontact = async () => {
+		// take name state, send update to profile
+		try {
+			setIsEditingEcontact(false);
+			const data = { emergencyContacts: econtact };
+			const { user, profile } = await updateProfile(data);
+			// update name state
+			setEcontact((prev) => [...prev, ...profile.emergencyContacts]);
+			// turn off editing
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	const handleCancelEditEcontact = () => {
+		setEcontact((prev) => ({ ...prev, ...oldEcontact }));
+		setIsEditingEcontact(false);
+	};
+	const handleEditEcontact = () => {
+		setOldEcontact((prev) => ({ ...prev, ...econtact }));
+		setIsEditingEcontact(true);
+	};
 
 	return (
 		<>
@@ -159,42 +300,14 @@ const PersonalInformation = (props) => {
 				<hr />
 				<div className="content">
 					<div className="row my-5">
-						<div className="d-flex justify-content-between">
-							<div className="title">
-								<h2>Name</h2>
-							</div>
-							<div>
-								{isEditingName ? (
-									<>
-										<Button
-											color="primary"
-											variant="contained"
-											onClick={handleSubmitEditName}
-											className="m-2"
-										>
-											Save
-										</Button>
-										<Button
-											color="warning"
-											variant="contained"
-											onClick={handleCancelEditName}
-											className="m-2"
-										>
-											Cancel
-										</Button>
-									</>
-								) : (
-									<Button
-									
-										variant="contained"
-										onClick={handleEditName}
-										className="m-2"
-									>
-										Edit
-									</Button>
-								)}
-							</div>
-						</div>
+						<SectionTitle 
+							title='Name'
+							isEditing={isEditingName}
+							handleCancel={handleCancelEditName}
+							handleSubmit={handleSubmitEditName}
+							handleEdit={handleEditName}
+						/>
+
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -402,27 +515,31 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Address</h2>
-						</div>
+						<SectionTitle 
+							title='Address'
+							isEditing={isEditingAddress}
+							handleCancel={handleCancelEditAddress}
+							handleSubmit={handleSubmitEditAddress}
+							handleEdit={handleEditAddress}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
 						>
 							<div className="col-3 mx-auto">
-								<label>Building/apt:</label>
+								<label>Street name:</label>
 								<Editable
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address?.line2 ?? ''}
+									initialValue={address.line1}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, line1: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -434,19 +551,19 @@ const PersonalInformation = (props) => {
 								/>
 							</div>
 							<div className="col-3 mx-auto">
-								<label>Street name:</label>
+								<label>Building/apt:</label>
 								<Editable
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.line1}
+									initialValue={address.line2}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, line2: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -463,14 +580,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.city}
+									initialValue={address.city}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, city: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -487,14 +604,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.state}
+									initialValue={address.state}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, state: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -511,14 +628,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingAddress}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.address.zipcode}
+									initialValue={address.zipcode}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setAddress((prev) => ({ ...prev, zipcode: val }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -532,8 +649,40 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Contact Info</h2>
+						<div className="d-flex justify-content-between">
+							<div className="title">
+								<h2>Contact Info</h2>
+							</div>
+							<div>
+								{isEditingContact ? (
+									<>
+										<Button
+											color="primary"
+											variant="contained"
+											onClick={handleSubmitEditContact}
+											className="m-2"
+										>
+											Save
+										</Button>
+										<Button
+											color="warning"
+											variant="contained"
+											onClick={handleCancelEditContact}
+											className="m-2"
+										>
+											Cancel
+										</Button>
+									</>
+								) : (
+									<Button
+										variant="contained"
+										onClick={handleEditAddress}
+										className="m-2"
+									>
+										Edit
+									</Button>
+								)}
+							</div>
 						</div>
 						<Paper
 							variant="outlined"
