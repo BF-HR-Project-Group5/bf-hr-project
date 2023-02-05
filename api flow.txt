@@ -208,7 +208,7 @@ Visa Status Management page {
 		=> /profile/nextStep ? (GET) ?? 
 			(get profile status i.e. all documents ACCEPTED, or get next document? get all document statuses for this profile???)
 			returns: {
-				nextStep: string (message from: config.application.nextSteps[theirNextStep].user)
+				nextStep: string (message from: config.application.nextStepsObj[theirNextStep].user)
 			}
 
 	(need to be able to add next document if needed:)

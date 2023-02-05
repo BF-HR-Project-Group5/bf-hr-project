@@ -145,6 +145,7 @@ const putDocumentIdToUserId = async (docId, userId) => {
 // put a house to the user?
 // Or only done on creation? <<<
 const putHouseIdToUserId = async (houseId, userId) => {
+	console.log({userId},{houseId});
 	const user = await getUserById(userId);
 	user.house = houseId;
 	await user.save();

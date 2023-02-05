@@ -6,7 +6,7 @@ const auth = require('../middlewares/auth');
 // HR will submit user data to this path
 router.post( // checked
 	'/invites/send',
-	auth, authHr,
+	// auth, authHr,
 	controllers.inviteNewEmployee
 );
 

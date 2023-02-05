@@ -7,7 +7,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import SendIcon from '@material-ui/icons/Send';
 import fileDownload from '../utils/fileDownload';
-import filePreview from '../utils//filePreview';
+import filePreview from '../utils/filePreview';
 import { documentApprove, documentReject, sendReminder } from '../redux/actions/index';
 
 const HrVisaStatusDoc = (props) => {

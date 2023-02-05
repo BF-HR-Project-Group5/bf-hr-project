@@ -178,7 +178,7 @@ const assignUserIdToHouse = async (userId) => {
 	const houseIds = houses.map(h => h._id);
 
 	function randomNumber(min, max) {
-		return Math.floor(Math.random() * (max - min) + min);
+		return Math.floor(Math.random() * (max-min) + min);	
 	}
 
 	// get random index of the found houses

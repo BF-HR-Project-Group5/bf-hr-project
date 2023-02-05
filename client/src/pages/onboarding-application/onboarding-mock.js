@@ -317,7 +317,7 @@ export const json = {
 			elements: [
 				{
 					type: 'paneldynamic',
-					name: 'emergencyContact',
+					name: 'emergencyContacts',
 					titleLocation: 'hidden',
 					defaultValue: [{}],
 					templateTitle: 'Emergency contact #{panelIndex}',
