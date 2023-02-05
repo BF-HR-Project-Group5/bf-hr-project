@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import { Logout, Text, ProfileStyled } from '../styled-components/header/header-settings';
 import { useHistory,Route,useLocation,useParams,useMatch, Link } from 'react-router-dom';
 import { createBrowserHistory } from 'history'
@@ -6,13 +7,14 @@ import { submitLogout } from '../../redux/actions/index';
 
 function NavSettings(props) {
     console.log('props',props)
+		const navigate = useNavigate();
 
     const handleSubmit = async(e)=>{
       e.preventDefault() 
       try {
         const fn = submitLogout()
         fn().then((res)=>{
-          window.location.href = '/login'
+					navigate('/login');
         });
       } catch (err) {
         console.log(err);

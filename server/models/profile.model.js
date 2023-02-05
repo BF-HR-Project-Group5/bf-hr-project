@@ -62,7 +62,7 @@ const ProfileSchema = new Schema(
 			email: { type: String, required: true },
 			relationship: { type: String, required: true },
 		},
-		emergencyContact: [
+		emergencyContacts: [
 			{
 				name: {
 					first: { type: String, required: true },

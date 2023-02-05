@@ -96,7 +96,12 @@ export const sendReminder = (value) => async dispatch => {
 };
 
 
-
+export const updateProfile = (profileData) => async dispatch => {
+  console.log({profileData});
+  const { user } = await axios.put('/profile/update', profileData);
+  dispatch({ type: FETCH_USER, payload: user });
+  return user
+};
 
 
 

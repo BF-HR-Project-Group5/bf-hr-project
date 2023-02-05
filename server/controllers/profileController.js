@@ -163,7 +163,8 @@ const putUpdateProfile = catchAsync(async (req, res) => {
 	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 	console.log('found profile:', { profile });
 
-	return res.status(200).json({ user, profile });
+	const updatedUser = await userService.getUserByIdAndPopulate(user._id);
+	return res.status(200).json({ user: updatedUser, profile });
 });
 
 // should be auth and authHr protected
