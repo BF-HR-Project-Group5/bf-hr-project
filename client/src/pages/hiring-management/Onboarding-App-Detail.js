@@ -157,13 +157,22 @@ const OnboardingViewApp = (props) => {
                     </div>
                     <Paper variant="outlined" className="document-container">
                         <div className="col-12 mx-auto">
-                            <p>
+                            {/* <p>
                                 {data.profile.address.line1 + ', ' + 
                                  data.profile.address.line2 + ', ' +
                                  data.profile.address.city + ', ' +
                                  data.profile.address.state + ', ' +
                                  data.profile.address.zipcode}
-                            </p>
+                            </p> */}
+														<p>
+														{data.profile.address.line1} 
+														</p>
+														<p>
+														{ data.profile.address.line2} 
+														</p>
+														<p>
+															{`${data.profile.address.city}, ${data.profile.address.state} ${data.profile.address.zipcode}`}
+														</p>
                         </div>
                     </Paper>
                 </div>
