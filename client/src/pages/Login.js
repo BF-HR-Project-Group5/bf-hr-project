@@ -63,12 +63,12 @@ const LoginForm = (props) => {
 			// 	navigate('/home');
 			// } else {
 				// if (response.user.profile.status === 'APPROVED') {
-					navigate('/hrVisaStatus');
+					// navigate('/hrVisaStatus');
 					// navigate('/housing');
-
+					navigate('/HiringManagement');
 				// } 
 			// 	else {
-			// 		navigate('/onboardingApp');
+					// navigate('/onboardingApp');
 			// 	}
 			// }
 		} catch (err) {
