@@ -1,5 +1,5 @@
 import { Paper, ButtonGroup, Button } from '@material-ui/core';
-import React from "react";
+import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
 import Editable from 'react-bootstrap-editable'
@@ -11,6 +11,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Navigation from '../components/navigation/navigation';
+import fileDownload from '../utils/fileDownload';
+import filePreview from '../utils/filePreview';
+import DocumentPreview from './DocumentPreview';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,10 +35,11 @@ function ListItemLink(props) {
 
 const PersonalInformation = (props) => {
   const classes = useStyles();
-	
-	
+  
+  const [ clicked, setClicked ] = useState(false);
+
   return (
-    <>
+      <>
     <Navigation />
     <div className="container">
         <div className="row mt-3">
@@ -671,17 +675,50 @@ const PersonalInformation = (props) => {
                             <ListItem button>
                                 <ListItemText primary="Driver's license" />
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    <Button>Download</Button>
-                                    <Button>Preview</Button>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();  
+                                            let link = props.auth.user.profile.license.link
+                                            let endTag = link.substring(link.length-4, link.length)
+                                            fileDownload(props.auth.user.profile.license.link, `${props.auth.user.name.last}${props.auth.user.name.first}DL${endTag}`)
+                                        }}
+                                    >
+                                        Download</Button>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            filePreview(props.auth.user.profile.license.link)
+                                            setClicked(!clicked);
+                                        }}
+                                    >Preview</Button>
                                 </ButtonGroup>
                             </ListItem>
                             <ListItemLink href="#simple-list">
                                 <ListItemText primary="Work authorization" />
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    <Button>Download</Button>
-                                    <Button>Preview</Button>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();  
+                                            let link = props.auth.user.profile.documents[0].link
+                                            let endTag = link.substring(link.length-4, link.length)
+                                            fileDownload(props.auth.user.profile.documents[0].link, `${props.auth.user.name.last}${props.auth.user.name.first}WorkAuth${endTag}`)
+                                        }}
+                                    >Download</Button>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            filePreview(props.auth.user.profile.documents[0].link)
+                                            setClicked(!clicked);
+                                        }}
+                                    >Preview</Button>
                                 </ButtonGroup>
                             </ListItemLink>
+                            {
+                                clicked == true ? <DocumentPreview /> : ""
+                                
+                            }
+                            
+                            
                         </List>
                     </div>
                 </Paper>
