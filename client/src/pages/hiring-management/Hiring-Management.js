@@ -68,10 +68,10 @@ const HiringManagement = (props) => {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-            <RegistrationToken />
+                <RegistrationToken />
             </TabPanel>
             <TabPanel value={value} index={1}>
-            <OnboardingAppReview />
+                <OnboardingAppReview />
             </TabPanel>
         </div>
         </>

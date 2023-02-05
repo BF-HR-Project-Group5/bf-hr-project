@@ -17,6 +17,8 @@ const HrHome = lazy(() => import('./pages/HrHome'));
 const EmployeeProfiles = lazy(() => import('./pages/Employee-Profiles'));
 const HrVisaStatus = lazy(() => import('./pages/Hr-Visa-Status'));
 const HrVisaStatusDoc = lazy(() => import('./pages/Hr-Visa-Status-Doc'));
+const HiringManagement = lazy(() => import('./pages/hiring-management/Hiring-Management'));
+const OnboardingAppDetail = lazy(() => import('./pages/hiring-management/Onboarding-App-Detail'));
 
 function App(props) {
 	return (
@@ -144,6 +146,24 @@ function App(props) {
 						element={
 							<RequireAuthOrHr hrRequired={true}>
 								<HrVisaStatusDoc />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/hiringManagement"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<HiringManagement />
+							</RequireAuthOrHr>
+						}
+					/>
+					<Route
+						path="/onboardingAppDetail"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<OnboardingAppDetail />
 							</RequireAuthOrHr>
 						}
 					/>

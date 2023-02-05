@@ -7,6 +7,17 @@ import { useForm } from 'react-hook-form';
 import { sendInvites, getAllInvites } from '../../redux/actions/index';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Chip from '@material-ui/core/Chip';
+import {
+	StyledForm,
+	StyledStack,
+} from '../../components/styled-components/login-register/login-register';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const RegistrationToken = (props) => {
     const classes = useStyles();
     const [allInvites,setAllInvites] = useState([])
+    const [curInvites,setCurInvites] = useState({})
     const {sendInvites,getAllInvites} = props
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -27,8 +39,9 @@ const RegistrationToken = (props) => {
         const promise = getAllInvites()
         promise.then((res)=>{
             console.log('res',res)
+            setAllInvites(res.invites)
         })
-    })
+    },[curInvites])
 
     const onSubmit = (data) => {
         console.log(data)
@@ -37,65 +50,85 @@ const RegistrationToken = (props) => {
         )
         promise.then((res)=>{
             console.log('res',res)
+            setCurInvites(res)
         })
     };
-    console.log(errors);
-
-    const handleClick = ()=> {
-        
-    }
 
     return (
         <>
             <div className="row my-5 mb-3">
+                <div className="title">
+                    <h2>Registration Token</h2>
+                </div>
                 <Paper variant="outlined" className="container">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <input type="text" placeholder="First name" {...register("firstName", {required: true, maxLength: 80})} />
-                        <input type="text" placeholder="Last name" {...register("lastName", {required: true, maxLength: 100})} />
-                        <input type="text" />
-                        <TextField 
-                        placeholder="Email" 
-                        id="outlined-basic" 
-                        label="Outlined" 
-                        variant="outlined" 
-                        {...register("email", {required: true, pattern: /^\S+@\S+$/i})}
-                        />
-                        <input type="submit" />
-                    </form>
-                    {/* <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={(e)=>{handleClick(e)}}>
-                       
-                    </Button> */}
+                    <StyledForm className="RegTokenForm" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+				        <StyledStack>
+                            <TextField 
+                            placeholder="First name" 
+                            {...register("firstName", {required: true, maxLength: 80})} 
+                            id="outlined-basic" 
+                            label="First name" 
+                            variant="outlined" 
+                            />
+                            <TextField 
+                            placeholder="Last name" 
+                            {...register("lastName", {required: true, maxLength: 100})}
+                            id="outlined-basic" 
+                            label="Last name" 
+                            variant="outlined" 
+                            />
+                            <TextField 
+                            placeholder="Email" 
+                            id="outlined-basic" 
+                            label="Email" 
+                            variant="outlined" 
+                            {...register("email", {required: true, pattern: /^\S+@\S+$/i})}
+                            />
+                        </StyledStack>
+                        <Button 
+                        className="RegTokenBtn" 
+                        type="submit" 
+                        variant="contained" 
+                        fullWidth>
+                            Generate token and send email
+                        </Button>
+                    </StyledForm>
                 </Paper>
             </div>
             <div className="row my-5">
                 <div className="title">
                     <h2>Registration History</h2>
                 </div>
-                {/* <TableContainer component={Paper}>
+                <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead className="tableHead">
                             <TableRow>
-                                <TableCell>Preferred name</TableCell>
-                                <TableCell align="right">Full name</TableCell>
-                                <TableCell align="right">Phone number</TableCell>
+                                <TableCell>Full name</TableCell>
+                                <TableCell align="right">Email</TableCell>
+                                <TableCell align="right">Registration link</TableCell>
+                                <TableCell align="right">Status</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                        {data?.roommates.map((row,index) => (
+                        {allInvites?.map((row,index) => (
                             <TableRow key={index}>
                                 <TableCell component="th" scope="row">
-                                    {row.name?.preferred}
+                                    {row.name?.last + ' ' + row.name?.first}
                                 </TableCell>
-                                <TableCell align="right">{row.name?.last + ' ' + row.name?.first}</TableCell>
-                                <TableCell align="right">{row?.profile?.phone.mobile}</TableCell>
+                                <TableCell align="right">{row.email}</TableCell>
+                                <TableCell align="right">{row.link}</TableCell>
+                                <TableCell align="right">
+						            <Chip 
+                                        color={row.isRegistered?'primary':'secondary'} 
+                                        size="small" 
+                                        label={row.isRegistered?'registered':'unregistered'} 
+                                    />
+                                </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
-                </TableContainer> */}
+                </TableContainer>
             </div>
         </>
     )

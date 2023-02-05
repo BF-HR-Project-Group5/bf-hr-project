@@ -66,7 +66,6 @@ export const updateComment = (commentData) => async dispatch => {
 };
 
 export const fetchAllProfiles = (value) => async dispatch => {
-  // /profiles/all
   console.log('value',value)
   const { data } = await axios.get('/profiles/all');
   return data
@@ -94,6 +93,40 @@ export const sendReminder = (value) => async dispatch => {
   return data
   // dispatch({ type: FETCH_HOUSE, payload: data });
 };
+
+export const sendInvites = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/invites/send', value);
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const getAllInvites = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/invites');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+export const rejectProfile = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/profiles/' + value.userId + '/reject', {'feedback':value.feedback});
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
+
+// /profiles/:userId/reject (POST)
+// 			(for rejecting a profile)
+// 			params: {
+// 				:userId
+// 			}
+// 			body: {
+// 				feedback: string
+// 			}
+// 			returns: {
+// 				user
+// 			}
+
 
 
 export const updateProfile = (profileData) => async dispatch => {
