@@ -20,7 +20,7 @@ import {
 } from '../utils/personalInfoHelpers';
 import fileDownload from '../utils/fileDownload';
 import filePreview from '../utils/filePreview';
-import DocumentPreview from './DocumentPreview';
+import DocumentRow from '../components/DocumentRow';
 
 const useStyles = makeStyles((theme) => ({
 	docListContainer: {
@@ -1013,26 +1013,12 @@ const PersonalInformation = (props) => {
 									component="nav"
 									aria-label="secondary mailbox folders"
 								>
-									<ListItem button>
-										<ListItemText primary="Driver's license" />
-										<ButtonGroup
-											color="primary"
-											aria-label="outlined primary button group"
-										>
-											<Button>Download</Button>
-											<Button>Preview</Button>
-										</ButtonGroup>
-									</ListItem>
-									<ListItemLink href="#simple-list">
-										<ListItemText primary="Work authorization" />
-										<ButtonGroup
-											color="primary"
-											aria-label="outlined primary button group"
-										>
-											<Button>Download</Button>
-											<Button>Preview</Button>
-										</ButtonGroup>
-									</ListItemLink>
+									{/* Driver License */}
+                                    {props.auth.user?.profile?.license.link && <DocumentRow link={props.auth.user.profile.license.link} user={props.auth.user} title="Driver's License" />}
+                                    {/* Documents */}
+                                    {props.auth.user?.profile?.documents.length > 0 && props.auth.user.profile.documents.map((i,doc) => <DocumentRow key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />)}
+                                    {/* Profile Photo */}
+                                    {props.auth.user?.profile?.photo && <DocumentRow link={props.auth.user.profile.photo} user={props.auth.user} title="Profile Photo" /> }
 								</List>
 							</div>
 						</Paper>
