@@ -63,7 +63,7 @@ const SectionTitle = ({ title, isEditing, handleSubmit, handleCancel, handleEdit
 						<Button
 							color="primary"
 							variant="contained"
-							onClick={() => {handleSubmit();}}
+							onClick={() => handleSubmit()}
 							className="m-2"
 						>
 							Save
@@ -649,41 +649,14 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="d-flex justify-content-between">
-							<div className="title">
-								<h2>Contact Info</h2>
-							</div>
-							<div>
-								{isEditingContact ? (
-									<>
-										<Button
-											color="primary"
-											variant="contained"
-											onClick={handleSubmitEditContact}
-											className="m-2"
-										>
-											Save
-										</Button>
-										<Button
-											color="warning"
-											variant="contained"
-											onClick={handleCancelEditContact}
-											className="m-2"
-										>
-											Cancel
-										</Button>
-									</>
-								) : (
-									<Button
-										variant="contained"
-										onClick={handleEditAddress}
-										className="m-2"
-									>
-										Edit
-									</Button>
-								)}
-							</div>
-						</div>
+					
+						<SectionTitle 
+							title='Contact Info'
+							isEditing={isEditingContact}
+							handleCancel={handleCancelEditContact}
+							handleSubmit={handleSubmitEditContact}
+							handleEdit={handleEditContact}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -694,14 +667,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingContact}
 									editText="Edit"
 									id={null}
-									initialValue={'' + props.auth.user?.profile.phone.mobile}
+									initialValue={"" + contact.phone.mobile}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setContact((prev) => ({ ...prev, phone: {...prev.phone, mobile: val} }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -718,14 +691,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingContact}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile.phone?.work ?? 'None provided'}
+									initialValue={"" + (contact.phone.work ?? "None provided")}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setContact((prev) => ({ ...prev, phone: {...prev.phone, work: val} }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -739,9 +712,13 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Employment</h2>
-						</div>
+						<SectionTitle 
+							title='Employment'
+							isEditing={isEditingEmployment}
+							handleCancel={handleCancelEditEmployment}
+							handleSubmit={handleSubmitEditEmployment}
+							handleEdit={handleEditEmployment}
+						/>
 						<Paper
 							variant="outlined"
 							className="document-container"
@@ -752,14 +729,14 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
-									initialValue={props.auth.user?.profile?.workAuth.title ?? ''}
+									initialValue={employment.workAuth.title ?? ''}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setEmployment((prev) => ({ workAuth: {...prev.workAuth, title: val} }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -776,16 +753,16 @@ const PersonalInformation = (props) => {
 									ajax={null}
 									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
 									initialValue={
-										dateMongoToSimple(props.auth.user?.profile?.workAuth.startDate) ?? ''
+										dateMongoToSimple(employment.workAuth.startDate) ?? ''
 									}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setEmployment((prev) => ({ workAuth: {...prev.workAuth, startDate: dateSimpleToMongo(val)} }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -800,16 +777,17 @@ const PersonalInformation = (props) => {
 								<label>End date:</label>
 								<Editable
 									ajax={null}
-									alwaysEditing={false}
 									className={null}
-									disabled={false}
+									disabled={!isEditingEmployment}
 									editText="Edit"
 									id={null}
-									initialValue={dateMongoToSimple(props.auth.user?.profile?.workAuth.endDate) ?? ''}
+									initialValue={
+										dateMongoToSimple(employment.workAuth.startDate) ?? ''
+									}
 									isValueClickable={false}
 									label={null}
 									mode="inline"
-									onSubmit={null}
+									onSubmit={(val) => setEmployment((prev) => ({ workAuth: {...prev.workAuth, endDate: dateSimpleToMongo(val)} }))}
 									onValidated={null}
 									options={null}
 									placement="top"
@@ -823,10 +801,14 @@ const PersonalInformation = (props) => {
 						</Paper>
 					</div>
 					<div className="row my-5">
-						<div className="title">
-							<h2>Emergency contacts</h2>
-						</div>
-						{props.auth.user?.profile.emergencyContacts.map((contact, i) => (
+						<SectionTitle 
+							title='Emergency Contacts'
+							isEditing={isEditingEcontact}
+							handleCancel={handleCancelEditEcontact}
+							handleSubmit={handleSubmitEditEcontact}
+							handleEdit={handleEditEcontact}
+						/>
+						{econtact.map((contact, i) => (
 							<React.Fragment
 								key={
 									i +
@@ -846,14 +828,14 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name.first}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], name: {...prev[i].name, first: val},  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -870,14 +852,14 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name.last}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], name: {...prev[i].name, last: val},  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -894,14 +876,14 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.name?.middle}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], name: {...prev[i].name, middle: val},  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -918,14 +900,14 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.phone}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], phone: val,  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -942,14 +924,14 @@ const PersonalInformation = (props) => {
 											ajax={null}
 											alwaysEditing={false}
 											className={null}
-											disabled={false}
+											disabled={!isEditingEcontact}
 											editText="Edit"
 											id={null}
 											initialValue={contact.email}
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], email: val,  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
@@ -973,7 +955,7 @@ const PersonalInformation = (props) => {
 											isValueClickable={false}
 											label={null}
 											mode="inline"
-											onSubmit={null}
+											onSubmit={(val) => setEcontact((prev) => ([...prev, {...prev[i], relationship: val,  }]))}
 											onValidated={null}
 											options={null}
 											placement="top"
