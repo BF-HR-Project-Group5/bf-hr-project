@@ -19,17 +19,6 @@ const useStyles = makeStyles({
     },
 });
 
-function createData(name, calories, fat) {
-    return { name, calories, fat };
-}
-
-const rows = [
-createData('Joe', "Joe Moulton", 312222223),
-createData('Teressa', "Teressa Sung", 312222224),
-createData('Yuxin', "Yuxin Kang", 312222222),
-createData('Justin', "Tao Yang", 312222225),
-];
-
 const HouseDetails = (props) => {
     console.log('props',props)
     const [data,setData] = useState()
@@ -52,20 +41,7 @@ const HouseDetails = (props) => {
                     /* 3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616 */
     return (
         <>
-						{/* <AddressPaperRow rowClasses="row my-5" paperClasses="address-container" address={data?.profile?.address ?? {}} /> */}
-            <div className="row my-5">
-                <div className="title">
-                    <h2>Address</h2>
-                </div>
-                <Paper variant="outlined" className="address-container">
-                    {data?.address.line1 + ', ' +
-                     data?.address.line2 + ', ' + 
-                     data?.address.city + ', ' + 
-                     data?.address.state + ', ' + 
-                     data?.address.zipcode 
-                    }
-                </Paper>
-            </div>
+						<AddressPaperRow rowClasses="row my-5" paperClasses="address-container" address={data?.address ?? {}} /> 
             <div className="row my-5">
                 <div className="title">
                     <h2>List of roommates</h2>

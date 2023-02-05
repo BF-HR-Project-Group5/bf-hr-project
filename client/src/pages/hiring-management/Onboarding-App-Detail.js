@@ -155,25 +155,7 @@ const OnboardingViewApp = (props) => {
                     </Paper>
                 </div>
 								}
-								{/* <AddressPaperRow rowClasses="row my-3" paperClasses="document-container" address={data?.profile?.address ?? {}} /> */}
-                <div className="row my-3">
-                    <div className="title">
-                        <h2>Address</h2>
-                    </div>
-                    <Paper variant="outlined" className="document-container">
-                        <div className="col-12 mx-auto">
-														<p>
-														{data.profile.address.line1} 
-														</p>
-														<p>
-														{ data.profile.address.line2} 
-														</p>
-														<p>
-															{`${data.profile.address.city}, ${data.profile.address.state} ${data.profile.address.zipcode}`}
-														</p>
-                        </div>
-                    </Paper>
-                </div>
+								<AddressPaperRow rowClasses="row my-3" paperClasses="document-container" address={data?.profile?.address ?? {}} />
                 <div className="row my-3">
                     <div className="title">
                         <h2>Phone</h2>
