@@ -17,22 +17,23 @@ const schema = yup.object({
 	userName: yup
 		.string()
 		.required('user name is Required')
-		.test(
-			'userName',
-			'Min 6 and Max 18 characters required',
-			(val) => val.length >= 6 && val.length <= 18
-		),
+		// .test(
+		// 	'userName',
+		// 	'Min 6 and Max 18 characters required',
+		// 	(val) => val.length >= 6 && val.length <= 18
+		// ),
+		,
 	email: yup
 		.string()
-		.matches(/^[\w-(.?)]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Enter valid email address')
+		// .matches(/^[\w-(.?)]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Enter valid email address')
 		.required('Email is Required'),
 	password: yup
 		.string()
 		.required('Password is Required')
-		.matches(
-			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
-			'Min 6 and Max 12 characters atleast one letter,one number and no special character'
-		),
+		// .matches(
+		// 	/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
+		// 	'Min 6 and Max 12 characters atleast one letter,one number and no special character'
+		// ),
 });
 
 const LoginForm = (props) => {

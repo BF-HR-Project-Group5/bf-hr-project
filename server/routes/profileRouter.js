@@ -88,4 +88,22 @@ router.get(
 	controllers.queryProfiles
 );
 
+
+// profiles/:userId/approve
+router.get(
+	'/profiles/:userId/approve',
+	auth,
+	authHr,
+	controllers.approveProfile,
+)
+
+// profiles/:userId/reject //
+router.post(
+	'/profiles/:userId/reject',
+	auth,
+	authHr,
+	controllers.rejectProfile,
+)
+
+
 module.exports = router;
