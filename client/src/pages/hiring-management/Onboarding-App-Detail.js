@@ -16,6 +16,7 @@ import Chip from '@material-ui/core/Chip';
 import { rejectProfile, approveProfile } from '../../redux/actions/index';
 import { object } from 'yup';
 import { citizenTypeNice, dateMongoToSimple, daysRemaining, genderNiceString, workAuthNice } from '../../utils/personalInfoHelpers';
+import AddressPaperRow from '../../components/AddressPaperRow';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -154,19 +155,13 @@ const OnboardingViewApp = (props) => {
                     </Paper>
                 </div>
 								}
+								{/* <AddressPaperRow rowClasses="row my-3" paperClasses="document-container" address={data?.profile?.address ?? {}} /> */}
                 <div className="row my-3">
                     <div className="title">
                         <h2>Address</h2>
                     </div>
                     <Paper variant="outlined" className="document-container">
                         <div className="col-12 mx-auto">
-                            {/* <p>
-                                {data.profile.address.line1 + ', ' + 
-                                 data.profile.address.line2 + ', ' +
-                                 data.profile.address.city + ', ' +
-                                 data.profile.address.state + ', ' +
-                                 data.profile.address.zipcode}
-                            </p> */}
 														<p>
 														{data.profile.address.line1} 
 														</p>

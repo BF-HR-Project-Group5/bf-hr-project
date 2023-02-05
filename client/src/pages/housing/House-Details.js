@@ -11,6 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { fetchHouse } from '../../redux/actions/index';
+import AddressPaperRow from "../../components/AddressPaperRow";
 
 const useStyles = makeStyles({
     table: {
@@ -48,14 +49,15 @@ const HouseDetails = (props) => {
 
     const classes = useStyles();
 
+                    /* 3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616 */
     return (
         <>
+						{/* <AddressPaperRow rowClasses="row my-5" paperClasses="address-container" address={data?.profile?.address ?? {}} /> */}
             <div className="row my-5">
                 <div className="title">
                     <h2>Address</h2>
                 </div>
                 <Paper variant="outlined" className="address-container">
-                    {/* 3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616 */}
                     {data?.address.line1 + ', ' +
                      data?.address.line2 + ', ' + 
                      data?.address.city + ', ' + 
