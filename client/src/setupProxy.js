@@ -8,6 +8,7 @@ module.exports = function (app) {
   app.use(proxy('/report/*', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/report/*/comment', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/comment/*', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/document/*', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/documents/*/approve', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/documents/*/reject', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profile/*', { target: `http://localhost:${PORT}/` }));

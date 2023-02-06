@@ -23,22 +23,26 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-  function getSteps(props) {
+  function getSteps() {
     return ['OPT Receipt', 'OPT EAD', 'I-983', 'I-20'];
   }
   
-  function getStepContent(step) {
+  function getStepContent(step, props) {
+    console.log({step})
     switch (step) {
+      // mongoose keeps upload order so OPT Receipt = documents[0]
       case 0:
-        // return 'Please upload a copy of your OPT EAD...';
+        return "";
+        // return <ManagedDocument document={props.auth.user?.profile?.documents[0]} />
+        // show OPT Receipt, status > if status not approved then can't go to the next step
         // map through documents to find OPT EAD
-        {props.auth.user?.profile?.documents.length > 1 && props.auth.user.profile.documents.map((i,doc) => 
-          {
-            console.log("doc", doc)   
-          }
+        // console.log(props.auth.user.profile.documents)
+        // return props.auth.user.profile.documents.map((i,doc) => 
+          // console.log("doc", doc)   
+          
         // <DocumentRow key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
-        )}
-        // <ManagedDocument document={props.auth.user?.profile?.document} />
+        // )
+        // 
             // doc.type == 'OPT Receipt' ? 
             // <ManagedDocument key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
             // : "No record of OPT Receipt"
@@ -53,44 +57,51 @@ const useStyles = makeStyles((theme) => ({
 
 const VisaStatus = (props) => {
     console.log('props',props)
-
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
+
+    const [disabled, setDisabled] = React.useState(true);
+
     const steps = getSteps();
   
-    const isStepOptional = (step) => {
-      return step === 1;
-    };
+    // const isStepOptional = (step) => {
+    //   return step === 1;
+    // };
   
     const handleNext = () => {
       let newSkipped = skipped;
+      console.log({newSkipped})
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     };
   
-    const handleBack = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    // const handleBack = () => {
+    //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // };
   
-    const handleSkip = () => {
-      if (!isStepOptional(activeStep)) {
-        // You probably want to guard against something like this,
-        // it should never occur unless someone's actively trying to break something.
-        throw new Error("You can't skip a step that isn't optional.");
-      }
+    // const handleSkip = () => {
+    //   if (!isStepOptional(activeStep)) {
+    //     // You probably want to guard against something like this,
+    //     // it should never occur unless someone's actively trying to break something.
+    //     throw new Error("You can't skip a step that isn't optional.");
+    //   }
   
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped((prevSkipped) => {
-        const newSkipped = new Set(prevSkipped.values());
-        newSkipped.add(activeStep);
-        return newSkipped;
-      });
-    };
+    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //   setSkipped((prevSkipped) => {
+    //     const newSkipped = new Set(prevSkipped.values());
+    //     newSkipped.add(activeStep);
+    //     return newSkipped;
+    //   });
+    // };
   
-    const handleReset = () => {
-      setActiveStep(0);
-    };
+    // const handleReset = () => {
+    //   setActiveStep(0);
+    // };
+
+    // const stepToNext = () => {
+    //   setActiveStep(activeStep+1);
+    // }
   
     return (
       <div className={classes.root}>
@@ -115,13 +126,15 @@ const VisaStatus = (props) => {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+              <Typography className={classes.instructions}>{getStepContent(activeStep, props)}</Typography>
+              <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep] } />
               <div>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={handleNext}
-                  className={classes.button}
+                  className={classes.button} 
+                  disabled= {props.auth.user?.profile?.documents[activeStep]?.status !== "APPROVED"}
                 >
                   {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                 </Button>
