@@ -17,7 +17,7 @@ function HrHome(props) {
 					<li className="list-group-item"><Link to="/employeeProfiles" >Employee Profiles</Link></li>
 					<li className="list-group-item"><Link to="/hrVisaStatus" >Visa Status Management</Link></li>
 					<li className="list-group-item"><Link to="/hiringManagement" >Hiring Management</Link></li>
-					<li className="list-group-item"><Link to="/housingManagement" >Housing Management</Link></li>
+					<li className="list-group-item"><Link to="/hrHousingList" >Housing Management</Link></li>
 				</ul>
 			</div>
 		</div>

@@ -28,7 +28,7 @@ function Navigation({ auth }) {
 								<Link to="/employeeProfiles">Employee Profiles</Link>
 								<Link to="/hrVisaStatus">Visa Status Management</Link>
 								<Link to="/hiringManagement">Hiring Management</Link>
-								<Link to="/housingManagement">Housing Management</Link>
+								<Link to="/hrHousingList">Housing Management</Link>
 							</>
 						) : auth?.user.role === 'user' ? (
 							<>
