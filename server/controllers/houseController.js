@@ -46,7 +46,7 @@ const deleteHouse = catchAsync(async (req, res) => {
     console.log('delete house controller:', { reqUser: req.user }, { reqHouse: req.params.id });
     const houseId = req.params.id;
     const house = await houseService.deleteHouseById(houseId);
-    res.status(200).json({ house });
+    res.status(200).json({ message: `Success deleting House ID: ${houseId}` });
 })
 
 const getHouseForUser = catchAsync(async(req, res) => {
