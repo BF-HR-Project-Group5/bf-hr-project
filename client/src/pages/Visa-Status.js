@@ -32,20 +32,7 @@ const useStyles = makeStyles((theme) => ({
     switch (step) {
       // mongoose keeps upload order so OPT Receipt = documents[0]
       case 0:
-        return "";
-        // return <ManagedDocument document={props.auth.user?.profile?.documents[0]} />
-        // show OPT Receipt, status > if status not approved then can't go to the next step
-        // map through documents to find OPT EAD
-        // console.log(props.auth.user.profile.documents)
-        // return props.auth.user.profile.documents.map((i,doc) => 
-          // console.log("doc", doc)   
-          
-        // <DocumentRow key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
-        // )
-        // 
-            // doc.type == 'OPT Receipt' ? 
-            // <ManagedDocument key={doc} link={props.auth.user.profile.documents[doc].link} user={props.auth.user} title={props.auth.user.profile.documents[doc].type} />
-            // : "No record of OPT Receipt"
+        return "Please upload a copy of your OPT EAD...";
       case 1:
         return 'Please download and fill out the I-983 form';
       case 2:
@@ -126,7 +113,8 @@ const VisaStatus = (props) => {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep, props)}</Typography>
+              {/* {getStepContent(activeStep, props)} */}
+              <Typography className={classes.instructions}></Typography>
               <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep] } />
               <div>
                 <Button

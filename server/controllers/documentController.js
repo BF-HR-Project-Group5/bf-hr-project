@@ -24,7 +24,7 @@ const createDocument = catchAsync(async (req, res) => {
 	if (!profile) throw {statusCode: 404, message: 'Profile not found'};
 
 	// upload the file, and get the response
-	console.log('make sure we have a file in here', {req}, {files: req.file});
+	console.log('make sure we have a file in here', {files: req.file});
 	const file = req.file;
 	if (!file) throw {statusCode: 400, message: 'Please include a file'};
 	const response = await s3Service.uploadFile(file);
