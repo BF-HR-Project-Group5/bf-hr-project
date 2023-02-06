@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const routes = require('./routes');
-const cors = require('cors')
+// const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const { errorHandler } = require('./middlewares/error');
 const connection = require('./config/db');
@@ -11,7 +11,7 @@ require('dotenv').config();
 
 
 // use cors
-app.use(cors({origin: true, credentials: true }))
+// app.use(cors({origin: true, credentials: true }))
 
 app.use(cookieParser());
 app.use('/', express.json());
