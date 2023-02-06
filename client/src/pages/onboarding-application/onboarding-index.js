@@ -6,9 +6,9 @@ import { submitLogin } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
-import { json } from './onboarding-mock';
+import { getJsonFromStatus, json } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
-// import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip';
 
 const buildFormData = (formData, data, parentKey) => {
 	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -107,11 +107,23 @@ const onSubmit = async (data) => {
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
+
+	// const shouldBeFilled = !!props.auth.user?.profile; 
+	// const shouldBeEnabled = (!shouldBeFilled || props.auth.user?.profile.status === 'REJECTED'); 
+
 	const survey = new Model(json);
 	survey.onComplete.add(async (sender, options) => {
 		// console.log({data: sender.data});
 		await onSubmit(sender.data);
 		navigate('/personalInfo');
+	});
+
+	const otherSurveyJson = getJsonFromStatus(props.auth.user);
+	const otherSurvey = new Model(otherSurveyJson)
+	otherSurvey.onComplete.add(async (sender, options) => {
+		console.log({data: sender.data});
+		// await onSubmit(sender.data);
+		// navigate('/personalInfo');
 	});
 
 	return (
@@ -127,12 +139,13 @@ const OnboardingApplication = (props) => {
 					</h3>
 					<h5 className="sd-description">
 						<span className="sv-string-viewer">Current status: </span>
-						{/* <Chip size="small" label={props.auth.user.applicationStatus} /> */}
+						<Chip size="small" label={props.auth.user.profile.status} />
 					</h5>
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
 			<Survey model={survey} />
+			<Survey model={otherSurvey} />
 		</>
 	);
 };
