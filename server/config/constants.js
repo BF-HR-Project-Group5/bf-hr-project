@@ -69,7 +69,7 @@ exports.config = {
 				user: 'Please wait for HR to approve your I-20.',
 				hr: 'I-20 needs approval.'
 			},
-			'COMPLETE': {
+			'COMPLETED': {
 				user: 'You are all done!',
 				hr: 'Document upload complete.'
 			},
