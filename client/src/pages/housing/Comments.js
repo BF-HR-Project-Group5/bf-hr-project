@@ -21,11 +21,11 @@ const Comments = (props) => {
         { title: 'Description', field: 'description' },
         { title: 'Created By', field: 'createdBy', initialEditValue: 'initial edit value', editable: 'never' },
         { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
-      ]);
+    ]);
     
-      const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
 
-      useEffect(() => {
+    useEffect(() => {
         (async function () {
             try {
                 props.house.reports.forEach(element => {
@@ -35,8 +35,8 @@ const Comments = (props) => {
             } catch (err) {
             console.log(err);
             }
-          })()
-      }, []);
+        })()
+    }, []);
 
     return (
         <>
@@ -50,49 +50,49 @@ const Comments = (props) => {
                     <Typography color="textPrimary">Comments</Typography>
                 </Breadcrumbs>
                 <div className='container'>            
-                <MaterialTable
-                title="Add/Edit Comments"
-                columns={columns}
-                data={data}
-                editable={{
-                onRowAdd: newData =>
-                    new Promise((resolve, reject) => {
-                        console.log('props',props)
-                        newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
-                        const d = new Date();
-                        const n = d.toLocaleDateString();
-                        newData.updatedAt = n
-                        resolve();
-                        (async function () {
-                            try {
-                                const response = await createComment(reportId, newData)
-                                console.log('res',response)
-                                setData([...data, newData]);
-                            } catch (err) {
-                            console.log(err);
-                            }
-                        })()
-                    }),
-                onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                        const dataUpdate = [...data];
-                        const index = oldData.tableData.id;
-                        dataUpdate[index] = newData;
-                        resolve();
-                        (async function () {
-                            try {
-                                const response = await updateComment(newData)
-                                console.log('res',response)
-                                setData([...dataUpdate]);
-                            } catch (err) {
-                            console.log(err);
-                            }
-                        })()
-                    }),
-                }}
-                />
+                    <MaterialTable
+                        title="Add/Edit Comments"
+                        columns={columns}
+                        data={data}
+                        editable={{
+                        onRowAdd: newData =>
+                            new Promise((resolve, reject) => {
+                                console.log('props',props)
+                                newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
+                                const d = new Date();
+                                const n = d.toLocaleDateString();
+                                newData.updatedAt = n
+                                resolve();
+                                (async function () {
+                                    try {
+                                        const response = await createComment(reportId, newData)
+                                        console.log('res',response)
+                                        setData([...data, newData]);
+                                    } catch (err) {
+                                    console.log(err);
+                                    }
+                                })()
+                            }),
+                        onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                const dataUpdate = [...data];
+                                const index = oldData.tableData.id;
+                                dataUpdate[index] = newData;
+                                resolve();
+                                (async function () {
+                                    try {
+                                        const response = await updateComment(newData)
+                                        console.log('res',response)
+                                        setData([...dataUpdate]);
+                                    } catch (err) {
+                                    console.log(err);
+                                    }
+                                })()
+                            }),
+                        }}
+                    />
+                </div>
             </div>
-        </div>
         </>
     )
 }
