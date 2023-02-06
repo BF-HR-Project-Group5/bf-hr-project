@@ -9,9 +9,9 @@ export const submitLogin = (values) => async (dispatch) => {
 	return data;
 };
 
-export const submitSignup = (values) => async (dispatch) => {
+export const submitSignup = (values, params) => async (dispatch) => {
 	console.log('values', values);
-	const { data } = await axios.post('/user/register', values);
+	const { data } = await axios.post(`/user/register/${params.token}`, values);
 	dispatch({ type: FETCH_USER, payload: data });
 	return data;
 };

@@ -11,7 +11,7 @@ import {
 	StyledStack,
 	StyledA,
 } from '../components/styled-components/login-register/login-register';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const schema = yup.object({
 	userName: yup
@@ -41,6 +41,7 @@ const schema = yup.object({
 
 const SignUpForm = (props) => {
 	const navigate = useNavigate();
+	const params = useParams();
 	console.log('signup', {props});
 	// const { name, email, password } = props.data;
 	const { submitSignup } = props;
@@ -58,7 +59,7 @@ const SignUpForm = (props) => {
 		console.log('data', data);
 		reset();
 		try {
-			const response = await submitSignup(data);
+			const response = await submitSignup(data, params);
 			console.log('signup onsubmit', { response });
 			navigate('/login');
 		} catch (err) {
