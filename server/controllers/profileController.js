@@ -214,7 +214,7 @@ const getProfileById = catchAsync(async (req, res) => {
 const getAllVisaProfiles = catchAsync(async (req, res) => {
 	console.log('get all Visa profiles');
 
-	const foundUsers = await userService.getAllVisaUsers();
+	const foundUsers = await userService.getAllVisaUsersAndPopulate();
 	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 

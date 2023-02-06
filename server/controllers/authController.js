@@ -62,10 +62,12 @@ const login = catchAsync(async (req, res) => {
 	// if HR, maybe create a secondary token? or some identifier?
 	// Or, the user already has a 'role' key so the client will know whether or not the user is 'hr' or 'employee'
 	// user has role: hr | employee
-	console.log('login:', { user });
+
+	const freshUser = await userService.getUserByIdAndPopulate(user._id);
+	console.log('login:', { user: freshUser });
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`);
-	return res.status(200).send({ user, jwt });
+	return res.status(200).send({ user: freshUser, jwt });
 });
 
 const logout = catchAsync(async (req, res) => {
