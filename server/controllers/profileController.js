@@ -38,6 +38,8 @@ const createProfile = catchAsync(async (req, res) => {
 		} else {
 			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth, userId));
 		}
+	} else {
+		delete(req.body.workAuth);
 	}
 
 	// check for and upload license
@@ -119,9 +121,10 @@ const createProfile = catchAsync(async (req, res) => {
 		name,
 	};
 	const invite = await inviteService.updateInviteById(user.invite, inviteUpdate);
+	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
 	// done!!!
-	res.status(200).json({ user, profile, invite });
+	res.status(200).send({ user: freshUser, profile, invite });
 });
 
 // take the req.user and look up the profile

@@ -115,6 +115,20 @@ export const rejectProfile = (value) => async dispatch => {
   // dispatch({ type: FETCH_HOUSE, payload: data });
 };
 
+export const createProfile = (profileData) => async dispatch => {
+  console.log({profileData});
+  const {data} = await axios.post('/profile/create', profileData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
+	console.log({data});
+
+  dispatch({ type: FETCH_USER, payload: data.user });
+	
+  return data
+};
+
 export const approveProfile = (value) => async dispatch => {
   console.log('value',value)
   const { data } = await axios.get('/profiles/' + value.userId + '/approve');

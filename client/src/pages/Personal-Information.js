@@ -83,7 +83,7 @@ const PersonalInformation = (props) => {
 			preferred: props.auth.user?.name?.preferred ?? '',
 		},
 		email: props.auth.user.email,
-		ssn: props.auth.user?.profile.ssn,
+		ssn: props.auth.user?.profile?.ssn,
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
@@ -676,7 +676,7 @@ const PersonalInformation = (props) => {
 							</div>
 						</Paper>
 					</div>
-					<div className="row my-5">
+					{props.auth?.user?.profile?.citizenType === 'VISA' && <div className="row my-5">
 						<SectionTitle
 							title="Employment"
 							isEditing={isEditingEmployment}
@@ -770,7 +770,7 @@ const PersonalInformation = (props) => {
 								/>
 							</div>
 						</Paper>
-					</div>
+					</div>}
 					<div className="row my-5">
 						<SectionTitle
 							title="Emergency Contacts"

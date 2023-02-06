@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { submitLogin } from '../../redux/actions/index';
+import { createProfile } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
@@ -26,7 +26,7 @@ const buildFormData = (formData, data, parentKey) => {
 	}
 };
 
-const onSubmit = async (data) => {
+const formatData = (data) => {
 	console.log('onSubmit:', { data });
 	const formattedData = {
 		ssn: data.ssn,
@@ -101,13 +101,7 @@ const onSubmit = async (data) => {
 	});
 
 	// send the post request!
-	const result = await axios
-		.post(`/profile/create`, formData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		})
-		.catch((err) => console.error(err));
-	console.log('POST form data:', { result });
-	return result;
+	return formData
 };
 
 const OnboardingApplication = (props) => {
@@ -141,14 +135,15 @@ const OnboardingApplication = (props) => {
 	surveyDynamic.onComplete.add(async (sender, options) => {
 		// console.log({data: sender.data});
 		try {
-			const result = await onSubmit(sender.data);
-			console.log({ result });
-			if (result.ok) navigate('/personalInfo');
-			else {
-				const json = await result.json();
-				console.log({ json });
-				setMessage(`Error submitting form: Status: ${json.statusCode}, Message: ${json.message}`);
+			const formData = formatData(sender.data);
+			const user = await props.createProfile(formData);
+			console.log({ user });
+
+			if (!user) {
+				throw new Error(`Profile not created`);
 			}
+			navigate('/personalInfo');
+
 		} catch (e) {
 			console.log(e);
 			setMessage(`Error submitting form: ${e.message}`);
@@ -261,4 +256,4 @@ const mapStateToProps = ({ auth }) => ({
 	auth,
 });
 
-export default connect(mapStateToProps, { submitLogin })(OnboardingApplication);
+export default connect(mapStateToProps, { createProfile })(OnboardingApplication);

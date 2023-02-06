@@ -14,11 +14,11 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 
 const schema = yup.object({
-	userName: yup
+	username: yup
 		.string()
 		.required('user name is Required')
 		.test(
-			'userName',
+			'username',
 			'Min 6 and Max 18 characters required',
 			(val) => val.length >= 6 && val.length <= 18
 		),
@@ -31,7 +31,7 @@ const schema = yup.object({
 		.required('Password is Required')
 		.matches(
 			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
-			'Min 6 and Max 12 characters atleast one letter,one number and no special character'
+			'Min 6 and Max 12 characters at least one letter,one number and no special character'
 		),
 	confirmPassword: yup
 		.string()

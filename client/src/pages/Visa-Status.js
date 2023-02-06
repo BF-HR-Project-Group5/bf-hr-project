@@ -104,7 +104,7 @@ const VisaStatus = (props) => {
           })}
         </Stepper>
         <div className="container">
-          {activeStep === steps.length ? (
+          {activeStep === steps.length || props.auth.user?.profile?.nextStep === 'COMPLETED' ? (
             <div>
               <Typography className={classes.instructions}>
                 All steps completed - you&apos;re finished

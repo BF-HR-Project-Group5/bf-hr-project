@@ -21,7 +21,7 @@ function Navigation({ auth }) {
 								<Logo src="/assets/logo.png" />
 							</Title>
 						</Link>
-						{auth?.user.role === 'hr' ? (
+						{auth?.user?.role === 'hr' ? (
 							<>
 								<Link to="/home">Home</Link>
 								{/* <Link to="/onboardingApp">OnboardingApp</Link> */}
@@ -30,7 +30,7 @@ function Navigation({ auth }) {
 								<Link to="/hiringManagement">Hiring Management</Link>
 								<Link to="/hrHousingList">Housing Management</Link>
 							</>
-						) : auth?.user.role === 'user' ? (
+						) : auth?.user?.role === 'user' ? (
 							<>
 								<Link to="/housing">Housing</Link>
 								<Link to="/onboardingApp">Onboarding App</Link>
@@ -39,8 +39,8 @@ function Navigation({ auth }) {
 							</>
 						) : null}
 							<Chip
-								avatar={<Avatar>{auth.user.username.charAt(0).toUpperCase()}</Avatar>}
-								label={auth.user.username}
+								avatar={<Avatar>{auth?.user?.username.charAt(0).toUpperCase()}</Avatar>}
+								label={auth?.user?.username}
 								clickable
 								color="primary"
 								onClick={(auth) => setOn(!on)}
