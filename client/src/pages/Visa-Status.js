@@ -114,7 +114,7 @@ const VisaStatus = (props) => {
             <div>
               {/* {getStepContent(activeStep, props)} */}
               <Typography className={classes.instructions}></Typography>
-              <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep] } />
+              <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep]} activeStep={activeStep}  />
               <div>
                 <Button
                   variant="contained"

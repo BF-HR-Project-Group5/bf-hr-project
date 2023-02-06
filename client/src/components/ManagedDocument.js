@@ -27,6 +27,7 @@ const ManagedDocument = (props) => {
     const [file, setFile] = useState("")
     const [clicked, setClicked] = useState(false)
     const [message, setMessage] = useState('')
+    const [key, setKey] = useState()
 
     // useEffect(() => {
     //     let timer;
@@ -100,12 +101,44 @@ const ManagedDocument = (props) => {
                                         <iframe
                                             src={document.link}
 
-                                            height="300%"
+                                            height="800vh"
                                             width="100%"
                                         ></iframe>}
 
                                 </>
+                                : 
+                                document.status == "APPROVED" && props.activeStep == 2 ?      
+                                    <>
+                                        <ListItem button>
+                                            <ListItemText primary={document.type} />
+                                            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                                <Button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        document.map((doc,i) => {
+                                                            let splitLink = doc.link.split(".")
+                                                            const endTag = splitLink[splitLink.length - 1]
+                                                            fileDownload(doc.link, `${props.user.name.last}${props.user.name.first}${props.user.profile.workAuth.title}.${endTag}`)
+                                                        })
+                                                    }}
+                                                >
+                                                    Download
+                                                </Button>
+                                                <Button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        document.map((doc,i) => {
+                                                            filePreview(doc.link)
+                                                        })
+                                                    }}
+                                                >
+                                                    Preview
+                                                </Button>
+                                            </ButtonGroup>
+                                        </ListItem>
+                                    </>
                                 :
+
                                 document.status == "REJECTED" ?
                                     <>
                                         <p>{document.feedback}</p><br />
