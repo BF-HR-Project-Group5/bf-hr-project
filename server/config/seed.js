@@ -146,8 +146,6 @@ const seedProfiles = async (count, documents) => {
 				email: `email${i}@email.com`,
 				relationship: `BFF`,
 			},
-			// currentStepInt: i,
-			// nextStep: config.application.nextStepCode[i],
 			currentStepInt: 0,
 			nextStep: config.application.nextStepCode[0],
 			emergencyContact: [
