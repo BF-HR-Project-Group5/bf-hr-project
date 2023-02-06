@@ -86,11 +86,11 @@ module.exports = {
 	getReportById,
 	// getFacilityByTitle,
 	// getFacilityByDescription,
-	getCommentById,
+	// getCommentById,
 	getReportByIdAndPopulateFields,
 	updateReportById,
 	updateCommentById,
-	deleteReportById,
+	// deleteReportById,
 	deleteCommentById,
 	addCommentToReportId,
 };

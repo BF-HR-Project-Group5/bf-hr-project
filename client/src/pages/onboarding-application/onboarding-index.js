@@ -101,7 +101,7 @@ const formatData = (data) => {
 	});
 
 	// send the post request!
-	return formData
+	return formData;
 };
 
 const OnboardingApplication = (props) => {
@@ -143,7 +143,6 @@ const OnboardingApplication = (props) => {
 				throw new Error(`Profile not created`);
 			}
 			navigate('/personalInfo');
-
 		} catch (e) {
 			console.log(e);
 			setMessage(`Error submitting form: ${e.message}`);
@@ -168,11 +167,25 @@ const OnboardingApplication = (props) => {
 							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
 						/>
 					</h5>
+					{(props?.auth?.user?.profile?.status === 'PENDING' ||
+						props?.auth?.user?.profile?.status === 'REJECTED') && (
+						<h4
+							style={{
+								textAlign: 'center',
+							}}
+						>
+							{props?.auth?.user?.profile?.status === 'REJECTED' ? (
+								<>{props?.auth?.user?.profile?.feedback}</>
+							) : (
+								'Please wait for HR to approve your application.'
+							)}
+						</h4>
+					)}
 					<p
 						style={
 							message
 								? {
-										padding: '0.5rem',
+										padding: '1rem 1.4rem',
 										border: '1px solid #ffaaaa',
 										background: '#ffeeee',
 										borderRadius: '4px',
@@ -185,7 +198,13 @@ const OnboardingApplication = (props) => {
 							<>
 								{message}
 								<button
-									style={{ border: 'none', background: '#00000000' }}
+									style={{
+										border: 'none',
+										background: '#00000000',
+										display: 'float-right',
+										marginLeft: '10px',
+										color: '#553333',
+									}}
 									onClick={() => setMessage('')}
 								>
 									X

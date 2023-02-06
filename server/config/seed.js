@@ -101,10 +101,6 @@ const CITIZEN_TYPE = ['CITIZEN', 'GREEN_CARD', 'VISA'];
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
 	for (let i = 0; i < count; i++) {
-		const width = rng(300, 400);
-		const height = rng(300, 400);
-		const width1 = rng(300, 400);
-		const height1 = rng(300, 400);
 		const data = {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
@@ -117,9 +113,9 @@ const seedProfiles = async (count, documents) => {
 				state: `state_${i}`,
 				zipcode: `55555(-5555)${i}`,
 			},
-			citizenType: CITIZEN_TYPE[i % 3],
+			citizenType: 'VISA',
 			workAuth: {
-				title: config.document.types[i % 5],
+				title: documents[i].title,
 				startDate: new Date(),
 				endDate: new Date(),
 				daysRemaining: 99,
@@ -139,7 +135,7 @@ const seedProfiles = async (count, documents) => {
 				// work
 			},
 			documents: [documents[i]],
-			feedback: 'overall feedback on profile',
+			feedback: '',
 			reference: {
 				name: {
 					first: `first${i}`,
@@ -150,8 +146,10 @@ const seedProfiles = async (count, documents) => {
 				email: `email${i}@email.com`,
 				relationship: `BFF`,
 			},
-			currentStepInt: i,
-			nextStep: config.application.nextStepCode[i],
+			// currentStepInt: i,
+			// nextStep: config.application.nextStepCode[i],
+			currentStepInt: 0,
+			nextStep: config.application.nextStepCode[0],
 			emergencyContact: [
 				{
 					name: {
@@ -178,15 +176,13 @@ const seedDocuments = async (count) => {
 	const documents = [];
 
 	for (let i = 0; i < count; i++) {
-		const width = rng(400, 600);
-		const height = rng(400, 600);
-		// const isLicense = i >= (count / 2);
+		// const width = rng(400, 600);
+		const random = rng(0, 4);
 		const data = {
 			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			feedback: '',
 			status: `PENDING`,
-			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
-			type: `F1(CPT/OPT)`,
+			type: i % 2 === 0 ? `F1(CPT/OPT)` : config.document.types[random],
 		};
 		documents.push(documentService.createDocument(data));
 	}

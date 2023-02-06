@@ -185,8 +185,8 @@ const getAllHousesAndPopulate = () => House.find().populate(DEEP_POPULATE_PATH);
 module.exports = {
 	getHouseById,
 	getHouseByIdAndPopulateFields,
-	queryHouses,
-	getHouseByAddressLine1,
+	// queryHouses,
+	// getHouseByAddressLine1,
 	createHouse,
 	updateHouse,
 	deleteHouseById,
