@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { ButtonGroup, Button, FormControl, InputLabel, Input } from '@material-ui/core';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -20,15 +20,13 @@ import filePreview from '../utils/filePreview';
 // }
 
 const ManagedDocument = (props) => {
-    console.log({ props })
+    // console.log({ props })
     let document = props.document
-    console.log(document)
-
+    // console.log(document)
 
     const [file, setFile] = useState("")
     const [clicked, setClicked] = useState(false)
     const [message, setMessage] = useState('')
-    const [error, setError] = useState("")
 
     // useEffect(() => {
     //     let timer;
@@ -44,29 +42,21 @@ const ManagedDocument = (props) => {
         const file = e.target.files[0]
         setFile(file)
         console.log('file', file)
-
     }
 
     const submit = async e => {
         e.preventDefault()
-        // const location = await postImage({ doc: doc })
-        // console.log("location", location)
-        // if (!location) setError("Please Try Again.")
+    
         const formData = new FormData();
         formData.append("file", file)
 
         await axios.post('/document/create', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
             .then(() => {
-                setMessage('Upload Success, Wait for HR Review');
-                setFile(null);
+                setMessage(`"${file.name}" upload successful, Waiting for HR Review`);
                 // reset file input
-                e.target.files = null;
+                setKey(Math.random())
             })
             .catch((e) => setMessage('Error uploading:', e))
-
-
-        // is now empty
-        console.log(e.target.files);
     }
 
     return (
@@ -155,14 +145,9 @@ const ManagedDocument = (props) => {
 
                     <>
                         <form onSubmit={submit}>
-                            {/* <Input onChange={fileSelectedDoc} type="file" name="doc" /> */}
-                            <input type="file" id="chooseFile" style="display:none;" />
-                                <label class="upload_bp" for="fileinp">
-                                    <p onChange={fileSelectedDoc} type="file" name="doc">upload</p>
-                                </label>
+                            <input onChange={fileSelectedDoc} type="file" name="doc" key={key} />
 
                                 <ButtonGroup>
-
                                     <Button
                                         type="submit"
                                         name="upload"
