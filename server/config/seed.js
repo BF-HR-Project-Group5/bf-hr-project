@@ -109,7 +109,7 @@ const seedProfiles = async (count, documents) => {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
 			gender: GENDERS[i % 3],
-			photo: `http://placekitten.com/${width}/${height}`,
+			photo: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			address: {
 				line1: `addressLine1_${i}`,
 				line2: `addressLine2_${i}`,
@@ -132,7 +132,7 @@ const seedProfiles = async (count, documents) => {
 			license: {
 				number: `${i}abcde12345`,
 				expiration: new Date(),
-				link: `http://placeKitten.com/${width1}/${height1}`,
+				link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jp`,
 			},
 			phone: {
 				mobile: Number(`999999999${i}`),
@@ -182,7 +182,7 @@ const seedDocuments = async (count) => {
 		const height = rng(400, 600);
 		// const isLicense = i >= (count / 2);
 		const data = {
-			link: `http://placekitten.com/${width}/${height}`,
+			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jp`,
 			feedback: 'feedback on document',
 			status: `PENDING`,
 			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
@@ -229,7 +229,7 @@ const updateHouseRoommatesAndReports = async (count, users, houses, reports) => 
 };
 
 const clearInvites = () => Invite.deleteMany({});
-const clearUsers = () => User.deleteMany({ _id: { $ne: '63d6da694ba462d927745b7e' } });
+const clearUsers = () => User.deleteMany({});
 const clearHouses = () => House.deleteMany({});
 const clearProfiles = () => Profile.deleteMany({});
 const clearDocuments = () => Document.deleteMany({});

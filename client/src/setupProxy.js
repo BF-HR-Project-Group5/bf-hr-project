@@ -18,5 +18,6 @@ module.exports = function (app) {
   app.use(proxy('/invites', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profiles/*/reject', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profiles/*/approve', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/houses/*', { target: `http://localhost:${PORT}/` }));
 };
 

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { updateProfile } from '../redux/actions/index';
 import Editable from 'react-bootstrap-editable';
 import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../layout/Personal-Information.css';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -1014,12 +1013,12 @@ const PersonalInformation = (props) => {
 									)}
 									{/* Documents */}
 									{props.auth.user?.profile?.documents.length > 0 &&
-										props.auth.user.profile.documents.map((i, doc) => (
+										props.auth.user.profile.documents.map((doc, i) => (
 											<DocumentRow
-												key={doc}
-												link={props.auth.user.profile.documents[doc].link}
+												key={i}
+												link={doc.link}
 												user={props.auth.user}
-												title={props.auth.user.profile.documents[doc].type}
+												title={doc.type}
 											/>
 										))}
 									{/* Profile Photo */}
