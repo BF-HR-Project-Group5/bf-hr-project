@@ -53,7 +53,6 @@ const Housing = (props) => {
 
     return (
       <>
-        <Navigation />
         <div className='container'>
           <AppBar position="static" color="default">
               <Tabs

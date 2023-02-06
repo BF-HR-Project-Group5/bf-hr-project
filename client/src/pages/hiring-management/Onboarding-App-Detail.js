@@ -33,7 +33,7 @@ function ListItemLink(props) {
 const OnboardingViewApp = (props) => {
     const location = useLocation();
     const {rejectProfile,approveProfile} = props
-    const [feedback, setFeedback] = useState('feedback');
+    const [feedback, setFeedback] = useState('');
     const [show, setShow] = useState(false);
     const [data, setData] = useState(location.state);
     const handleClose = () => setShow(false);

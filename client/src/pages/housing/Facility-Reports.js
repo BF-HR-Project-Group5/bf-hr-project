@@ -77,8 +77,8 @@ function TabPanel(props) {
         console.log('props',props)
         const navigate = useNavigate();
         const classes = useStyles();
-        const [value, setValue] = React.useState({'title':'','description':''});
-        const [formData, setFormData] = useState(null);
+        const [value, setValue] = useState(0);
+        const [values, setValues] = useState({'title':'','description':''});
         const { fetchHouse } = props;
 
         const handleChange = (event, newValue) => {
@@ -117,55 +117,55 @@ function TabPanel(props) {
                     </Tabs>
                 </AppBar>
                 <TabPanel value={value} index={0}>
-                <Formik
-                validationSchema={yupSchema}
-                onSubmit={onSubmit}
-                initialValues={{
-                    title: '',
-                    description: '',
-                }}>
-            {({
-                handleSubmit,
-                handleChange,
-                handleBlur,
-                values,
-                touched,
-                isValid,
-                errors,
-            }) => (
-                <Form noValidate onSubmit={handleSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationFormik01">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="title"
-                        value={values.title}
-                        onChange={handleChange}
-                        isValid={touched.title && !errors.title}
-                    />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                    
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationFormik02">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        type="text"
-                        name="description"
-                        value={values.description}
-                        onChange={handleChange}
-                        isValid={touched.description && !errors.description}
-                    />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Button type="submit">Submit form</Button>
-                </Form>
-            )}
-            </Formik>
+                    <Formik
+                        validationSchema={yupSchema}
+                        onSubmit={onSubmit}
+                        initialValues={{
+                            title: '',
+                            description: '',
+                        }}>
+                        {({
+                        handleSubmit,
+                        handleChange,
+                        handleBlur,
+                        values,
+                        touched,
+                        isValid,
+                        errors,
+                        }) => (
+                            <Form noValidate onSubmit={handleSubmit}>
+                            <Row className="mb-3">
+                                <Form.Group as={Col} md="6" controlId="validationFormik01">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="title"
+                                    value={values.title}
+                                    onChange={handleChange}
+                                    isValid={touched.title && !errors.title}
+                                />
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                            </Row>
+                                
+                            <Row className="mb-3">
+                                <Form.Group as={Col} md="6" controlId="validationFormik02">
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    type="text"
+                                    name="description"
+                                    value={values.description}
+                                    onChange={handleChange}
+                                    isValid={touched.description && !errors.description}
+                                />
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                            </Row>
+                            <Button type="submit">Submit form</Button>
+                            </Form>
+                        )}
+                    </Formik>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <TableContainer component={Paper}>
@@ -181,22 +181,20 @@ function TabPanel(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {props.house.reports.map((row,index) => (
-                                <TableRow key={index}>
-                                <TableCell component="th" scope="row">
-                                    {row.title}
-                                </TableCell>
-                                <TableCell align="right">{row.description}</TableCell>
-                                <TableCell align="right">{row.createdBy}</TableCell>
-                                <TableCell align="right">{row.updatedAt}</TableCell>
-                                <TableCell align="right">{row.status}</TableCell>
-                                <TableCell align="right">
-                                    {/* <Link to={{pathname:`/housing/comments`, state: row._id}}>
-                                    </Link> */}
-                                    <Button onClick={(e)=>{handleClick(index,row,e)}}>View Comments</Button>
-                                </TableCell>
-                                </TableRow>
-                            ))}
+                                {props?.house.reports.map((row,index) => (
+                                    <TableRow key={index}>
+                                        <TableCell component="th" scope="row">
+                                            {row.title}
+                                        </TableCell>
+                                        <TableCell align="right">{row.description}</TableCell>
+                                        <TableCell align="right">{row.createdBy.username}</TableCell>
+                                        <TableCell align="right">{row.updatedAt}</TableCell>
+                                        <TableCell align="right">{row.status}</TableCell>
+                                        <TableCell align="right">
+                                            <Button onClick={(e)=>{handleClick(index,row,e)}}>View Comments</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

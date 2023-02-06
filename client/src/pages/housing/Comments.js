@@ -4,27 +4,22 @@ import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import Navigation from '../../components/navigation/navigation';
 import MaterialTable from "material-table";
 import { createComment } from '../../redux/actions/index';
 import { updateComment } from '../../redux/actions/index';
 import {useLocation} from 'react-router-dom';
 
-    const columns = [
-        { title: 'Description', field: 'description' },
-        { title: 'Created By', field: 'createdBy', initialEditValue: 'initial edit value', editable: 'never' },
-        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
-    ];
+const columns = [
+    { title: 'Description', field: 'description' },
+    { title: 'Created By', field: 'createdBy.username', initialEditValue: 'initial edit value', editable: 'never' },
+    { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
+];
     
 const Comments = (props) => {
     console.log('props',props)
     const location = useLocation();
-    console.log('location',location)
     const { createComment, updateComment } = props
     const reportId = location.state
-
-
-    
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -42,7 +37,6 @@ const Comments = (props) => {
 
     return (
         <>
-            <Navigation />
             <div className='container'>            
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link color="inherit" href="/housing">
@@ -59,17 +53,17 @@ const Comments = (props) => {
                         editable={{
                         onRowAdd: newData =>
                             new Promise((resolve, reject) => {
-                                console.log('props',props)
-                                newData.createdBy = props.auth.user.username
+                                newData.createdBy = {}
+                                newData.createdBy.username = props.auth.user.username
                                 const d = new Date();
                                 const n = d.toLocaleDateString();
                                 newData.updatedAt = n
+                                setData([...data, newData]);
                                 resolve();
                                 (async function () {
                                     try {
                                         const response = await createComment(reportId, newData)
-                                        console.log('res',response)
-                                        setData([...data, newData]);
+                                        setData(response.report.comments);
                                     } catch (err) {
                                     console.log(err);
                                     }
@@ -84,7 +78,6 @@ const Comments = (props) => {
                                 (async function () {
                                     try {
                                         const response = await updateComment(newData)
-                                        console.log('res',response)
                                         setData([...dataUpdate]);
                                     } catch (err) {
                                         console.log(err);

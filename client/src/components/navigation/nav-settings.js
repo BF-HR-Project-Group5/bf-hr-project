@@ -24,20 +24,20 @@ function NavSettings(props) {
   return (
     <>
       <Link 
-        className='onboardingLink'
+        className='dropMenu onboardingLink'
         to={{ pathname : '/onboardingApp' , state : props.data}}
 				onClick={props.handleClose}
 				>
         Onboarding Application
       </Link>
       <Link 
-        className='profileLink'
+        className='dropMenu profileLink'
         to={{ pathname : '/personalInfo' , state : props.data}}
 				onClick={props.handleClose}
 				>
         Profile
       </Link>
-      <Logout onClick={handleSubmit}>
+      <Logout className='dropMenu' onClick={handleSubmit}>
         Logout
       </Logout>
     </>

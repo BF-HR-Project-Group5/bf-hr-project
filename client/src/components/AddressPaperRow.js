@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
+import '../layout/AddressPaperRow.css';
 
 function AddressPaperRow({ rowClasses, paperClasses, address }) {
 	return (
@@ -15,7 +16,7 @@ function AddressPaperRow({ rowClasses, paperClasses, address }) {
 					<label>Address Line 1:</label>
 					<p>{address?.line1}</p>
 				</div>
-				<div className="col-6 mx-auto">
+				<div className="col-4 mx-auto">
 					<label>Address Line 2:</label>
 					<p>{address?.line2}</p>
 				</div>
