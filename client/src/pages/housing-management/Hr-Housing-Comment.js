@@ -6,6 +6,11 @@ import MaterialTable from "material-table";
 import { createComment } from '../../redux/actions/index';
 import { updateComment } from '../../redux/actions/index';
 import {useLocation} from 'react-router-dom';
+const columns = [
+        { title: 'Description', field: 'description' },
+        { title: 'Created By', field: 'createdBy.username', initialEditValue: 'initial edit value', editable: 'never' },
+        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
+    ];
 
 const HrHousingComment = (props) => {
     console.log('props',props)
@@ -13,12 +18,6 @@ const HrHousingComment = (props) => {
 	const location = useLocation();
     const [data,setData] = useState(location.state.comments)
     console.log('location',location)
-
-    const [columns, setColumns] = useState([
-        { title: 'Description', field: 'description' },
-        { title: 'Created By', field: 'createdBy.username', initialEditValue: 'initial edit value', editable: 'never' },
-        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
-    ]);
 
     return (
         <div className='container'>            
