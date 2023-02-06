@@ -1013,12 +1013,12 @@ const PersonalInformation = (props) => {
 									)}
 									{/* Documents */}
 									{props.auth.user?.profile?.documents.length > 0 &&
-										props.auth.user.profile.documents.map((i, doc) => (
+										props.auth.user.profile.documents.map((doc, i) => (
 											<DocumentRow
-												key={doc}
-												link={props.auth.user.profile.documents[doc].link}
+												key={i}
+												link={doc.link}
 												user={props.auth.user}
-												title={props.auth.user.profile.documents[doc].type}
+												title={doc.type}
 											/>
 										))}
 									{/* Profile Photo */}
