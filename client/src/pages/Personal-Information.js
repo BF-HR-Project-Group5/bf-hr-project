@@ -249,7 +249,6 @@ const PersonalInformation = (props) => {
 
 	return (
 		<>
-			<Navigation />
 			<div className="container">
 				<div className="row mt-3">
 					<div className="col-12 mx-auto text-center">

@@ -58,7 +58,6 @@ const EmployeeProfiles = (props) => {
 
 	return (
 		<>
-			<Navigation />
 			<div className="container">
 				<div className="container">
 					{!loading && (

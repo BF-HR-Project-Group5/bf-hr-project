@@ -5,7 +5,10 @@ import { TextField, Button } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import {
 	StyledSection,
 	StyledForm,
@@ -36,8 +39,29 @@ const schema = yup.object({
 		// ),
 });
 
+const useStyles = makeStyles((theme) => ({
+	paper: {
+	  marginTop: theme.spacing(8),
+	  display: 'flex',
+	  flexDirection: 'column',
+	  alignItems: 'center',
+	},
+	avatar: {
+	  margin: theme.spacing(1),
+	  backgroundColor: theme.palette.secondary.main,
+	},
+	form: {
+	  width: '100%', // Fix IE 11 issue.
+	  marginTop: theme.spacing(1),
+	},
+	submit: {
+	  margin: theme.spacing(3, 0, 2),
+	},
+  }));
+
 const LoginForm = (props) => {
 	const navigate = useNavigate();
+	const classes = useStyles();
 	const { submitLogin } = props;
 
 	const {
@@ -79,6 +103,9 @@ const LoginForm = (props) => {
 
 	return (
 		<StyledSection>
+			<Avatar className={classes.avatar}>
+          		<LockOutlinedIcon />
+        	</Avatar>
 			<h2>Login</h2>
 			<StyledForm
 				autoComplete="off"
@@ -109,8 +136,9 @@ const LoginForm = (props) => {
 					/>
 					{errors.checkbox && <p>{errors.checkbox.message}</p>}
 					<Button
+						variant="contained" 
+						color="primary"
 						type="submit"
-						variant="contained"
 						fullWidth
 					>
 						Submit

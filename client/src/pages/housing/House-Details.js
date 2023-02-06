@@ -38,10 +38,9 @@ const HouseDetails = (props) => {
 
     const classes = useStyles();
 
-                    /* 3445 S RHODES AVE UNIT 609, Unit #5-0609, CHICAGO, IL 60616 */
     return (
         <>
-						<AddressPaperRow rowClasses="row my-5" paperClasses="address-container" address={data?.address ?? {}} /> 
+			<AddressPaperRow rowClasses="row my-5" paperClasses="address-container" address={data?.address ?? {}} /> 
             <div className="row my-5">
                 <div className="title">
                     <h2>List of roommates</h2>
