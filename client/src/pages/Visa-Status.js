@@ -92,7 +92,6 @@ const VisaStatus = (props) => {
   
     return (
       <div className={classes.root}>
-        <Navigation />
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const stepProps = {};

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
+import '../layout/AddressPaperRow.css';
 
 function AddressPaperRow({ rowClasses, paperClasses, address }) {
 	return (

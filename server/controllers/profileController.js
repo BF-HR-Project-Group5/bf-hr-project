@@ -9,7 +9,6 @@ const inviteService = require('../services/inviteService');
 const emailService = require('../services/emailService');
 const s3Service = require('../services/s3Service');
 const documentService = require('../services/documentService');
-// const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
 const { objectValuesToRegex } = require('../utils/regexHelpers');

@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
-import { json } from './onboarding-mock';
+import { getDynamicSurveyJson, surveyJson, } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
-// import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip';
 
 const buildFormData = (formData, data, parentKey) => {
 	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -23,7 +23,7 @@ const buildFormData = (formData, data, parentKey) => {
 };
 
 const onSubmit = async (data) => {
-	console.log('onSubmit:', {data});
+	console.log('onSubmit:', { data });
 	const formattedData = {
 		ssn: data.ssn,
 		dateOfBirth: data.dateOfBirth,
@@ -79,11 +79,10 @@ const onSubmit = async (data) => {
 			phone: each.phone,
 			email: each.email,
 			relationship: each.relationship,
-
 		})),
-		licenseFile: data?.licenseFile[0],
-		workAuthFile: data?.workAuthFile[0],
-		photoFile: data?.profilePhotoFile[0],
+		licenseFile: data?.licenseFile?.[0] ?? undefined,
+		workAuthFile: data?.workAuthFile?.[0] ?? undefined,
+		photoFile: data?.profilePhotoFile?.[0] ?? undefined,
 	};
 	console.log({ formattedData });
 
@@ -98,20 +97,53 @@ const onSubmit = async (data) => {
 	});
 
 	// send the post request!
-	const result = await axios.post(`/profile/create`, formData, {
-		headers: { 'Content-Type': 'multipart/form-data' },
-	}).catch(err => console.error(err));
+	const result = await axios
+		.post(`/profile/create`, formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		})
+		.catch((err) => console.error(err));
 	console.log('POST form data:', { result });
+	return result;
 };
 
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
-	const survey = new Model(json);
-	survey.onComplete.add(async (sender, options) => {
+	const [message, setMessage] = useState('');
+
+	let surveyDynamic;
+	if (props.auth?.user?.profile?.status === 'REJECTED') {
+		// should be filled and editable
+		const json = getDynamicSurveyJson(props.auth?.user, true);
+		surveyDynamic = new Model(json);
+	} else if (
+		props.auth?.user?.profile?.status === 'APPROVED' ||
+		props.auth?.user?.profile?.status === 'PENDING'
+	) {
+		// filled in and not editable
+		// TODO: make uneditable!
+		const json = getDynamicSurveyJson(props.auth?.user, true, false);
+		surveyDynamic = new Model(json);
+	} else {
+		// Not yet submitted, should be empty and editable
+		surveyDynamic = new Model(surveyJson);
+	}
+
+	surveyDynamic.onComplete.add(async (sender, options) => {
 		// console.log({data: sender.data});
-		await onSubmit(sender.data);
-		navigate('/personalInfo');
+		try {
+			const result = await onSubmit(sender.data);
+			console.log({ result });
+			if (result.ok) navigate('/personalInfo');
+			else {
+				const json = await result.json();
+				console.log({ json });
+				setMessage(`Error submitting form: Status: ${json.statusCode}, Message: ${json.message}`);
+			}
+		} catch (e) {
+			console.log(e);
+			setMessage(`Error submitting form: ${e.message}`);
+		}
 	});
 
 	return (
@@ -127,12 +159,23 @@ const OnboardingApplication = (props) => {
 					</h3>
 					<h5 className="sd-description">
 						<span className="sv-string-viewer">Current status: </span>
-						{/* <Chip size="small" label={props.auth.user.applicationStatus} /> */}
+						<Chip
+							size="small"
+							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
+						/>
 					</h5>
+					<p style={message ? {padding: '0.5rem', border: '1px solid #ffaaaa', background: '#ffeeee', borderRadius: '4px', margin: '0.5rem auto'} : {padding: '0.5rem',  borderRadius: '4px', margin: '0.5rem auto'}}>
+						{message && (
+							<>
+								{message}
+								<button style={{border: 'none', background: '#00000000'}} onClick={() => setMessage('')}>X</button>
+							</>
+						)}
+					</p>
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
-			<Survey model={survey} />
+			<Survey model={surveyDynamic} />
 		</>
 	);
 };
