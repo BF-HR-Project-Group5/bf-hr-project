@@ -24,11 +24,11 @@ function Navigation({ auth }) {
 						{auth?.user.role === 'hr' ? (
 							<>
 								<Link to="/home">Home</Link>
-								<Link to="/housing">Housing</Link>
-								<Link to="/onboardingApp">OnboardingApp</Link>
+								{/* <Link to="/onboardingApp">OnboardingApp</Link> */}
 								<Link to="/employeeProfiles">Employee Profiles</Link>
 								<Link to="/hrVisaStatus">Visa Status Management</Link>
 								<Link to="/hiringManagement">Hiring Management</Link>
+								<Link to="/housingManagement">Housing Management</Link>
 							</>
 						) : auth?.user.role === 'user' ? (
 							<>
