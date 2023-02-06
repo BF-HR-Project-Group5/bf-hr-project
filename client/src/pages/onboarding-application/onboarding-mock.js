@@ -396,7 +396,7 @@ export const surveyJson = {
 };
 
 export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
-	return {
+	const json = {
 		logo: '',
 		logoFit: 'cover',
 		logoPosition: 'right',
@@ -416,6 +416,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.name.first : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -424,6 +425,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.name.last : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -431,6 +433,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Middle Name',
 						startWithNewLine: false,
 						defaultValue: filled ? user?.name?.middle ?? '' : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -438,6 +441,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Preferred name',
 						startWithNewLine: false,
 						defaultValue: filled ? user?.name?.preferred ?? '' : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -453,6 +457,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.address.line1 : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -461,6 +466,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: false,
 						defaultValue: filled ? user?.profile?.address.line2 : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -469,6 +475,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.address.city : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -477,6 +484,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.address.state : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -485,6 +493,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.address.zipcode : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -500,6 +509,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: false,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.phone.mobile : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -507,6 +517,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Work phone number',
 						startWithNewLine: false,
 						defaultValue: filled ? user?.profile?.phone.work ?? '' : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -516,6 +527,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 				title: 'Upload a profile photo',
 				acceptedTypes: 'image/*',
 				isRequired: false,
+				enabledIf: '',
 			},
 			{
 				type: 'panel',
@@ -531,6 +543,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						otherPlaceholder: 'Please specify...',
 						otherText: 'Other',
 						defaultValue: filled ? genderNiceString(user?.profile?.gender) : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -539,6 +552,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						inputType: 'date',
 						isRequired: true,
 						defaultValue: filled ? dateMongoToSimple(user?.profile?.dateOfBirth) : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -547,6 +561,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						startWithNewLine: true,
 						isRequired: true,
 						defaultValue: filled ? user?.profile?.ssn : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -563,6 +578,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						? 'Yes'
 						: 'No'
 					: '',
+				enabledIf: '',
 			},
 			{
 				type: 'radiogroup',
@@ -580,6 +596,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						? 'Green Card'
 						: ''
 					: '',
+				enabledIf: '',
 			},
 			{
 				type: 'panel',
@@ -600,6 +617,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								? 'Other'
 								: user?.profile?.workAuth?.title ?? ''
 							: '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -612,6 +630,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								? dateMongoToSimple(user?.profile?.workAuth?.startDate) ?? ''
 								: ''
 							: '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -625,6 +644,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								? dateMongoToSimple(user?.profile?.workAuth?.endDate) ?? ''
 								: ''
 							: '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -635,16 +655,14 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 				title: 'Upload your work authorization document',
 				isRequired: true,
 				acceptedTypes: 'application/pdf',
+				enabledIf: '',
 			},
 			{
 				type: 'boolean',
 				name: 'have-driver-license',
 				title: "Do you have a driver's license?",
-				defaultValue: filled
-					? user?.profile?.license?.number
-						? true
-						: false
-					: false,
+				defaultValue: filled ? (user?.profile?.license?.number ? true : false) : false,
+				enabledIf: '',
 			},
 
 			{
@@ -658,24 +676,24 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						name: 'car-make',
 						title: 'Make',
 						startWithNewLine: false,
-						defaultValue: filled
-							? user?.profile?.car?.make ?? '' : '',
+						defaultValue: filled ? user?.profile?.car?.make ?? '' : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
 						name: 'car-model',
 						title: 'Model',
 						startWithNewLine: false,
-						defaultValue: filled
-							? user?.profile?.car?.model ?? '' : '',
+						defaultValue: filled ? user?.profile?.car?.model ?? '' : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
 						name: 'car-color',
 						title: 'Color',
 						startWithNewLine: false,
-						defaultValue: filled
-							? user?.profile?.car?.color ?? '' : '',
+						defaultValue: filled ? user?.profile?.car?.color ?? '' : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -690,8 +708,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						name: 'licenseNumber',
 						title: "Driver's license number",
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.license?.number ?? '' : '',
+						defaultValue: filled ? user?.profile?.license?.number ?? '' : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -699,8 +717,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Expiration Date',
 						inputType: 'date',
 						isRequired: true,
-						defaultValue: filled
-							? dateMongoToSimple(user?.profile?.license?.expiration) ?? '' : '',
+						defaultValue: filled ? dateMongoToSimple(user?.profile?.license?.expiration) ?? '' : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -711,6 +729,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 				title: 'Upload your driver license document',
 				acceptedTypes: 'application/pdf',
 				isRequired: true,
+				enabledIf: '',
 			},
 
 			{
@@ -724,8 +743,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'First Name',
 						startWithNewLine: false,
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.reference?.name.first : '',
+						defaultValue: filled ? user?.profile?.reference?.name.first : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -733,8 +752,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Last Name',
 						startWithNewLine: false,
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.reference?.name.last : '',
+						defaultValue: filled ? user?.profile?.reference?.name.last : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -742,8 +761,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'Middle Name',
 						startWithNewLine: false,
 						isRequired: false,
-						defaultValue: filled
-							? user?.profile?.reference?.name?.middle : '',
+						defaultValue: filled ? user?.profile?.reference?.name?.middle : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -751,8 +770,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'phone',
 						startWithNewLine: false,
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.reference?.phone : '',
+						defaultValue: filled ? user?.profile?.reference?.phone : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -760,8 +779,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'email',
 						startWithNewLine: false,
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.reference?.email : '',
+						defaultValue: filled ? user?.profile?.reference?.email : '',
+						enabledIf: '',
 					},
 					{
 						type: 'text',
@@ -769,8 +788,8 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						title: 'relationship',
 						startWithNewLine: false,
 						isRequired: true,
-						defaultValue: filled
-							? user?.profile?.reference?.relationship : '',
+						defaultValue: filled ? user?.profile?.reference?.relationship : '',
+						enabledIf: '',
 					},
 				],
 			},
@@ -784,16 +803,17 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 						name: 'emergencyContacts',
 						titleLocation: 'hidden',
 						// defaultValue: [{}],
-						defaultValue: user?.profile?.emergencyContacts?.map(c => ({
-							"name-first": c.name.first,
-							"name-last": c.name.last,
-							"name-middle": c.name?.middle ?? '',
-							"phone": c.phone,
-							"email": c.email,
-							"relationship": c.relationship,
+						defaultValue: user?.profile?.emergencyContacts?.map((c) => ({
+							'name-first': c.name.first,
+							'name-last': c.name.last,
+							'name-middle': c.name?.middle ?? '',
+							phone: c.phone,
+							email: c.email,
+							relationship: c.relationship,
 						})) ?? [{}],
 						templateTitle: 'Emergency contact #{panelIndex}',
 						panelAddText: 'Add an emergency contact',
+						enabledIf: '',
 						templateElements: [
 							{
 								type: 'text',
@@ -802,6 +822,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								startWithNewLine: false,
 								title: 'First name',
 								titleLocation: 'top',
+								enabledIf: '',
 							},
 							{
 								type: 'text',
@@ -810,6 +831,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								startWithNewLine: false,
 								title: 'Last name',
 								titleLocation: 'top',
+								enabledIf: '',
 							},
 							{
 								type: 'text',
@@ -817,6 +839,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								startWithNewLine: false,
 								title: 'Middle name',
 								titleLocation: 'top',
+								enabledIf: '',
 							},
 							{
 								type: 'text',
@@ -837,6 +860,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								],
 								inputType: 'tel',
 								placeholder: '+0 (000) 000-0000',
+								enabledIf: '',
 							},
 							{
 								type: 'text',
@@ -845,6 +869,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								startWithNewLine: false,
 								title: 'Email',
 								titleLocation: 'top',
+								enabledIf: '',
 							},
 							{
 								type: 'text',
@@ -853,6 +878,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 								startWithNewLine: false,
 								title: 'Relationship',
 								titleLocation: 'top',
+								enabledIf: '',
 							},
 						],
 					},
@@ -864,6 +890,15 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 		widthMode: 'static',
 		width: '864px',
 	};
+
+	// visibleIf: "{is-citizen-permanent} = 'Yes'",
+	// if not editable, only make it editable if hidden-field = 'Yes', and that should never happen
+	 
+	const finalJson = editable
+		? json
+		: JSON.stringify(json).replaceAll(`"enabledIf":""`, `"enabledIf":"{licenseNumber}='12478902345Yes'"`);
+	console.log({finalJson});
+	return finalJson;
 };
 
 /* 
