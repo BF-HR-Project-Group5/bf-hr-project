@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -96,6 +96,7 @@ const LoginForm = (props) => {
 			console.log(err);
 		}
 	};
+
 	useEffect(() => {
 		if (!props?.auth?.user) return;
 		if (props?.auth?.user?.role === 'hr') {

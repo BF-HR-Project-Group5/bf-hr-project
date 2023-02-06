@@ -101,13 +101,13 @@ const onSubmit = async (data) => {
 	});
 
 	// send the post request!
-	const result = await axios
+	return axios
 		.post(`/profile/create`, formData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		})
-		.catch((err) => console.error(err));
-	console.log('POST form data:', { result });
-	return result;
+	// 	.catch((err) => console.error(err));
+	// console.log('POST form data:', { result });
+	// return result;
 };
 
 const OnboardingApplication = (props) => {
@@ -143,7 +143,7 @@ const OnboardingApplication = (props) => {
 		try {
 			const result = await onSubmit(sender.data);
 			console.log({ result });
-			if (result.ok) navigate('/personalInfo');
+			if (result.statusText === 'OK') navigate('/personalInfo');
 			else {
 				const json = await result.json();
 				console.log({ json });

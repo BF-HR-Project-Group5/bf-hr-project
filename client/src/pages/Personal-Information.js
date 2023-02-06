@@ -83,7 +83,7 @@ const PersonalInformation = (props) => {
 			preferred: props.auth.user?.name?.preferred ?? '',
 		},
 		email: props.auth.user.email,
-		ssn: props.auth.user?.profile.ssn,
+		ssn: props.auth.user?.profile?.ssn,
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
