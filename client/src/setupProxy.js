@@ -14,6 +14,7 @@ module.exports = function (app) {
   app.use(proxy('/documents/*/approve', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/documents/*/reject', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profile/*', { target: `http://localhost:${PORT}/` }));
+  app.use(proxy('/profile/create', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profiles/*', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/profiles/*/sendReminder', { target: `http://localhost:${PORT}/` }));
   app.use(proxy('/invites/send', { target: `http://localhost:${PORT}/` }));
