@@ -40,7 +40,7 @@ function App(props) {
 						}
 					/>
 					<Route
-						path="/signup"
+						path="/signup/:token"
 						exact
 						element={<SignUp />}
 					/>
