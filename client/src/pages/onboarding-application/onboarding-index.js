@@ -6,7 +6,7 @@ import { submitLogin } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
-import { json } from './onboarding-mock';
+import { getDynamicSurveyJson, surveyJson, } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 import Chip from '@material-ui/core/Chip';
 
@@ -80,9 +80,9 @@ const onSubmit = async (data) => {
 			email: each.email,
 			relationship: each.relationship,
 		})),
-		licenseFile: data?.licenseFile[0] ?? undefined,
-		workAuthFile: data?.workAuthFile[0] ?? undefined,
-		photoFile: data?.profilePhotoFile[0] ?? undefined,
+		licenseFile: data?.licenseFile?.[0] ?? undefined,
+		workAuthFile: data?.workAuthFile?.[0] ?? undefined,
+		photoFile: data?.profilePhotoFile?.[0] ?? undefined,
 	};
 	console.log({ formattedData });
 
@@ -110,22 +110,39 @@ const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
 	const [message, setMessage] = useState('');
-	const survey = new Model(json);
-	// const surveyFilled = new Model(json);
-	survey.onComplete.add(async (sender, options) => {
+
+	let surveyDynamic;
+	if (props.auth?.user?.profile?.status === 'REJECTED') {
+		// should be filled and editable
+		const json = getDynamicSurveyJson(props.auth?.user, true);
+		surveyDynamic = new Model(json);
+	} else if (
+		props.auth?.user?.profile?.status === 'APPROVED' ||
+		props.auth?.user?.profile?.status === 'PENDING'
+	) {
+		// filled in and not editable
+		// TODO: make uneditable!
+		const json = getDynamicSurveyJson(props.auth?.user, true, false);
+		surveyDynamic = new Model(json);
+	} else {
+		// Not yet submitted, should be empty and editable
+		surveyDynamic = new Model(surveyJson);
+	}
+
+	surveyDynamic.onComplete.add(async (sender, options) => {
 		// console.log({data: sender.data});
 		try {
 			const result = await onSubmit(sender.data);
-			console.log({result});
+			console.log({ result });
 			if (result.ok) navigate('/personalInfo');
 			else {
 				const json = await result.json();
-				console.log({json});
-				setMessage(`Error submitting form: Status: ${json.statusCode}, Message: ${json.message}` );
+				console.log({ json });
+				setMessage(`Error submitting form: Status: ${json.statusCode}, Message: ${json.message}`);
 			}
 		} catch (e) {
 			console.log(e);
-			setMessage(`Error submitting form: ${e.message}` );
+			setMessage(`Error submitting form: ${e.message}`);
 		}
 	});
 
@@ -147,7 +164,14 @@ const OnboardingApplication = (props) => {
 							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
 						/>
 					</h5>
-					<p>{message && (<>{message}<button onClick={() => setMessage('')}>X</button></>)}</p>
+					<p>
+						{message && (
+							<>
+								{message}
+								<button onClick={() => setMessage('')}>X</button>
+							</>
+						)}
+					</p>
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
@@ -164,7 +188,7 @@ const OnboardingApplication = (props) => {
 				// Not yet submitted, should be empty and editable
 				<Survey model={survey} />
 			)} */}
-			<Survey model={survey} />
+			<Survey model={surveyDynamic} />
 		</>
 	);
 };

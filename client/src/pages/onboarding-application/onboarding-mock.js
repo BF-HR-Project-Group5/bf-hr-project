@@ -1,6 +1,6 @@
 import { dateMongoToSimple, genderNiceString } from '../../utils/personalInfoHelpers';
 
-export const json = {
+export const surveyJson = {
 	logo: '',
 	logoFit: 'cover',
 	logoPosition: 'right',
@@ -395,7 +395,7 @@ export const json = {
 	width: '864px',
 };
 
-export const getJson = (user, filled = false, editable = true) => {
+export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 	return {
 		logo: '',
 		logoFit: 'cover',
@@ -573,6 +573,13 @@ export const getJson = (user, filled = false, editable = true) => {
 				showOtherItem: false,
 				otherPlaceholder: 'Please specify...',
 				otherText: 'Other',
+				defaultValue: filled
+					? user?.profile?.citizenType === 'CITIZEN'
+						? 'Citizen'
+						: user?.profile?.citizenType === 'GREEN_CARD'
+						? 'Green Card'
+						: ''
+					: '',
 			},
 			{
 				type: 'panel',
@@ -583,12 +590,16 @@ export const getJson = (user, filled = false, editable = true) => {
 					{
 						type: 'radiogroup',
 						name: 'workAuthType',
-						// visibleIf: "{is-citizen-permanent} = 'No'",
 						title: 'What is your work authorization?',
 						choices: ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4'],
 						showOtherItem: true,
 						otherPlaceholder: 'Please specify...',
 						otherText: 'Other',
+						defaultValue: filled
+							? user?.profile?.workAuth?.title === 'OTHER'
+								? 'Other'
+								: user?.profile?.workAuth?.title ?? ''
+							: '',
 					},
 					{
 						type: 'text',
@@ -596,6 +607,11 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'Start Date',
 						inputType: 'date',
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.workAuth?.startDate
+								? dateMongoToSimple(user?.profile?.workAuth?.startDate) ?? ''
+								: ''
+							: '',
 					},
 					{
 						type: 'text',
@@ -604,6 +620,11 @@ export const getJson = (user, filled = false, editable = true) => {
 						inputType: 'date',
 						isRequired: true,
 						startWithNewLine: false,
+						defaultValue: filled
+							? user?.profile?.workAuth?.endDate
+								? dateMongoToSimple(user?.profile?.workAuth?.endDate) ?? ''
+								: ''
+							: '',
 					},
 				],
 			},
@@ -619,6 +640,11 @@ export const getJson = (user, filled = false, editable = true) => {
 				type: 'boolean',
 				name: 'have-driver-license',
 				title: "Do you have a driver's license?",
+				defaultValue: filled
+					? user?.profile?.license?.number
+						? true
+						: false
+					: false,
 			},
 
 			{
@@ -632,18 +658,24 @@ export const getJson = (user, filled = false, editable = true) => {
 						name: 'car-make',
 						title: 'Make',
 						startWithNewLine: false,
+						defaultValue: filled
+							? user?.profile?.car?.make ?? '' : '',
 					},
 					{
 						type: 'text',
 						name: 'car-model',
 						title: 'Model',
 						startWithNewLine: false,
+						defaultValue: filled
+							? user?.profile?.car?.model ?? '' : '',
 					},
 					{
 						type: 'text',
 						name: 'car-color',
 						title: 'Color',
 						startWithNewLine: false,
+						defaultValue: filled
+							? user?.profile?.car?.color ?? '' : '',
 					},
 				],
 			},
@@ -658,6 +690,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						name: 'licenseNumber',
 						title: "Driver's license number",
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.license?.number ?? '' : '',
 					},
 					{
 						type: 'text',
@@ -665,6 +699,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'Expiration Date',
 						inputType: 'date',
 						isRequired: true,
+						defaultValue: filled
+							? dateMongoToSimple(user?.profile?.license?.expiration) ?? '' : '',
 					},
 				],
 			},
@@ -688,6 +724,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'First Name',
 						startWithNewLine: false,
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.reference?.name.first : '',
 					},
 					{
 						type: 'text',
@@ -695,6 +733,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'Last Name',
 						startWithNewLine: false,
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.reference?.name.last : '',
 					},
 					{
 						type: 'text',
@@ -702,6 +742,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'Middle Name',
 						startWithNewLine: false,
 						isRequired: false,
+						defaultValue: filled
+							? user?.profile?.reference?.name?.middle : '',
 					},
 					{
 						type: 'text',
@@ -709,6 +751,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'phone',
 						startWithNewLine: false,
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.reference?.phone : '',
 					},
 					{
 						type: 'text',
@@ -716,6 +760,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'email',
 						startWithNewLine: false,
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.reference?.email : '',
 					},
 					{
 						type: 'text',
@@ -723,6 +769,8 @@ export const getJson = (user, filled = false, editable = true) => {
 						title: 'relationship',
 						startWithNewLine: false,
 						isRequired: true,
+						defaultValue: filled
+							? user?.profile?.reference?.relationship : '',
 					},
 				],
 			},
@@ -735,7 +783,15 @@ export const getJson = (user, filled = false, editable = true) => {
 						type: 'paneldynamic',
 						name: 'emergencyContacts',
 						titleLocation: 'hidden',
-						defaultValue: [{}],
+						// defaultValue: [{}],
+						defaultValue: user?.profile?.emergencyContacts?.map(c => ({
+							"name-first": c.name.first,
+							"name-last": c.name.last,
+							"name-middle": c.name?.middle ?? '',
+							"phone": c.phone,
+							"email": c.email,
+							"relationship": c.relationship,
+						})) ?? [{}],
 						templateTitle: 'Emergency contact #{panelIndex}',
 						panelAddText: 'Add an emergency contact',
 						templateElements: [
