@@ -12,6 +12,7 @@ import {Button} from '@material-ui/core';
 import { fetchAllProfiles } from '../redux/actions/index';
 import { useNavigate } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
+import VisaStatusConstants from '../components/VisaStatusConstants'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,7 +61,7 @@ const HrVisaStatus = (props) => {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead className="tableHead">
                         <TableRow>
-                            <TableCell align="right">Name</TableCell>
+                            <TableCell>Name</TableCell>
                             <TableCell align="right">Work Authorization</TableCell>
                             <TableCell align="right">Next steps</TableCell>
                             <TableCell align="right">Action</TableCell>
@@ -78,7 +79,12 @@ const HrVisaStatus = (props) => {
                             <p>{'End Date: ' + row.profile.workAuth.endDate}</p>
                             <p>{'Remaining days: ' + row.profile.workAuth.daysRemaining}</p>
                         </TableCell>
-                        <TableCell align="right">{row.profile.nextStep}</TableCell>
+                        <TableCell align="right">
+                            {console.log('VisaStatusConstants.nextStepsObj[row.profile.nextStep]',
+                            VisaStatusConstants.nextStepsObj[row.profile.nextStep])}
+                            {VisaStatusConstants.nextStepsObj[row.profile.nextStep]?.hr}
+                            {/* {row.profile.nextStep} */}
+                        </TableCell>
                         <TableCell align="right">
                             <Button 
                             variant="contained" 

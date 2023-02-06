@@ -108,7 +108,7 @@ const HrHousingDetail = (props) => {
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead className="tableHead">
                             <TableRow>
-                                <TableCell align="right">Full name</TableCell>
+                                <TableCell>Full name</TableCell>
                                 <TableCell align="right">Email</TableCell>
                                 <TableCell align="right">Phone number</TableCell>
                                 <TableCell align="right">Car information</TableCell>
