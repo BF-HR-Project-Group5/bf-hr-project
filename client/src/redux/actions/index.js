@@ -129,9 +129,23 @@ export const updateProfile = (profileData) => async dispatch => {
   return user
 };
 
+export const fecthAllHouses = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.get('/houses/all');
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
 
+export const createHouse = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.post('/houses/create', value);
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};
 
-
-
-
-
+export const deleteHouse = (value) => async dispatch => {
+  console.log('value',value)
+  const { data } = await axios.delete('/houses/' + value);
+  return data
+  // dispatch({ type: FETCH_HOUSE, payload: data });
+};

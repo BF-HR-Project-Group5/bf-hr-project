@@ -65,7 +65,8 @@ const LoginForm = (props) => {
 				// if (response.user.profile.status === 'APPROVED') {
 					// navigate('/hrVisaStatus');
 					// navigate('/housing');
-					navigate('/HiringManagement');
+					// navigate('/HiringManagement');
+					navigate('/HrHousingList');
 				// } 
 			// 	else {
 					// navigate('/onboardingApp');
