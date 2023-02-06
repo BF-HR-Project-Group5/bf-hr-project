@@ -132,7 +132,7 @@ const seedProfiles = async (count, documents) => {
 			license: {
 				number: `${i}abcde12345`,
 				expiration: new Date(),
-				link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jp`,
+				link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			},
 			phone: {
 				mobile: Number(`999999999${i}`),
@@ -182,7 +182,7 @@ const seedDocuments = async (count) => {
 		const height = rng(400, 600);
 		// const isLicense = i >= (count / 2);
 		const data = {
-			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jp`,
+			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			feedback: 'feedback on document',
 			status: `PENDING`,
 			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
