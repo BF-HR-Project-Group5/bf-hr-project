@@ -14,7 +14,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 
 const schema = yup.object({
-	userName: yup
+	username: yup
 		.string()
 		.required('user name is Required')
 		.test(
