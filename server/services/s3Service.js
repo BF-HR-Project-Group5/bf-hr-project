@@ -16,24 +16,14 @@ const s3 = new S3({
 });
 
 // uploads a file to s3
-<<<<<<< HEAD
-
-const uploadFile = async (file) => {
-	// const fileStream = fs.createReadStream(file.path);
-=======
 const uploadFile = async (file, userId) => {
 	const randomChars = crypto.randomBytes(3).toString('hex');
 	const Key = `${userId}.${randomChars}.${file.originalname}`;
->>>>>>> master
 
 	const uploadParams = {
 		Bucket: bucketName,
 		Body: file.buffer,
-<<<<<<< HEAD
-		Key: file.originalname,
-=======
 		Key,
->>>>>>> master
 		ContentType: file.mimetype,
 		ContentEncoding: 'base64',
 	};
