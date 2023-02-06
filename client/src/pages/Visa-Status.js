@@ -8,6 +8,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Navigation from '../components/navigation/navigation';
+import ManagedDocument from "../components/ManagedDocument";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,10 +27,12 @@ const useStyles = makeStyles((theme) => ({
     return ['OPT Receipt', 'OPT EAD', 'I-983', 'I-20'];
   }
   
-  function getStepContent(step) {
+  function getStepContent(step, props) {
+    console.log({step})
     switch (step) {
+      // mongoose keeps upload order so OPT Receipt = documents[0]
       case 0:
-        return 'Please upload a copy of your OPT EAD...';
+        return "Please upload a copy of your OPT EAD...";
       case 1:
         return 'Please download and fill out the I-983 form';
       case 2:
@@ -41,44 +44,51 @@ const useStyles = makeStyles((theme) => ({
 
 const VisaStatus = (props) => {
     console.log('props',props)
-
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
+
+    const [disabled, setDisabled] = React.useState(true);
+
     const steps = getSteps();
   
-    const isStepOptional = (step) => {
-      return step === 1;
-    };
+    // const isStepOptional = (step) => {
+    //   return step === 1;
+    // };
   
     const handleNext = () => {
       let newSkipped = skipped;
+      console.log({newSkipped})
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     };
   
-    const handleBack = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    // const handleBack = () => {
+    //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // };
   
-    const handleSkip = () => {
-      if (!isStepOptional(activeStep)) {
-        // You probably want to guard against something like this,
-        // it should never occur unless someone's actively trying to break something.
-        throw new Error("You can't skip a step that isn't optional.");
-      }
+    // const handleSkip = () => {
+    //   if (!isStepOptional(activeStep)) {
+    //     // You probably want to guard against something like this,
+    //     // it should never occur unless someone's actively trying to break something.
+    //     throw new Error("You can't skip a step that isn't optional.");
+    //   }
   
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped((prevSkipped) => {
-        const newSkipped = new Set(prevSkipped.values());
-        newSkipped.add(activeStep);
-        return newSkipped;
-      });
-    };
+    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //   setSkipped((prevSkipped) => {
+    //     const newSkipped = new Set(prevSkipped.values());
+    //     newSkipped.add(activeStep);
+    //     return newSkipped;
+    //   });
+    // };
   
-    const handleReset = () => {
-      setActiveStep(0);
-    };
+    // const handleReset = () => {
+    //   setActiveStep(0);
+    // };
+
+    // const stepToNext = () => {
+    //   setActiveStep(activeStep+1);
+    // }
   
     return (
       <div className={classes.root}>
@@ -103,13 +113,16 @@ const VisaStatus = (props) => {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+              {/* {getStepContent(activeStep, props)} */}
+              <Typography className={classes.instructions}></Typography>
+              <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep] } />
               <div>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={handleNext}
-                  className={classes.button}
+                  className={classes.button} 
+                  disabled= {props.auth.user?.profile?.documents[activeStep]?.status !== "APPROVED"}
                 >
                   {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                 </Button>
