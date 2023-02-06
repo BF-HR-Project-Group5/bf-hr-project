@@ -6,26 +6,14 @@ import Avatar from '@material-ui/core/Avatar';
 import NavSettings from './nav-settings';
 import '../../layout/nav.css';
 
-import {
-	HeaderWrapper,
-	Nav,
-	Title,
-	GoogleButton,
-	SignUpButton,
-	Img,
-	LoggedInButton,
-	LoginButton,
-	Logo,
-	ButtonGroup,
-} from '../styled-components/header/header';
+import { HeaderWrapper, Nav, Title, Logo } from '../styled-components/header/header';
 
 function Navigation({ auth }) {
 	console.log('auth', auth);
 	const [on, setOn] = useState(false);
 	return (
 		<>
-			{
-				auth ? (
+			{auth && (
 				<HeaderWrapper>
 					<Nav>
 						<Link to="/">
@@ -50,30 +38,22 @@ function Navigation({ auth }) {
 								<Link to="/visaStatus">Visa Status Management</Link>
 							</>
 						) : null}
-						<>
-							{auth ? (
-								<>
-									<Chip
-										avatar={<Avatar>{auth.user.username.charAt(0).toUpperCase()}</Avatar>}
-										label={auth.user.username}
-										clickable
-										color="primary"
-										onClick={(auth) => setOn(!on)}
-									/>
-									{on && (
-										<NavSettings
-											handleClose={() => setOn(false)}
-											data={auth}
-										/>
-									)}
-								</>
-								) : (<></>)
-							}
-						</>
+							<Chip
+								avatar={<Avatar>{auth.user.username.charAt(0).toUpperCase()}</Avatar>}
+								label={auth.user.username}
+								clickable
+								color="primary"
+								onClick={(auth) => setOn(!on)}
+							/>
+							{on && (
+								<NavSettings
+									handleClose={() => setOn(false)}
+									data={auth}
+								/>
+							)}
 					</Nav>
 				</HeaderWrapper>
-				) : (<></>)
-			}
+			)}
 		</>
 	);
 }

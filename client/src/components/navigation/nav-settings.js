@@ -1,9 +1,9 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import { Logout, Text, ProfileStyled } from '../styled-components/header/header-settings';
-import { useHistory,Route,useLocation,useParams,useMatch, Link } from 'react-router-dom';
-import { createBrowserHistory } from 'history'
+import { Logout } from '../styled-components/header/header-settings';
+import { Link } from 'react-router-dom';
 import { submitLogout } from '../../redux/actions/index';
+import { connect } from 'react-redux';
 
 function NavSettings(props) {
     console.log('props',props)
@@ -12,11 +12,10 @@ function NavSettings(props) {
     const handleSubmit = async(e)=>{
       e.preventDefault() 
       try {
-        const fn = submitLogout()
-        fn().then((res)=>{
-					navigate('/login');
-					props.handleClose();
-        });
+        await props.submitLogout()
+				navigate('/login');
+				props.handleClose();
+
       } catch (err) {
         console.log(err);
       }
@@ -43,5 +42,6 @@ function NavSettings(props) {
     </>
   );
 }
-export default NavSettings;
+const mapStateToProps = ({ auth }) => ({ auth });
+export default connect(mapStateToProps, {submitLogout})(NavSettings);
 
