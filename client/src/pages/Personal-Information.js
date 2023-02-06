@@ -676,7 +676,7 @@ const PersonalInformation = (props) => {
 							</div>
 						</Paper>
 					</div>
-					<div className="row my-5">
+					{props.auth?.user?.profile?.citizenType === 'VISA' && <div className="row my-5">
 						<SectionTitle
 							title="Employment"
 							isEditing={isEditingEmployment}
@@ -770,7 +770,7 @@ const PersonalInformation = (props) => {
 								/>
 							</div>
 						</Paper>
-					</div>
+					</div>}
 					<div className="row my-5">
 						<SectionTitle
 							title="Emergency Contacts"
