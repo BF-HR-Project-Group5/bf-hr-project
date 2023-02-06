@@ -395,7 +395,7 @@ export const json = {
 	width: '864px',
 };
 
-const getJson = (user, filled = false, editable = true) => {
+export const getJson = (user, filled = false, editable = true) => {
 	return {
 		logo: '',
 		logoFit: 'cover',

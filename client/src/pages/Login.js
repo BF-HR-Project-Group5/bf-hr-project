@@ -86,7 +86,7 @@ const LoginForm = (props) => {
 			if (response?.user?.role === 'hr') {
 				navigate('/home');
 			} else {
-				if (response.user.profile.status === 'APPROVED') {
+				if (response?.user?.profile?.status === 'APPROVED') {
 					navigate('/personalInfo');
 					// navigate('/hrVisaStatus');
 					// navigate('/housing');
