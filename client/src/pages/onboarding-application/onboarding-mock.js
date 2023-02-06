@@ -896,7 +896,7 @@ export const getDynamicSurveyJson = (user, filled = false, editable = true) => {
 	 
 	const finalJson = editable
 		? json
-		: JSON.stringify(json).replaceAll(`"enabledIf":""`, `"enabledIf":"{licenseNumber}='12478902345Yes'"`);
+		: JSON.stringify(json).replaceAll(`"enabledIf":""`, `"enabledIf":"{ssn}='abcdefgabcYes'"`);
 	console.log({finalJson});
 	return finalJson;
 };
