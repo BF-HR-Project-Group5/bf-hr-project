@@ -21,15 +21,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const columns = [
+        { title: "Address's line2",field: 'address.line2'},
+    ]
+
 const HrHousingDetail = (props) => {
     console.log('props',props)
     const classes = useStyles();
 	const navigate = useNavigate();
     const location = useLocation();
     const {houseInfo,reports,roommates} = location.state
-    const [columns, setColumns] = useState([
-        { title: "Address's line2",field: 'address.line2'},
-    ]);
 
     const handleClickToComment = (index,row,e)=>{
         navigate('/hrHousingComment',{state:row});
