@@ -58,7 +58,7 @@ const Comments = (props) => {
                         onRowAdd: newData =>
                             new Promise((resolve, reject) => {
                                 console.log('props',props)
-                                newData.createdBy = props.auth.user.name.last + ' ' + props.auth.user.name.first
+                                newData.createdBy = props.auth.user.username
                                 const d = new Date();
                                 const n = d.toLocaleDateString();
                                 newData.updatedAt = n
@@ -85,7 +85,7 @@ const Comments = (props) => {
                                         console.log('res',response)
                                         setData([...dataUpdate]);
                                     } catch (err) {
-                                    console.log(err);
+                                        console.log(err);
                                     }
                                 })()
                             }),

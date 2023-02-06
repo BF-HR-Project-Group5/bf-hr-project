@@ -6,4 +6,8 @@
 }
 .MuiPaper-root .col-3 span {
   margin-left: 5px;
+}
+
+.nameBtn {
+  cursor: pointer;
 }/*# sourceMappingURL=hr-housing-detail.css.map */

@@ -21,6 +21,7 @@ const HiringManagement = lazy(() => import('./pages/hiring-management/Hiring-Man
 const OnboardingAppDetail = lazy(() => import('./pages/hiring-management/Onboarding-App-Detail'));
 const HrHousingList = lazy(() => import('./pages/housing-management/Hr-Housing-List'));
 const HrHousingDetail = lazy(() => import('./pages/housing-management/Hr-Housing-Detail'));
+const HrHousingComment = lazy(() => import('./pages/housing-management/Hr-Housing-Comment'));
 
 function App(props) {
 	return (
@@ -187,7 +188,15 @@ function App(props) {
 							</RequireAuthOrHr>
 						}
 					/>
-					
+					<Route
+						path="/hrHousingComment"
+						exact
+						element={
+							<RequireAuthOrHr hrRequired={true}>
+								<HrHousingComment />
+							</RequireAuthOrHr>
+						}
+					/>
 				</Routes>
 			</Suspense>
 		</BrowserRouter>
