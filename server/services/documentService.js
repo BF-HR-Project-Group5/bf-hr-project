@@ -68,16 +68,16 @@ const replaceDocumentById = async (
 };
 
 module.exports = {
-	getDocumentById,
-	getDocumentByLink,
-	getDocumentsByStatus,
-	getDocumentsByType,
+	// getDocumentById,
+	// getDocumentByLink,
+	// getDocumentsByStatus,
+	// getDocumentsByType,
 	createDocument,
-	updateDocumentById,
+	// updateDocumentById,
 	rejectDocumentIdWithFeedback,
 	approveDocumentId,
 	rejectDocumentId,
-	pendingDocumentId,
-	deleteDocumentById,
-	replaceDocumentById,
+	// pendingDocumentId,
+	// deleteDocumentById,
+	// replaceDocumentById,
 };

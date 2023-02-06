@@ -2,8 +2,7 @@ const userService = require('../services/userService');
 const profileService = require('../services/profileService');
 const documentService = require('../services/documentService');
 const s3Service = require('../services/s3Service');
-const catchAsync = require( '../utils/catchAsync' );
-
+const catchAsync = require('../utils/catchAsync');
 
 // already logged in
 // 1. get user from id, get profile from user
@@ -14,23 +13,23 @@ const catchAsync = require( '../utils/catchAsync' );
 
 // body: { document: fileToUpload, type: nameTypeOfFile (string) }
 const createDocument = catchAsync(async (req, res) => {
-	console.log('createDocument controller:', {reqUser: req.user, reqBody: req.body });
+	console.log('createDocument controller:', { reqUser: req.user, reqBody: req.body });
 	const userId = req.user._id;
 
 	const user = await userService.getUserById(userId);
-	if (!user) throw {statusCode: 404, message: 'User not found'};
+	if (!user) throw { statusCode: 404, message: 'User not found' };
 
 	const profile = await profileService.getProfileById(user.profile);
-	if (!profile) throw {statusCode: 404, message: 'Profile not found'};
+	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 
 	// upload the file, and get the response
-	console.log('make sure we have a file in here', {files: req.files, req});
+	console.log('make sure we have a file in here', { files: req.files, req });
 	const file = req.file;
-	if (!file) throw {statusCode: 400, message: 'Please include a file'};
+	if (!file) throw { statusCode: 400, message: 'Please include a file' };
 	const response = await s3Service.uploadFile(file);
 
 	const link = response.Location;
-	if (!link) throw {statusCode: 500, message: 'Error uploading document to S3'};
+	if (!link) throw { statusCode: 500, message: 'Error uploading document to S3' };
 
 	// save document
 	const document = await documentService.createDocument({
@@ -42,57 +41,57 @@ const createDocument = catchAsync(async (req, res) => {
 	// add the document to the profile
 	profile.documents.push(document);
 
-	// if (req.body.type)
-
 	// save the profile
 	await profile.save();
-	return res.status(202).send({document, profile, user});
+
+	// increase the step???
+	const freshProfile = await profileService.putStepToNextForProfileId(profile._id);
+
+	return res.status(202).send({ document, profile: freshProfile, user });
 });
-
-
 
 // get all documents from logged-in user
 // get user,
 // get profile and populate
 //return documents array
 const getAllDocumentsFromUser = catchAsync(async (req, res) => {
-	console.log('getAllDocumentsForUser controller:', {reqUser: req.user, reqBody: req.body });
+	console.log('getAllDocumentsForUser controller:', { reqUser: req.user, reqBody: req.body });
 	const userId = req.user._id;
 
 	const user = await userService.getUserById(userId);
-	if (!user) throw {statusCode: 404, message: 'User not found'};
+	if (!user) throw { statusCode: 404, message: 'User not found' };
 
 	const profile = await profileService.getProfileByIdAndPopulate(user.profile);
-	if (!profile) throw {statusCode: 404, message: 'Profile not found'};
+	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 
-	return res.status(202).send({user, profile, documents: profile.documents});
-})
-
+	return res.status(202).send({ user, profile, documents: profile.documents });
+});
 
 // replaceDocument ???
 
-
-// /document/:documentId/approve (GET or POST)
+// /documents/:documentId/approve (GET or POST)
 // do I update the user's nextStep?
 const approveDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const document = await documentService.approveDocumentId(docId);
-	return res.status(200).send({document})
+
+	// should step forward the profile's currentStep???
+	const userProfile = await profileService.putStepToNextForProfileWithDocumentId(docId);
+
+	return res.status(200).send({ document, profile: userProfile });
 });
 
-
-// /document/:documentId/reject POST
+// /documents/:documentId/reject POST
 const rejectDocument = catchAsync(async (req, res) => {
 	const docId = req.params.documentId;
 	const feedback = req.body.feedback;
 	const document = await documentService.rejectDocumentIdWithFeedback(docId, feedback);
-	return res.status(200).send({document})
+	return res.status(200).send({ document });
 });
-
 
 module.exports = {
 	createDocument,
 	getAllDocumentsFromUser,
 	approveDocument,
 	rejectDocument,
-}
+};

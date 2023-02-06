@@ -157,7 +157,7 @@ const getAllUsersAndPopulate = () => User.find().populate(DEEP_POPULATE_PATH);
 const filterVisaProfiles = (users) =>
 	users.filter((user) => user?.profile?.citizenType === 'VISA');
 
-const getAllVisaUsers = async () => {
+const getAllVisaUsersAndPopulate = async () => {
 	const users = await getAllUsersAndPopulate();
 	return filterVisaProfiles(users);
 };
@@ -196,19 +196,19 @@ module.exports = {
 	getUserByEmail,
 	getUserById,
 	getUserByUsername,
-	getUsersByFirstName,
-	getUsersByLastName,
-	getUsersByMiddleName,
+	// getUsersByFirstName,
+	// getUsersByLastName,
+	// getUsersByMiddleName,
 	queryUsersByFullName,
-	getUsersByPreferredName,
+	// getUsersByPreferredName,
 	createUser,
 	updateUserById,
 	getUserByIdAndPopulate,
-	putDocumentIdToUserId,
+	// putDocumentIdToUserId,
 	putHouseIdToUserId,
 	queryUsers,
 	getAllUsersAndPopulate,
-	getAllVisaUsers,
+	getAllVisaUsersAndPopulate,
 	queryUsersByFullNameAndPopulate,
 	queryVisaUsersByFullNameAndPopulate,
 };

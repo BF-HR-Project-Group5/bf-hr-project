@@ -5,11 +5,9 @@ const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 const getProfileById = async (id) => Profile.findById(id);
 
 const createProfile = async (profileBody) => {
+	const isCitizenOrGreenCard = profileBody.citizenType !== 'VISA';
 
-	const isNotVisa = profileBody.citizenType !== 'VISA';
-	if (isNotVisa) {
-		// is citizen or green card
-		// complete with documents
+	if (isCitizenOrGreenCard) {
 		const completedStepInt = config.application.nextStepCode.length - 1;
 		const stepCodeString = config.application.nextStepCode[completedStepInt];
 
@@ -18,14 +16,16 @@ const createProfile = async (profileBody) => {
 
 	} else {
 		const isNotOPT = profileBody?.document?.type === config.document.types[0];
+
 		if (isNotOPT) {
 			// they uploaded something other than OPT receipt
-			// complete with documents
+			// => complete with documents
 			const completedStepInt = config.application.nextStepCode.length - 1;
 			const stepCodeString = config.application.nextStepCode[completedStepInt];
 
 			profileBody.currentStepInt = completedStepInt;
 			profileBody.nextStep = stepCodeString;
+
 		} else {
 			// they uploaded an OPT receipt
 			profileBody.currentStepInt = 0;
@@ -105,6 +105,7 @@ const getProfileByIdAndPopulate = async (profileId) => {
 };
 
 const putStepToNextForProfileId = async (profileId) => {
+	console.log('putStepToNextForProfileId:', {profileId});
 	const profile = await getProfileById(profileId);
 	if (!profile) {
 		throw { statusCode: 404, message: 'putStepToNextForProfileId: Profile not found' };
@@ -115,8 +116,8 @@ const putStepToNextForProfileId = async (profileId) => {
 
 	// if NOT already complete...
 	// get next int, get next step string
-	const nextInt = profile.currentStepInt++;
-	const nextCode = config.application.nextStepCode[nextStepInt];
+	const nextInt = profile.currentStepInt + 1;
+	const nextCode = config.application.nextStepCode[nextInt];
 
 	// save next int and string
 	profile.currentStepInt = nextInt;
@@ -124,17 +125,33 @@ const putStepToNextForProfileId = async (profileId) => {
 
 	await profile.save();
 
-	return profile;
+	return getProfileByIdAndPopulate(profileId);
 };
+
+const getProfileWithDocumentId = async (docId) => {
+	const foundProfile = await Profile.findOne({documents: docId});
+	console.log('getProfileWithDocumentId:', {docId, foundProfile, profileDocs: foundProfile.documents});
+	return foundProfile
+}
+
+const putStepToNextForProfileWithDocumentId = async (docId) => {
+	const profile = await getProfileWithDocumentId(docId);
+	console.log('putNextStepForProfileWithDocumentId', {profile, id: profile._id});
+	const updatedProfile = await putStepToNextForProfileId(profile._id);
+	console.log('putNextStepForProfileWithDocumentId', {updatedProfile});
+	return updatedProfile;
+}
 
 module.exports = {
 	getProfileById,
 	getProfileByIdAndPopulate,
 	createProfile,
 	updateProfileById,
-	addLicenseIdToProfileId,
+	// addLicenseIdToProfileId,
 	addDocumentIdToProfileId,
 	approveProfileId,
 	rejectProfileIdWithFeedback,
 	putStepToNextForProfileId,
+	getProfileWithDocumentId,
+	putStepToNextForProfileWithDocumentId,
 };
