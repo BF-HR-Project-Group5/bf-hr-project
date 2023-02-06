@@ -9,6 +9,13 @@ export const submitLogin = (values) => async (dispatch) => {
 	return data;
 };
 
+export const refreshUser = () => async (dispatch) => {
+	const { data } = await axios.get('/profile');
+	console.log({ data });
+	dispatch({ type: FETCH_USER, payload: data });
+	return data;
+};
+
 export const submitSignup = (values, params) => async (dispatch) => {
 	console.log('values', values);
 	const { data } = await axios.post(`/user/register/${params.token}`, values);
@@ -92,9 +99,9 @@ export const documentCreate = (docData) => async (dispatch) => {
 		headers: { 'Content-Type': 'multipart/form-data' },
 	});
 
-	console.log({ data });
+	console.log('documentCreate action', { data });
 
-	dispatch({ type: FETCH_USER, payload: data.user });
+	dispatch({ type: FETCH_USER, payload: {user:data.user} });
 
 	return data;
 };

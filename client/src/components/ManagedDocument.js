@@ -73,7 +73,7 @@ const ManagedDocument = (props) => {
 				document ? (
 					// if it does exist it should render the document.status, .type, and render Preview and Download buttons using the document.link
 					<div>
-						<h3 style={{margin: '2rem 0'}}>Document type: {document.type}</h3>
+						<h3 style={{margin: '2rem 0'}}>Document type: {config.nextStepsObj[props.user.profile.nextStep].doc}</h3>
 						<div style={{margin: '2rem 0'}}>Status: {document.status}</div>
 						{/* go to next case */}
 						{/* (cond1) ? "something" : (cond2) ? "something2" : "something3" */}

@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Navigation from '../components/navigation/navigation';
 import ManagedDocument from '../components/ManagedDocument';
+import  {refreshUser} from '../redux/actions/index';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -101,6 +102,15 @@ const VisaStatus = (props) => {
 	//   setActiveStep(activeStep+1);
 	// }
 
+	useEffect(() => {
+		try {
+			props.refreshUser();
+
+		} catch(e) {
+			console.error('visa status loading error:', e);
+		}
+	}, [])
+
 	return (
 		<div className={classes.root}>
 			<Stepper activeStep={activeStep}>
@@ -154,4 +164,4 @@ const mapStateToProps = ({ auth }) => ({
 	auth,
 });
 
-export default connect(mapStateToProps)(VisaStatus);
+export default connect(mapStateToProps, {refreshUser})(VisaStatus);

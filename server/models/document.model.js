@@ -7,7 +7,7 @@ const DocumentSchema = new Schema(
 		link: { type: String },
 		feedback: { type: String, maxlength: 256 },
 		status: { type: String, enum: config.document.statuses, default: 'PENDING'},
-		type: { type: String, enum: config.document.types, default: 'F1(CPT/OPT)' },
+		type: { type: String, enum: config.document.allTypes, default: 'F1(CPT/OPT)' },
 	},
 	{ timestamps: true }
 );
