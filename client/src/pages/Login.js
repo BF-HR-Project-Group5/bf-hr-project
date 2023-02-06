@@ -88,10 +88,6 @@ const LoginForm = (props) => {
 			} else {
 				if (response?.user?.profile?.status === 'APPROVED') {
 					navigate('/personalInfo');
-					// navigate('/hrVisaStatus');
-					// navigate('/housing');
-					// navigate('/HiringManagement');
-					// navigate('/HrHousingList');
 				} else {
 					navigate('/onboardingApp');
 				}
@@ -100,6 +96,18 @@ const LoginForm = (props) => {
 			console.log(err);
 		}
 	};
+	useEffect(() => {
+		if (!props?.auth?.user) return;
+		if (props?.auth?.user?.role === 'hr') {
+			navigate('/home');
+		} else {
+			if (props?.auth?.user?.profile?.status === 'APPROVED') {
+				navigate('/personalInfo');
+			} else {
+				navigate('/onboardingApp');
+			}
+		}
+	},[]);
 
 	return (
 		<StyledSection>
@@ -150,4 +158,10 @@ const LoginForm = (props) => {
 };
 
 // export default Login;
-export default connect(null, { submitLogin })(LoginForm);
+// export default connect(null, { submitLogin })(LoginForm);
+
+const mapStateToProps = ({ auth }) => ({
+	auth,
+});
+
+export default connect(mapStateToProps, { submitLogin })(LoginForm);
