@@ -1,0 +1,424 @@
+body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 1fr 92px;
+}
+
+button {
+  font-size: 20px;
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+#left-column {
+  background: #000;
+}
+
+#nav {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+#nav hr {
+  border: 1px solid #282828;
+  margin: 1rem 0;
+}
+#nav a {
+  color: #b2b2b2;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+#nav a svg.icon {
+  margin-right: 0;
+  display: inline;
+  stroke: #b2b2b2;
+}
+#nav a #nav-likes svg.icon {
+  fill: #fff;
+  stroke: #fff;
+}
+#nav a.active {
+  color: #fff;
+}
+#nav a.active svg.icon {
+  fill: white;
+}
+#nav a div.text {
+  margin-left: -0.2rem;
+  padding-left: 1rem;
+  display: inline;
+}
+#nav a svg.icon:hover,
+#nav a div.text:hover {
+  color: #fff;
+  fill: #fff;
+  stroke: #fff;
+}
+#nav a svg.icon:hover ~ div.text,
+#nav a div.text:hover ~ div.text {
+  color: #fff;
+}
+#nav a svg.icon:hover {
+  fill: #fff;
+  stroke: #fff;
+}
+
+#notifications-container {
+  padding: 1rem 0.5rem;
+}
+#notifications-container p.notification {
+  visibility: hidden;
+  padding: 0.8rem 0.4rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  transition: 100ms ease-in-out;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+#notifications-container p.notification span {
+  text-align: left;
+}
+#notifications-container p.notification button {
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  transition: 100ms ease-in-out;
+  padding: 0;
+}
+#notifications-container p.notification button:hover {
+  color: #222;
+}
+#notifications-container p.notification#error.showing {
+  background-color: #ffeeee;
+  border: 1px solid #bbaaaa;
+}
+#notifications-container p.notification#error.showing button {
+  color: #faa;
+}
+#notifications-container p.notification#message.showing {
+  background-color: #eeffee;
+  border: 1px solid #aabbaa;
+}
+#notifications-container p.notification#message.showing button {
+  color: #afa;
+}
+
+#header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  background: #222;
+  position: sticky;
+  transition: background 150ms ease-in-out;
+  color: #fff;
+}
+#header.transparent {
+  background: #070707;
+}
+#header #header-container {
+  margin: 0 3rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+#header #header-container div {
+  cursor: pointer;
+  padding: 1rem;
+}
+#header #window-buttons {
+  margin: 0;
+  align-self: flex-start;
+  width: 100px;
+  height: 20px;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  background: #101010;
+  color: #ddd;
+  padding-left: 0;
+}
+#header #window-buttons li {
+  background: #101010;
+}
+
+div#content-wrapper {
+  overflow-y: scroll;
+  color: #fff;
+  background: #222;
+}
+div#content-wrapper #content {
+  padding: 0 2rem 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+div#content-wrapper #content #login-content,
+div#content-wrapper #content #search-content,
+div#content-wrapper #content #home-content,
+div#content-wrapper #content #profile-content,
+div#content-wrapper #content #likes-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+}
+div#content-wrapper #content section > div.title {
+  margin: 0 auto;
+  text-align: center;
+  height: 200px;
+  width: calc(100% - 40px);
+  background-color: #000;
+  display: grid;
+  border-radius: 20px;
+  padding: 20px;
+}
+div#content-wrapper #content section > div.title h1 {
+  font-size: 2.5rem;
+  line-height: 0rem;
+}
+div#content-wrapper #content section > div.title p.subtitle {
+  font-size: 1.25rem;
+  line-height: 0rem;
+}
+
+#likes-songs,
+#profile-information,
+#search,
+#search-songs,
+#home-songs,
+#login,
+#edit-profile {
+  padding: 40px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.2509803922);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#login-content form,
+#search-content form,
+#profile-content form {
+  margin: 0 auto;
+  display: grid;
+  gap: 0.6rem;
+  font-size: 20px;
+  width: calc(100% - 80px);
+}
+#login-content form div,
+#search-content form div,
+#profile-content form div {
+  width: 400px;
+}
+#login-content form label,
+#search-content form label,
+#profile-content form label {
+  display: block;
+}
+#login-content form input,
+#search-content form input,
+#profile-content form input {
+  font-size: 20px;
+  width: 98%;
+}
+#login-content form div.buttons,
+#search-content form div.buttons,
+#profile-content form div.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+#login-content form div.buttons button,
+#search-content form div.buttons button,
+#profile-content form div.buttons button {
+  font-size: 20px;
+}
+#login-content form div.buttons button#complete,
+#search-content form div.buttons button#complete,
+#profile-content form div.buttons button#complete {
+  background-color: #33ff33;
+}
+
+div.songItem {
+  background-color: rgba(255, 255, 255, 0.1254901961);
+  border-radius: 20px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  gap: 0.8rem;
+}
+div.songItem div.title {
+  padding: 0 0.5rem;
+  font-size: 2rem;
+}
+div.songItem div.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+div.songItem div.buttons-container button {
+  flex: 1;
+}
+div.songItem div.buttons-container button.liked, div.songItem div.buttons-container button.followed {
+  background: #ddffdd;
+}
+div.songItem div.rightCol {
+  display: grid;
+}
+div.songItem div.rightCol div.key,
+div.songItem div.rightCol div.val {
+  flex: 1;
+}
+div.songItem div.rightCol div.key.small,
+div.songItem div.rightCol div.val.small {
+  font-size: 0.9rem;
+}
+div.songItem div.rightCol div.key {
+  text-align: left;
+  color: #aaa;
+}
+div.songItem div.rightCol div.val {
+  padding-left: 10px;
+  text-align: left;
+}
+
+div#home-songs.songs-grid,
+div#search-songs.songs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  grid-template-rows: repeat(auto-fill, 300px);
+  gap: 80px;
+}
+div#home-songs.songs-grid div.songItem,
+div#search-songs.songs-grid div.songItem {
+  width: calc(300px - 2rem);
+  height: calc(300px - 2rem);
+  grid-template-columns: 60% 1fr;
+  grid-template-rows: 40% 1fr;
+}
+div#home-songs.songs-grid div.title,
+div#search-songs.songs-grid div.title {
+  grid-column: 1/3;
+}
+
+div#likes-songs.songs-list {
+  gap: 20px;
+}
+div#likes-songs.songs-list div.songItem {
+  width: calc(100% - 4rem);
+  height: calc(100% + 2rem);
+  grid-template-columns: 80% 1fr;
+  grid-template-rows: 60% 1fr;
+}
+div#likes-songs.songs-list div.songItem div.title {
+  grid-column: 1/2;
+}
+div#likes-songs.songs-list div.songItem div.buttons-container {
+  grid-column: 1/2;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 2rem;
+}
+div#likes-songs.songs-list div.songItem div.rightCol {
+  grid-column: 2/3;
+  grid-row: 1/3;
+  grid-template-columns: auto 1fr;
+}
+
+#profile-information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+#profile-information h2 {
+  margin: 0 auto;
+}
+#profile-information #userInfo {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  width: 100%;
+  gap: 0.4rem;
+}
+#profile-information #userInfo span.li-key {
+  color: #aaa;
+  text-align: right;
+}
+#profile-information #userInfo span.li-val {
+  text-align: left;
+}
+
+form#edit-profile {
+  align-self: center;
+}
+form#edit-profile #edit-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+}
+form#edit-profile #edit-title #edit-toggle {
+  padding: 0.5rem;
+  background: #eee;
+}
+form#edit-profile #edit-title #edit-toggle.pressed {
+  background: #999;
+}
+form#edit-profile #edit-profile-content {
+  margin: 0 auto;
+  width: 400px;
+  display: grid;
+  gap: 0.6rem;
+}
+form#edit-profile #edit-profile-content div.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+#logout {
+  margin: 0 auto;
+  font-size: 20px;
+  padding: 10px 16px;
+}
+
+#media-player {
+  grid-column: 1/3;
+  background: #181818;
+  color: #888;
+  border-top: 1px solid #282828;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 236px 1fr 236px;
+  padding: 0 1rem;
+}
+#media-player * {
+  margin: 0 auto;
+}
+#media-player div {
+  grid-column: 1/2;
+}
+#media-player img {
+  grid-column: 2/3;
+}
+#media-player img.volume {
+  grid-column: 3/4;
+}/*# sourceMappingURL=main.css.map */
