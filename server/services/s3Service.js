@@ -32,19 +32,6 @@ const uploadFile = async (file, userId) => {
 	console.log({uploadPromise});
 	return uploadPromise;
 };
-// const uploadFile = async (file) => {
-// 	const fileStream = fs.createReadStream(file.path);
-
-// 	const uploadParams = {
-// 		Bucket: bucketName,
-// 		Body: fileStream,
-// 		Key: file.filename,
-// 	};
-
-// 	const uploadPromise = await s3.upload(uploadParams).promise();
-// 	console.log({uploadPromise});
-// 	return uploadPromise;
-// };
 
 const getFileStream = (fileKey) => {
 	const downloadParams = {
