@@ -8,16 +8,16 @@ import fileDownload from '../utils/fileDownload';
 import filePreview from '../utils/filePreview';
 
 // add image, files, desc to formData and send to server via POST
-async function postImage({ doc }) {
-    const formData = new FormData();
-    formData.append("file", doc)
+// async function postImage({ doc }) {
+//     const formData = new FormData();
+//     formData.append("file", doc)
 
-    const result = await axios.post(
-        '/document/create', formData, { headers: { 'Content-Type': 'multipart/form-data' } }
-    )
-    // console.log({ result })
-    return { resultDoc: result.data.document.link }
-}
+//     const result = await axios.post(
+//         '/document/create', formData, { headers: { 'Content-Type': 'multipart/form-data' } }
+//     )
+//     // console.log({ result })
+//     return { resultDoc: result.data.document.link }
+// }
 
 const ManagedDocument = (props) => {
     console.log({ props })
@@ -25,23 +25,48 @@ const ManagedDocument = (props) => {
     console.log(document)
 
 
-    const [doc, setDoc] = useState("")
+    const [file, setFile] = useState("")
     const [clicked, setClicked] = useState(false)
+    const [message, setMessage] = useState('')
     const [error, setError] = useState("")
+
+    // useEffect(() => {
+    //     let timer;
+    //     if (message !== '') {
+    //         timer = setTimeout(() => setMessage(''), 8000) // set timer to reset message to empty after 8 secs
+    //     }
+    //     return () => clearTimeout(timer); // cleanup func
+    // }, [message]); // watch message
 
     const fileSelectedDoc = e => {
         // console.log('e.target.files', e.target.files)
-        const docFile = e.target.files[0]
-        console.log('file', docFile)
-        setDoc(docFile)
-        docFile = ""
+        console.log('e', e.target)
+        const file = e.target.files[0]
+        setFile(file)
+        console.log('file', file)
+
     }
 
     const submit = async e => {
         e.preventDefault()
-        const location = await postImage({ doc: doc })
-        console.log("location", location)
-        if (!location) setError("Please Try Again.")
+        // const location = await postImage({ doc: doc })
+        // console.log("location", location)
+        // if (!location) setError("Please Try Again.")
+        const formData = new FormData();
+        formData.append("file", file)
+
+        await axios.post('/document/create', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+            .then(() => {
+                setMessage('Upload Success, Wait for HR Review');
+                setFile(null);
+                // reset file input
+                e.target.files = null;
+            })
+            .catch((e) => setMessage('Error uploading:', e))
+
+
+        // is now empty
+        console.log(e.target.files);
     }
 
     return (
@@ -57,7 +82,6 @@ const ManagedDocument = (props) => {
                         {document.status == "PENDING" ? "Waiting for HR to approve" :
                             document.status == "APPROVED" ?
                                 <>
-                                    <p>"Go To Next Step..." </p>
                                     <ListItem button>
                                         <ListItemText primary={document.type} />
                                         <ButtonGroup color="primary" aria-label="outlined primary button group">
@@ -126,22 +150,30 @@ const ManagedDocument = (props) => {
                         }
 
                     </div>
-                ) :
+                ) : 
+                (
 
-                    <form onSubmit={submit}>
-                        <Input onChange={fileSelectedDoc} type="file" name="doc" />
-                        <ButtonGroup>
+                    <>
+                        <form onSubmit={submit}>
+                            {/* <Input onChange={fileSelectedDoc} type="file" name="doc" /> */}
+                            <input type="file" id="chooseFile" style="display:none;" />
+                                <label class="upload_bp" for="fileinp">
+                                    <p onChange={fileSelectedDoc} type="file" name="doc">upload</p>
+                                </label>
 
-                            <Button
-                                type="submit"
-                                name="upload"
-                            >
-                                Upload
-                            </Button>
-                        </ButtonGroup>
-                        {error}
-                    </form>
+                                <ButtonGroup>
 
+                                    <Button
+                                        type="submit"
+                                        name="upload"
+                                    >
+                                        Upload
+                                    </Button>
+                                </ButtonGroup>
+                        </form>
+                        <p>{message}</p>
+                    </>
+                )
             }
         </>
     )
