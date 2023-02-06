@@ -32,7 +32,7 @@ const HrVisaStatusDoc = (props) => {
             onClick: (event, rowData) => {
 							const split = rowData.link.split('.');
 							const ext = split[split.length - 1];
-							console.log({event, rowData});
+							console.log({event, rowData, ext});
                 fileDownload(rowData.link,`${location.state.name.first}${location.state.name.last}${rowData.type}.${ext}`)
             }
         }

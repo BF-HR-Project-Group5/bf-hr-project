@@ -6,9 +6,13 @@ import { submitLogin } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
-import { getDynamicSurveyJson, surveyJson, } from './onboarding-mock';
+import { getDynamicSurveyJson, surveyJson } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 import Chip from '@material-ui/core/Chip';
+import List from '@material-ui/core/List';
+import { Paper } from '@material-ui/core';
+import DocumentRow from '../../components/DocumentRow';
+import '../../layout/Personal-Information.css';
 
 const buildFormData = (formData, data, parentKey) => {
 	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -111,23 +115,28 @@ const OnboardingApplication = (props) => {
 	const navigate = useNavigate();
 	const [message, setMessage] = useState('');
 
+	let filled = false;
+	let editable = true;
 	let surveyDynamic;
 	if (props.auth?.user?.profile?.status === 'REJECTED') {
 		// should be filled and editable
-		const json = getDynamicSurveyJson(props.auth?.user, true);
-		surveyDynamic = new Model(json);
+		filled = true;
 	} else if (
 		props.auth?.user?.profile?.status === 'APPROVED' ||
 		props.auth?.user?.profile?.status === 'PENDING'
 	) {
 		// filled in and not editable
 		// TODO: make uneditable!
-		const json = getDynamicSurveyJson(props.auth?.user, true, false);
-		surveyDynamic = new Model(json);
+		filled = true;
+		editable = false;
 	} else {
 		// Not yet submitted, should be empty and editable
-		surveyDynamic = new Model(surveyJson);
+		filled = false;
+		editable = true;
 	}
+	const json = getDynamicSurveyJson(props.auth?.user, filled, editable);
+	surveyDynamic = new Model(json);
+	// surveyDynamic = new Model(surveyJson);
 
 	surveyDynamic.onComplete.add(async (sender, options) => {
 		// console.log({data: sender.data});
@@ -164,11 +173,28 @@ const OnboardingApplication = (props) => {
 							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
 						/>
 					</h5>
-					<p style={message ? {padding: '0.5rem', border: '1px solid #ffaaaa', background: '#ffeeee', borderRadius: '4px', margin: '0.5rem auto'} : {padding: '0.5rem',  borderRadius: '4px', margin: '0.5rem auto'}}>
+					<p
+						style={
+							message
+								? {
+										padding: '0.5rem',
+										border: '1px solid #ffaaaa',
+										background: '#ffeeee',
+										borderRadius: '4px',
+										margin: '0.5rem auto',
+								  }
+								: { padding: '0.5rem', borderRadius: '4px', margin: '0.5rem auto' }
+						}
+					>
 						{message && (
 							<>
 								{message}
-								<button style={{border: 'none', background: '#00000000'}} onClick={() => setMessage('')}>X</button>
+								<button
+									style={{ border: 'none', background: '#00000000' }}
+									onClick={() => setMessage('')}
+								>
+									X
+								</button>
 							</>
 						)}
 					</p>
@@ -176,6 +202,56 @@ const OnboardingApplication = (props) => {
 				<div className="sd-hidden"></div>
 			</div>
 			<Survey model={surveyDynamic} />
+			{filled && (
+				<div className="row my-5">
+					<div className="title">
+						<h2>Documents</h2>
+					</div>
+					<Paper
+						variant="outlined"
+						className="document-container"
+					>
+						<div
+							style={{
+								width: '100%',
+								maxWidth: 360,
+							}}
+						>
+							<List
+								component="nav"
+								aria-label="secondary mailbox folders"
+							>
+								{/* Driver License */}
+								{props.auth.user?.profile?.license.link && (
+									<DocumentRow
+										link={props.auth.user.profile.license.link}
+										user={props.auth.user}
+										title="Driver's License"
+									/>
+								)}
+								{/* Documents */}
+								{props.auth.user?.profile?.documents.length > 0 &&
+									props.auth.user.profile.documents.map((doc, i) => (
+										<DocumentRow
+											key={i}
+											link={doc.link}
+											user={props.auth.user}
+											title={doc.type}
+										/>
+									))}
+								{/* Profile Photo */}
+								{props.auth.user?.profile?.photo && (
+									<DocumentRow
+										link={props.auth.user.profile.photo}
+										user={props.auth.user}
+										title="Profile Photo"
+									/>
+								)}
+							</List>
+						</div>
+					</Paper>
+				</div>
+			)}
 		</>
 	);
 };
