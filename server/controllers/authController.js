@@ -63,11 +63,10 @@ const login = catchAsync(async (req, res) => {
 	// Or, the user already has a 'role' key so the client will know whether or not the user is 'hr' or 'employee'
 	// user has role: hr | employee
 
-	const freshUser = await userService.getUserByIdAndPopulate(user._id);
-	console.log('login:', { user: freshUser });
+	console.log('login:', { user });
 
 	res.set('Set-Cookie', `jwt=${jwt}; Path=/;`);
-	return res.status(200).send({ user: freshUser, jwt });
+	return res.status(200).send({ user, jwt });
 });
 
 const logout = catchAsync(async (req, res) => {
