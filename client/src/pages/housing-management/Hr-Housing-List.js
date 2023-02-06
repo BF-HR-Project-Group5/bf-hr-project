@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import '../../layout/House.css';
 import { connect } from 'react-redux';
 import MaterialTable from "material-table";
@@ -28,6 +28,9 @@ const HrHousingList = (props) => {
     const {fecthAllHouses,createHouse,deleteHouse} = props
     const [data,setData] = useState()
     const reqBody = {address: {}, landlord: {}, numResidents: '', houseInfo: {}}
+		const [searchTerm, setSearchTerm] = useState('');
+		const [resultCount, setResultCount] = useState(0);
+		const tableRef = useRef(null);
 
     useEffect(()=>{
         (async function () {
@@ -35,6 +38,7 @@ const HrHousingList = (props) => {
                 const res = await fecthAllHouses();
                 console.log('res',res)
                 setData(res.allHouses)
+								setResultCount(res.allHouses.length);
             } catch (err) {
                 console.log(err);
             }
@@ -57,11 +61,23 @@ const HrHousingList = (props) => {
             {
                 data ? (
                 <>
+							<p className="mb-3" style={{textAlign: 'center'}}>
+								{
+									`${searchTerm !== '' ? `Searching for "${searchTerm}": ` : ''}${
+										resultCount === 1 ? '1 result' : `${resultCount} results`
+									} found.`}
+							</p>
                 <MaterialTable
+										tableRef={tableRef}
                     title="House List"
                     columns={columns}
                     data={data}
                     actions={[showViewButton]}
+										onSearchChange={() => {
+											console.log("onSearchChange:", {state: tableRef.current});
+											setResultCount(tableRef.current?.dataManager?.searchedData?.length ?? 0);
+											setSearchTerm(tableRef.current?.dataManager?.searchText ?? '');
+										}}
                     editable={{
                         onRowDelete: oldData =>
                         new Promise((resolve, reject) => {
