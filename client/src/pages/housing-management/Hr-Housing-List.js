@@ -7,6 +7,22 @@ import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {useNavigate} from 'react-router-dom';
 
+    const columns =[
+        { title: "Address's line2",field: 'address.line2'},
+        { title: "Address's line1",field: 'address.line1'},
+        { title: "Address's city",field: 'address.city',},
+        { title: "Address's state",field: 'address.state',},
+        { title: "Address's zipcode",field: 'address.zipcode',},
+        { title: "Landlord's full name", field: 'landlord.legalFullName'},
+        { title: "Landlord's email", field: 'landlord.email'},
+        { title: "Landlord's phone", field: 'landlord.phone'},
+        { title: 'Number of employee residents', field: 'numResidents'},
+        { title: "Bed's count", field: 'houseInfo.bedCount'},
+        { title: "Mattress's count", field: 'houseInfo.mattressCount'},
+        { title: "Table's count", field: 'houseInfo.tableCount'},
+        { title: "Chair's count", field: 'houseInfo.chairCount'},
+    ];
+
 const HrHousingList = (props) => {
 	const navigate = useNavigate();
     const {fecthAllHouses,createHouse,deleteHouse} = props
@@ -25,21 +41,6 @@ const HrHousingList = (props) => {
         })()
     },[])
 
-    const [columns, setColumns] = useState([
-        { title: "Address's line2",field: 'address.line2'},
-        { title: "Address's line1",field: 'address.line1'},
-        { title: "Address's city",field: 'address.city',},
-        { title: "Address's state",field: 'address.state',},
-        { title: "Address's zipcode",field: 'address.zipcode',},
-        { title: "Landlord's full name", field: 'landlord.legalFullName'},
-        { title: "Landlord's email", field: 'landlord.email'},
-        { title: "Landlord's phone", field: 'landlord.phone'},
-        { title: 'Number of employee residents', field: 'numResidents'},
-        { title: "Bed's count", field: 'houseInfo.bedCount'},
-        { title: "Mattress's count", field: 'houseInfo.mattressCount'},
-        { title: "Table's count", field: 'houseInfo.tableCount'},
-        { title: "Chair's count", field: 'houseInfo.chairCount'},
-    ]);
 
     const showViewButton = ()=> {
         return {
