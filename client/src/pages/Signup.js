@@ -79,9 +79,9 @@ const SignUpForm = (props) => {
 					<TextField
 						label="User Name"
 						variant="outlined"
-						error={!!errors.userName}
-						helperText={errors.userName && errors.userName.message}
-						{...register('userName')}
+						error={!!errors.username}
+						helperText={errors.username && errors.username.message}
+						{...register('username')}
 					/>
 					<TextField
 						error={!!errors.email}

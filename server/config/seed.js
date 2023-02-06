@@ -183,7 +183,7 @@ const seedDocuments = async (count) => {
 		// const isLicense = i >= (count / 2);
 		const data = {
 			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
-			feedback: 'feedback on document',
+			feedback: '',
 			status: `PENDING`,
 			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
 			type: `F1(CPT/OPT)`,
