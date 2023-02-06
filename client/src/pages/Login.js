@@ -35,7 +35,7 @@ const schema = yup.object({
 		.required('Password is Required')
 		// .matches(
 		// 	/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
-		// 	'Min 6 and Max 12 characters atleast one letter,one number and no special character'
+		// 	'Min 6 and Max 12 characters at least one letter,one number and no special character'
 		// ),
 });
 
