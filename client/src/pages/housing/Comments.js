@@ -10,6 +10,12 @@ import { createComment } from '../../redux/actions/index';
 import { updateComment } from '../../redux/actions/index';
 import {useLocation} from 'react-router-dom';
 
+    const columns = [
+        { title: 'Description', field: 'description' },
+        { title: 'Created By', field: 'createdBy', initialEditValue: 'initial edit value', editable: 'never' },
+        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
+    ];
+    
 const Comments = (props) => {
     console.log('props',props)
     const location = useLocation();
@@ -17,11 +23,7 @@ const Comments = (props) => {
     const { createComment, updateComment } = props
     const reportId = location.state
 
-    const [columns, setColumns] = useState([
-        { title: 'Description', field: 'description' },
-        { title: 'Created By', field: 'createdBy', initialEditValue: 'initial edit value', editable: 'never' },
-        { title: 'Timestamp', field: 'updatedAt', editable: 'never' },
-    ]);
+
     
     const [data, setData] = useState([]);
 
