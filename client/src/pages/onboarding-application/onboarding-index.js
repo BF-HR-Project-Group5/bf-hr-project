@@ -164,7 +164,7 @@ const OnboardingApplication = (props) => {
 							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
 						/>
 					</h5>
-					<p>
+					<p style={message ? {padding: '0.5rem', border: '1px solid #ffaaaa', background: '#ffeeee', borderRadius: '4px', margin: '0.5rem auto'} : {padding: '0.5rem',  borderRadius: '4px', margin: '0.5rem auto'}}>
 						{message && (
 							<>
 								{message}
@@ -175,19 +175,6 @@ const OnboardingApplication = (props) => {
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
-			{/* {props.auth?.user?.profile?.status === 'REJECTED' ? (
-				// should be filled and editable
-				<Survey model={survey} />
-				// <>TODO</>
-			) : props.auth?.user?.profile?.status === 'APPROVED' ||
-			  props.auth?.user?.profile?.status === 'PENDING' ? (
-				// should be uneditable and viewable: NOT the survey? Or filled in and editableIf
-				<Survey model={survey} />
-				// <>TODO</>
-			) : (
-				// Not yet submitted, should be empty and editable
-				<Survey model={survey} />
-			)} */}
 			<Survey model={surveyDynamic} />
 		</>
 	);
