@@ -38,6 +38,8 @@ const createProfile = catchAsync(async (req, res) => {
 		} else {
 			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth, userId));
 		}
+	} else {
+		delete(req.body.workAuth);
 	}
 
 	// check for and upload license

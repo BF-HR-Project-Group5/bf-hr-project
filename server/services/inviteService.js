@@ -55,10 +55,9 @@ const createInvite = async (
 	}
 ) => {
 	// check for email taken
-	// DISABLED FOR TESTING ONLY
-	// if (await Invite.isEmailTaken(data.email)) {
-	// 	throw { statusCode: 409, message: 'Email is already taken' };
-	// }
+	if (await Invite.isEmailTaken(data.email)) {
+		throw { statusCode: 409, message: 'Email is already taken' };
+	}
 
 	// create it?
 	return Invite.create(data);
