@@ -101,6 +101,9 @@ const CITIZEN_TYPE = ['CITIZEN', 'GREEN_CARD', 'VISA'];
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
 	for (let i = 0; i < count; i++) {
+		const currentStepInt = documents[i].type === config.document.types[0] ? 0 : 7;
+		const currentStepCode = config.document.types[currentStepInt];
+		const nextStep = config.application.nextStepCode[currentStepCode];
 		const data = {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
@@ -146,8 +149,8 @@ const seedProfiles = async (count, documents) => {
 				email: `email${i}@email.com`,
 				relationship: `BFF`,
 			},
-			currentStepInt: 0,
-			nextStep: config.application.nextStepCode[0],
+			currentStepInt,
+			nextStep,
 			emergencyContact: [
 				{
 					name: {
@@ -192,26 +195,25 @@ const seedReports = async (count, users) => {
 	for (let i = 0; i < count; i++) {
 		const data = {
 			title: `reportTitle${i}`,
-			description:`reportDescription${i}`,
+			description: `reportDescription${i}`,
 			createdBy: users[i]._id,
 		};
 		reports.push(reportService.createReport(data));
-
 	}
 	return Promise.all(reports);
-}
+};
 
 const seedComments = async (count, users, reports) => {
 	const comments = [];
 	for (let i = 0; i < count; i++) {
 		const data = {
-			description:`reportDescription${i}`,
-			createdBy: users[(count - 1) - i]._id,
+			description: `reportDescription${i}`,
+			createdBy: users[count - 1 - i]._id,
 		};
 		comments.push(reportService.addCommentToReportId(reports[i]._id, data));
 	}
 	return Promise.all(comments);
-}
+};
 
 const updateHouseRoommatesAndReports = async (count, users, houses, reports) => {
 	const houseUpdates = [];

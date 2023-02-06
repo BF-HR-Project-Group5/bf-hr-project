@@ -8,7 +8,7 @@ const statusEnum = Object.keys(allStatuses);
 // exports.statusEnum = statusEnum;
 
 exports.config = {
-	tokenExpirationMinutes: 10, // login token
+	tokenExpirationMinutes: 15, // login token
 	invite: {
 		expiresAfterMinutes: 180,
 	},
