@@ -168,7 +168,7 @@ const OnboardingApplication = (props) => {
 						{message && (
 							<>
 								{message}
-								<button onClick={() => setMessage('')}>X</button>
+								<button style={{border: 'none', background: '#00000000'}} onClick={() => setMessage('')}>X</button>
 							</>
 						)}
 					</p>
