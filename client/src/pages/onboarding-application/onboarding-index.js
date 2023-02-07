@@ -6,11 +6,6 @@ import { createProfile } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
-<<<<<<< HEAD
-import { getJsonFromStatus, json } from './onboarding-mock';
-import '../../layout/onboarding-app.css';
-import Chip from '@material-ui/core/Chip';
-=======
 import { getDynamicSurveyJson, surveyJson } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 import Chip from '@material-ui/core/Chip';
@@ -18,7 +13,6 @@ import List from '@material-ui/core/List';
 import { Paper } from '@material-ui/core';
 import DocumentRow from '../../components/DocumentRow';
 import '../../layout/Personal-Information.css';
->>>>>>> master
 
 const buildFormData = (formData, data, parentKey) => {
 	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -113,14 +107,6 @@ const formatData = (data) => {
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
-<<<<<<< HEAD
-
-	// const shouldBeFilled = !!props.auth.user?.profile; 
-	// const shouldBeEnabled = (!shouldBeFilled || props.auth.user?.profile.status === 'REJECTED'); 
-
-	const survey = new Model(json);
-	survey.onComplete.add(async (sender, options) => {
-=======
 	const [message, setMessage] = useState('');
 
 	let filled = false;
@@ -147,7 +133,6 @@ const OnboardingApplication = (props) => {
 	// surveyDynamic = new Model(surveyJson);
 
 	surveyDynamic.onComplete.add(async (sender, options) => {
->>>>>>> master
 		// console.log({data: sender.data});
 		try {
 			const formData = formatData(sender.data);
@@ -185,14 +170,10 @@ const OnboardingApplication = (props) => {
 					</h3>
 					<h5 className="sd-description">
 						<span className="sv-string-viewer">Current status: </span>
-<<<<<<< HEAD
-						<Chip size="small" label={props.auth.user.profile.status} />
-=======
 						<Chip
 							size="small"
 							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
 						/>
->>>>>>> master
 					</h5>
 					{(props?.auth?.user?.profile?.status === 'PENDING' ||
 						props?.auth?.user?.profile?.status === 'REJECTED') && (
@@ -242,10 +223,6 @@ const OnboardingApplication = (props) => {
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
-<<<<<<< HEAD
-			<Survey model={survey} />
-			<Survey model={otherSurvey} />
-=======
 			<Survey model={surveyDynamic} />
 			{filled && (
 				<div className="row my-5">
@@ -297,7 +274,6 @@ const OnboardingApplication = (props) => {
 					</Paper>
 				</div>
 			)}
->>>>>>> master
 		</>
 	);
 };
@@ -306,5 +282,5 @@ const OnboardingApplication = (props) => {
 const mapStateToProps = ({ auth }) => ({
 	auth,
 });
-
+// 
 export default connect(mapStateToProps, { createProfile })(OnboardingApplication);
