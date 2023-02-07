@@ -151,15 +151,15 @@ const seedProfiles = async (count, documents) => {
 			},
 			currentStepInt,
 			nextStep,
-			emergencyContact: [
+			emergencyContacts: [
 				{
 					name: {
-						first: `first${i}`,
-						last: `last${i}`,
-						middle: `middle${i}`,
+						first: `econtactFirst${i}`,
+						last: `econtactLast${i}`,
+						middle: `econtactMiddle${i}`,
 					},
 					phone: `999999999${i}`,
-					email: `email${i}@email.com`,
+					email: `econtact${i}@email.com`,
 					relationship: `BFF`,
 				},
 			],

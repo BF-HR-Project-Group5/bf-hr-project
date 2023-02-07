@@ -3,6 +3,7 @@ const profileService = require('../services/profileService');
 const documentService = require('../services/documentService');
 const s3Service = require('../services/s3Service');
 const catchAsync = require('../utils/catchAsync');
+const { config } = require( '../config/constants' );
 
 // already logged in
 // 1. get user from id, get profile from user
@@ -23,31 +24,36 @@ const createDocument = catchAsync(async (req, res) => {
 	if (!profile) throw { statusCode: 404, message: 'Profile not found' };
 
 	// upload the file, and get the response
-	console.log('make sure we have a file in here', { files: req.files, req });
+	console.log('make sure we have a file in here', { file: req.file  });
 	const file = req.file;
 	if (!file) throw { statusCode: 400, message: 'Please include a file' };
 	const response = await s3Service.uploadFile(file);
 
 	const link = response.Location;
 	if (!link) throw { statusCode: 500, message: 'Error uploading document to S3' };
+	const thisDocType = config.document.types2[
+Math.floor(profile.currentStepInt/2)
+	] ;
 
 	// save document
 	const document = await documentService.createDocument({
 		link, // link to the s3 url for this document
 		feedback: '',
-		type: req.body.type,
+		// type: req.body.type,
+		type: thisDocType,
 	});
 
 	// add the document to the profile
-	profile.documents.push(document);
+	profile.documents.push(document._id);
 
 	// save the profile
 	await profile.save();
 
 	// increase the step???
 	const freshProfile = await profileService.putStepToNextForProfileId(profile._id);
+	const freshUser = await userService.getUserByIdAndPopulate(userId);
 
-	return res.status(202).send({ document, profile: freshProfile, user });
+	return res.status(202).send({ document, profile: freshProfile, user: freshUser });
 });
 
 // get all documents from logged-in user
