@@ -101,15 +101,14 @@ const CITIZEN_TYPE = ['CITIZEN', 'GREEN_CARD', 'VISA'];
 const seedProfiles = async (count, documents) => {
 	const profiles = [];
 	for (let i = 0; i < count; i++) {
-		const width = rng(300, 400);
-		const height = rng(300, 400);
-		const width1 = rng(300, 400);
-		const height1 = rng(300, 400);
+		const currentStepInt = documents[i].type === config.document.types[0] ? 0 : 7;
+		const currentStepCode = config.document.types[currentStepInt];
+		const nextStep = config.application.nextStepCode[currentStepCode];
 		const data = {
 			ssn: Number(`99999999${i}`),
 			dateOfBirth: new Date(),
 			gender: GENDERS[i % 3],
-			photo: `http://placekitten.com/${width}/${height}`,
+			photo: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			address: {
 				line1: `addressLine1_${i}`,
 				line2: `addressLine2_${i}`,
@@ -117,9 +116,9 @@ const seedProfiles = async (count, documents) => {
 				state: `state_${i}`,
 				zipcode: `55555(-5555)${i}`,
 			},
-			citizenType: CITIZEN_TYPE[i % 3],
+			citizenType: 'VISA',
 			workAuth: {
-				title: config.document.types[i % 5],
+				title: documents[i].title,
 				startDate: new Date(),
 				endDate: new Date(),
 				daysRemaining: 99,
@@ -132,14 +131,14 @@ const seedProfiles = async (count, documents) => {
 			license: {
 				number: `${i}abcde12345`,
 				expiration: new Date(),
-				link: `http://placeKitten.com/${width1}/${height1}`,
+				link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
 			},
 			phone: {
 				mobile: Number(`999999999${i}`),
 				// work
 			},
 			documents: [documents[i]],
-			feedback: 'overall feedback on profile',
+			feedback: '',
 			reference: {
 				name: {
 					first: `first${i}`,
@@ -150,17 +149,17 @@ const seedProfiles = async (count, documents) => {
 				email: `email${i}@email.com`,
 				relationship: `BFF`,
 			},
-			currentStepInt: i,
-			nextStep: config.application.nextStepCode[i],
-			emergencyContact: [
+			currentStepInt,
+			nextStep,
+			emergencyContacts: [
 				{
 					name: {
-						first: `first${i}`,
-						last: `last${i}`,
-						middle: `middle${i}`,
+						first: `econtactFirst${i}`,
+						last: `econtactLast${i}`,
+						middle: `econtactMiddle${i}`,
 					},
 					phone: `999999999${i}`,
-					email: `email${i}@email.com`,
+					email: `econtact${i}@email.com`,
 					relationship: `BFF`,
 				},
 			],
@@ -178,15 +177,13 @@ const seedDocuments = async (count) => {
 	const documents = [];
 
 	for (let i = 0; i < count; i++) {
-		const width = rng(400, 600);
-		const height = rng(400, 600);
-		// const isLicense = i >= (count / 2);
+		// const width = rng(400, 600);
+		const random = rng(0, 4);
 		const data = {
-			link: `http://placekitten.com/${width}/${height}`,
-			feedback: 'feedback on document',
+			link: `https://bf-hr-project.s3.us-west-2.amazonaws.com/ny-real-id.jpg`,
+			feedback: '',
 			status: `PENDING`,
-			// type: isLicense ? `OTHER` : `F1(CPT/OPT)`,
-			type: `F1(CPT/OPT)`,
+			type: i % 2 === 0 ? `F1(CPT/OPT)` : config.document.types[random],
 		};
 		documents.push(documentService.createDocument(data));
 	}
@@ -198,26 +195,25 @@ const seedReports = async (count, users) => {
 	for (let i = 0; i < count; i++) {
 		const data = {
 			title: `reportTitle${i}`,
-			description:`reportDescription${i}`,
+			description: `reportDescription${i}`,
 			createdBy: users[i]._id,
 		};
 		reports.push(reportService.createReport(data));
-
 	}
 	return Promise.all(reports);
-}
+};
 
 const seedComments = async (count, users, reports) => {
 	const comments = [];
 	for (let i = 0; i < count; i++) {
 		const data = {
-			description:`reportDescription${i}`,
-			createdBy: users[(count - 1) - i]._id,
+			description: `reportDescription${i}`,
+			createdBy: users[count - 1 - i]._id,
 		};
 		comments.push(reportService.addCommentToReportId(reports[i]._id, data));
 	}
 	return Promise.all(comments);
-}
+};
 
 const updateHouseRoommatesAndReports = async (count, users, houses, reports) => {
 	const houseUpdates = [];
@@ -229,7 +225,7 @@ const updateHouseRoommatesAndReports = async (count, users, houses, reports) => 
 };
 
 const clearInvites = () => Invite.deleteMany({});
-const clearUsers = () => User.deleteMany({ _id: { $ne: '63d6da694ba462d927745b7e' } });
+const clearUsers = () => User.deleteMany({});
 const clearHouses = () => House.deleteMany({});
 const clearProfiles = () => Profile.deleteMany({});
 const clearDocuments = () => Document.deleteMany({});

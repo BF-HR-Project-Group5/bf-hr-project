@@ -11,6 +11,15 @@
   color: #fff;
 }
 
+.dropMenu {
+  z-index: 999;
+}
+
+.dropMenu:hover {
+  background-color: #3E3E3E;
+  color: #fff;
+}
+
 .profileLink {
   top: 113px;
 }
@@ -19,6 +28,11 @@
   top: 72px;
 }
 
-.profileLink:hover {
-  background-color: #3E3E3E;
-} /*# sourceMappingURL=nav.css.map *//*# sourceMappingURL=nav.css.map */
+header nav a {
+  color: #007bff;
+  text-decoration: none;
+}
+header nav a:hover {
+  text-decoration: none;
+  color: #0056b3;
+}/*# sourceMappingURL=nav.css.map */

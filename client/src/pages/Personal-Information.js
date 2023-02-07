@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { updateProfile } from '../redux/actions/index';
 import Editable from 'react-bootstrap-editable';
 import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
 import '../layout/Personal-Information.css';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -84,7 +83,7 @@ const PersonalInformation = (props) => {
 			preferred: props.auth.user?.name?.preferred ?? '',
 		},
 		email: props.auth.user.email,
-		ssn: props.auth.user?.profile.ssn,
+		ssn: props.auth.user?.profile?.ssn,
 		dateOfBirth: props.auth.user?.profile.dateOfBirth,
 		gender: genderNiceString(props.auth.user?.profile.gender),
 	});
@@ -250,7 +249,6 @@ const PersonalInformation = (props) => {
 
 	return (
 		<>
-			<Navigation />
 			<div className="container">
 				<div className="row mt-3">
 					<div className="col-12 mx-auto text-center">
@@ -678,7 +676,7 @@ const PersonalInformation = (props) => {
 							</div>
 						</Paper>
 					</div>
-					<div className="row my-5">
+					{props.auth?.user?.profile?.citizenType === 'VISA' && <div className="row my-5">
 						<SectionTitle
 							title="Employment"
 							isEditing={isEditingEmployment}
@@ -772,7 +770,7 @@ const PersonalInformation = (props) => {
 								/>
 							</div>
 						</Paper>
-					</div>
+					</div>}
 					<div className="row my-5">
 						<SectionTitle
 							title="Emergency Contacts"
@@ -1014,12 +1012,12 @@ const PersonalInformation = (props) => {
 									)}
 									{/* Documents */}
 									{props.auth.user?.profile?.documents.length > 0 &&
-										props.auth.user.profile.documents.map((i, doc) => (
+										props.auth.user.profile.documents.map((doc, i) => (
 											<DocumentRow
-												key={doc}
-												link={props.auth.user.profile.documents[doc].link}
+												key={i}
+												link={doc.link}
 												user={props.auth.user}
-												title={props.auth.user.profile.documents[doc].type}
+												title={doc.type}
 											/>
 										))}
 									{/* Profile Photo */}

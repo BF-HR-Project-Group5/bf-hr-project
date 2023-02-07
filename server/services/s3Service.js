@@ -68,6 +68,6 @@ const uploadFileFromBuffer = async (file, userId) => {
 
 module.exports = {
 	uploadFile,
-	getFileStream,
+	// getFileStream,
 	uploadFileFromBuffer,
 };

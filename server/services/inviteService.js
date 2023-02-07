@@ -3,9 +3,7 @@ const { caseInsensitiveRegex } = require('../utils/regexHelpers');
 
 // get singular invites
 const getInviteById = (id) => Invite.findById(id);
-const getInviteByEmail = (email) => Invite.findOne({ email });
 const getInviteByToken = (token) => Invite.findOne({ token });
-const getInviteByLink = (link) => Invite.findOne({ link });
 
 // get multiple invites
 const getInvitesByFirstName = (firstName) =>
@@ -55,10 +53,9 @@ const createInvite = async (
 	}
 ) => {
 	// check for email taken
-	// DISABLED FOR TESTING ONLY
-	// if (await Invite.isEmailTaken(data.email)) {
-	// 	throw { statusCode: 409, message: 'Email is already taken' };
-	// }
+	if (await Invite.isEmailTaken(data.email)) {
+		throw { statusCode: 409, message: 'Email is already taken' };
+	}
 
 	// create it?
 	return Invite.create(data);
@@ -100,22 +97,16 @@ const getInviteFromParams = async (params) => {
 };
 
 module.exports = {
-	getInviteById,
-	getInviteByEmail,
-	getInviteByToken,
-	getInviteByLink,
-
-	getInvitesByFirstName,
-	getInvitesByLastName,
-	getInvitesByMiddleName,
-	getInvitesByPreferredName,
-	queryInvites,
-	getInvitesByIsRegistered,
-	getInvitesByFullName,
+	// getInvitesByFirstName,
+	// getInvitesByLastName,
+	// getInvitesByMiddleName,
+	// getInvitesByPreferredName,
+	// queryInvites,
+	// getInvitesByIsRegistered,
+	// getInvitesByFullName,
 	createInvite,
 	putIsRegisteredToInviteId,
-	isExpiredByToken,
-	getInviteFromHeaders,
+	// isExpiredByToken,
 	getInviteFromParams,
 	updateInviteById,
 	getAllInvites,

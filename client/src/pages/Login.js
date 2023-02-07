@@ -2,10 +2,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { submitLogin } from '../redux/actions/index';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import {
 	StyledSection,
 	StyledForm,
@@ -25,19 +28,40 @@ const schema = yup.object({
 		,
 	email: yup
 		.string()
-		// .matches(/^[\w-(.?)]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Enter valid email address')
+		.matches(/^[\w-(.?)]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Enter valid email address')
 		.required('Email is Required'),
 	password: yup
 		.string()
 		.required('Password is Required')
 		// .matches(
 		// 	/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
-		// 	'Min 6 and Max 12 characters atleast one letter,one number and no special character'
+		// 	'Min 6 and Max 12 characters at least one letter,one number and no special character'
 		// ),
 });
 
+const useStyles = makeStyles((theme) => ({
+	paper: {
+	  marginTop: theme.spacing(8),
+	  display: 'flex',
+	  flexDirection: 'column',
+	  alignItems: 'center',
+	},
+	avatar: {
+	  margin: theme.spacing(1),
+	  backgroundColor: theme.palette.secondary.main,
+	},
+	form: {
+	  width: '100%', // Fix IE 11 issue.
+	  marginTop: theme.spacing(1),
+	},
+	submit: {
+	  margin: theme.spacing(3, 0, 2),
+	},
+  }));
+
 const LoginForm = (props) => {
 	const navigate = useNavigate();
+	const classes = useStyles();
 	const { submitLogin } = props;
 
 	const {
@@ -59,25 +83,38 @@ const LoginForm = (props) => {
 			console.log('login form submit', {response});
 
 			// if HR, go to HR page,
-			// if (response?.user?.role === 'hr') {
-			// 	navigate('/home');
-			// } else {
-				// if (response.user.profile.status === 'APPROVED') {
-					// navigate('/hrVisaStatus');
-					// navigate('/housing');
-					navigate('/HiringManagement');
-				// } 
-			// 	else {
-					// navigate('/onboardingApp');
-			// 	}
-			// }
+			if (response?.user?.role === 'hr') {
+				navigate('/home');
+			} else {
+				if (response?.user?.profile?.status === 'APPROVED') {
+					navigate('/personalInfo');
+				} else {
+					navigate('/onboardingApp');
+				}
+			}
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
+	useEffect(() => {
+		if (!props?.auth?.user) return;
+		if (props?.auth?.user?.role === 'hr') {
+			navigate('/home');
+		} else {
+			if (props?.auth?.user?.profile?.status === 'APPROVED') {
+				navigate('/personalInfo');
+			} else {
+				navigate('/onboardingApp');
+			}
+		}
+	},[]);
+
 	return (
 		<StyledSection>
+			<Avatar className={classes.avatar}>
+          		<LockOutlinedIcon />
+        	</Avatar>
 			<h2>Login</h2>
 			<StyledForm
 				autoComplete="off"
@@ -108,8 +145,9 @@ const LoginForm = (props) => {
 					/>
 					{errors.checkbox && <p>{errors.checkbox.message}</p>}
 					<Button
+						variant="contained" 
+						color="primary"
 						type="submit"
-						variant="contained"
 						fullWidth
 					>
 						Submit
@@ -121,4 +159,10 @@ const LoginForm = (props) => {
 };
 
 // export default Login;
-export default connect(null, { submitLogin })(LoginForm);
+// export default connect(null, { submitLogin })(LoginForm);
+
+const mapStateToProps = ({ auth }) => ({
+	auth,
+});
+
+export default connect(mapStateToProps, { submitLogin })(LoginForm);

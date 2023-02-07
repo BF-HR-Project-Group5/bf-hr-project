@@ -1,14 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { submitLogin } from '../../redux/actions/index';
+import { createProfile } from '../../redux/actions/index';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import '../../layout/survey-core/defaultV2.min.css';
+<<<<<<< HEAD
 import { getJsonFromStatus, json } from './onboarding-mock';
 import '../../layout/onboarding-app.css';
 import Chip from '@material-ui/core/Chip';
+=======
+import { getDynamicSurveyJson, surveyJson } from './onboarding-mock';
+import '../../layout/onboarding-app.css';
+import Chip from '@material-ui/core/Chip';
+import List from '@material-ui/core/List';
+import { Paper } from '@material-ui/core';
+import DocumentRow from '../../components/DocumentRow';
+import '../../layout/Personal-Information.css';
+>>>>>>> master
 
 const buildFormData = (formData, data, parentKey) => {
 	if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -22,8 +32,8 @@ const buildFormData = (formData, data, parentKey) => {
 	}
 };
 
-const onSubmit = async (data) => {
-	console.log('onSubmit:', {data});
+const formatData = (data) => {
+	console.log('onSubmit:', { data });
 	const formattedData = {
 		ssn: data.ssn,
 		dateOfBirth: data.dateOfBirth,
@@ -79,11 +89,10 @@ const onSubmit = async (data) => {
 			phone: each.phone,
 			email: each.email,
 			relationship: each.relationship,
-
 		})),
-		licenseFile: data?.licenseFile[0],
-		workAuthFile: data?.workAuthFile[0],
-		photoFile: data?.profilePhotoFile[0],
+		licenseFile: data?.licenseFile?.[0] ?? undefined,
+		workAuthFile: data?.workAuthFile?.[0] ?? undefined,
+		photoFile: data?.profilePhotoFile?.[0] ?? undefined,
 	};
 	console.log({ formattedData });
 
@@ -98,24 +107,61 @@ const onSubmit = async (data) => {
 	});
 
 	// send the post request!
-	const result = await axios.post(`/profile/create`, formData, {
-		headers: { 'Content-Type': 'multipart/form-data' },
-	}).catch(err => console.error(err));
-	console.log('POST form data:', { result });
+	return formData;
 };
 
 const OnboardingApplication = (props) => {
 	console.log('props', props);
 	const navigate = useNavigate();
+<<<<<<< HEAD
 
 	// const shouldBeFilled = !!props.auth.user?.profile; 
 	// const shouldBeEnabled = (!shouldBeFilled || props.auth.user?.profile.status === 'REJECTED'); 
 
 	const survey = new Model(json);
 	survey.onComplete.add(async (sender, options) => {
+=======
+	const [message, setMessage] = useState('');
+
+	let filled = false;
+	let editable = true;
+	let surveyDynamic;
+	if (props.auth?.user?.profile?.status === 'REJECTED') {
+		// should be filled and editable
+		filled = true;
+	} else if (
+		props.auth?.user?.profile?.status === 'APPROVED' ||
+		props.auth?.user?.profile?.status === 'PENDING'
+	) {
+		// filled in and not editable
+		// TODO: make uneditable!
+		filled = true;
+		editable = false;
+	} else {
+		// Not yet submitted, should be empty and editable
+		filled = false;
+		editable = true;
+	}
+	const json = getDynamicSurveyJson(props.auth?.user, filled, editable);
+	surveyDynamic = new Model(json);
+	// surveyDynamic = new Model(surveyJson);
+
+	surveyDynamic.onComplete.add(async (sender, options) => {
+>>>>>>> master
 		// console.log({data: sender.data});
-		await onSubmit(sender.data);
-		navigate('/personalInfo');
+		try {
+			const formData = formatData(sender.data);
+			const user = await props.createProfile(formData);
+			console.log({ user });
+
+			if (!user) {
+				throw new Error(`Profile not created`);
+			}
+			navigate('/personalInfo');
+		} catch (e) {
+			console.log(e);
+			setMessage(`Error submitting form: ${e.message}`);
+		}
 	});
 
 	const otherSurveyJson = getJsonFromStatus(props.auth.user);
@@ -139,13 +185,119 @@ const OnboardingApplication = (props) => {
 					</h3>
 					<h5 className="sd-description">
 						<span className="sv-string-viewer">Current status: </span>
+<<<<<<< HEAD
 						<Chip size="small" label={props.auth.user.profile.status} />
+=======
+						<Chip
+							size="small"
+							label={props?.auth?.user?.profile?.status ?? 'NOT YET SUBMITTED'}
+						/>
+>>>>>>> master
 					</h5>
+					{(props?.auth?.user?.profile?.status === 'PENDING' ||
+						props?.auth?.user?.profile?.status === 'REJECTED') && (
+						<h4
+							style={{
+								textAlign: 'center',
+							}}
+						>
+							{props?.auth?.user?.profile?.status === 'REJECTED' ? (
+								<>{props?.auth?.user?.profile?.feedback}</>
+							) : (
+								'Please wait for HR to approve your application.'
+							)}
+						</h4>
+					)}
+					<p
+						style={
+							message
+								? {
+										padding: '1rem 1.4rem',
+										border: '1px solid #ffaaaa',
+										background: '#ffeeee',
+										borderRadius: '4px',
+										margin: '0.5rem auto',
+								  }
+								: { padding: '0.5rem', borderRadius: '4px', margin: '0.5rem auto' }
+						}
+					>
+						{message && (
+							<>
+								{message}
+								<button
+									style={{
+										border: 'none',
+										background: '#00000000',
+										display: 'float-right',
+										marginLeft: '10px',
+										color: '#553333',
+									}}
+									onClick={() => setMessage('')}
+								>
+									X
+								</button>
+							</>
+						)}
+					</p>
 				</div>
 				<div className="sd-hidden"></div>
 			</div>
+<<<<<<< HEAD
 			<Survey model={survey} />
 			<Survey model={otherSurvey} />
+=======
+			<Survey model={surveyDynamic} />
+			{filled && (
+				<div className="row my-5">
+					<div className="title">
+						<h2>Documents</h2>
+					</div>
+					<Paper
+						variant="outlined"
+						className="document-container"
+					>
+						<div
+							style={{
+								width: '100%',
+								maxWidth: 360,
+							}}
+						>
+							<List
+								component="nav"
+								aria-label="secondary mailbox folders"
+							>
+								{/* Driver License */}
+								{props.auth.user?.profile?.license.link && (
+									<DocumentRow
+										link={props.auth.user.profile.license.link}
+										user={props.auth.user}
+										title="Driver's License"
+									/>
+								)}
+								{/* Documents */}
+								{props.auth.user?.profile?.documents.length > 0 &&
+									props.auth.user.profile.documents.map((doc, i) => (
+										<DocumentRow
+											key={i}
+											link={doc.link}
+											user={props.auth.user}
+											title={doc.type}
+										/>
+									))}
+								{/* Profile Photo */}
+								{props.auth.user?.profile?.photo && (
+									<DocumentRow
+										link={props.auth.user.profile.photo}
+										user={props.auth.user}
+										title="Profile Photo"
+									/>
+								)}
+							</List>
+						</div>
+					</Paper>
+				</div>
+			)}
+>>>>>>> master
 		</>
 	);
 };
@@ -155,4 +307,4 @@ const mapStateToProps = ({ auth }) => ({
 	auth,
 });
 
-export default connect(mapStateToProps, { submitLogin })(OnboardingApplication);
+export default connect(mapStateToProps, { createProfile })(OnboardingApplication);

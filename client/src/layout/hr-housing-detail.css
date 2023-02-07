@@ -1,0 +1,14 @@
+.MuiPaper-root {
+  padding: 20px;
+}
+.MuiPaper-root .col-3 {
+  margin-bottom: 0;
+}
+.MuiPaper-root .col-3 span {
+  margin-left: 5px;
+}
+
+.nameBtn {
+  cursor: pointer;
+  color: #333;
+}/*# sourceMappingURL=hr-housing-detail.css.map */

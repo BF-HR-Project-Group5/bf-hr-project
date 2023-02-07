@@ -8,7 +8,7 @@ const statusEnum = Object.keys(allStatuses);
 // exports.statusEnum = statusEnum;
 
 exports.config = {
-	tokenExpirationMinutes: 10, // login token
+	tokenExpirationMinutes: 15, // login token
 	invite: {
 		expiresAfterMinutes: 180,
 	},
@@ -17,7 +17,9 @@ exports.config = {
 	// document model: status, doctype
 	document: {
 		statuses: statusEnum,
+		allTypes:[ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER', 'OPT_EAD', 'I-983', 'I-20',],
 		types: [ 'F1(CPT/OPT)', 'H1-B', 'L2', 'H4', 'OTHER'],
+		types2: [ 'F1(CPT/OPT)', 'OPT_EAD', 'I-983', 'I-20',],
 	},
 
 	// profile or application: status, steps
@@ -69,7 +71,7 @@ exports.config = {
 				user: 'Please wait for HR to approve your I-20.',
 				hr: 'I-20 needs approval.'
 			},
-			'COMPLETE': {
+			'COMPLETED': {
 				user: 'You are all done!',
 				hr: 'Document upload complete.'
 			},

@@ -10,6 +10,15 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(26, 26, 29, 0.08);
     color: #fff;
   }
+
+  .dropMenu{
+    z-index: 999;
+  }
+
+  .dropMenu:hover{
+    background-color: #3E3E3E;
+    color: #fff;
+  }
   
   .profileLink {
     top: 113px;
@@ -19,7 +28,15 @@
     top: 72px;
   }
   
-  
-  .profileLink:hover {
-    background-color: #3E3E3E;
-  }/*# sourceMappingURL=nav.css.map */
+  header{
+    nav{
+      a{
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover{
+        text-decoration: none;
+        color: #0056b3;
+      }
+    }
+  }

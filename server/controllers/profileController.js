@@ -9,7 +9,6 @@ const inviteService = require('../services/inviteService');
 const emailService = require('../services/emailService');
 const s3Service = require('../services/s3Service');
 const documentService = require('../services/documentService');
-// const tokenService = require('../services/tokenService');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
 const { objectValuesToRegex } = require('../utils/regexHelpers');
@@ -39,6 +38,8 @@ const createProfile = catchAsync(async (req, res) => {
 		} else {
 			uploadPromises.push(s3Service.uploadFileFromBuffer(workAuth, userId));
 		}
+	} else {
+		delete(req.body.workAuth);
 	}
 
 	// check for and upload license
@@ -120,9 +121,10 @@ const createProfile = catchAsync(async (req, res) => {
 		name,
 	};
 	const invite = await inviteService.updateInviteById(user.invite, inviteUpdate);
+	const freshUser = await userService.getUserByIdAndPopulate(user._id);
 
 	// done!!!
-	res.status(200).json({ user, profile, invite });
+	res.status(200).send({ user: freshUser, profile, invite });
 });
 
 // take the req.user and look up the profile
@@ -212,7 +214,7 @@ const getProfileById = catchAsync(async (req, res) => {
 const getAllVisaProfiles = catchAsync(async (req, res) => {
 	console.log('get all Visa profiles');
 
-	const foundUsers = await userService.getAllVisaUsers();
+	const foundUsers = await userService.getAllVisaUsersAndPopulate();
 	return res.status(200).json({ users: foundUsers, totalResults: foundUsers.length });
 });
 

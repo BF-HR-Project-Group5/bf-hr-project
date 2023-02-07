@@ -11,14 +11,14 @@ import {
 	StyledStack,
 	StyledA,
 } from '../components/styled-components/login-register/login-register';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const schema = yup.object({
-	userName: yup
+	username: yup
 		.string()
 		.required('user name is Required')
 		.test(
-			'userName',
+			'username',
 			'Min 6 and Max 18 characters required',
 			(val) => val.length >= 6 && val.length <= 18
 		),
@@ -31,7 +31,7 @@ const schema = yup.object({
 		.required('Password is Required')
 		.matches(
 			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/g,
-			'Min 6 and Max 12 characters atleast one letter,one number and no special character'
+			'Min 6 and Max 12 characters at least one letter,one number and no special character'
 		),
 	confirmPassword: yup
 		.string()
@@ -41,6 +41,7 @@ const schema = yup.object({
 
 const SignUpForm = (props) => {
 	const navigate = useNavigate();
+	const params = useParams();
 	console.log('signup', {props});
 	// const { name, email, password } = props.data;
 	const { submitSignup } = props;
@@ -58,7 +59,7 @@ const SignUpForm = (props) => {
 		console.log('data', data);
 		reset();
 		try {
-			const response = await submitSignup(data);
+			const response = await submitSignup(data, params);
 			console.log('signup onsubmit', { response });
 			navigate('/login');
 		} catch (err) {
@@ -78,9 +79,9 @@ const SignUpForm = (props) => {
 					<TextField
 						label="User Name"
 						variant="outlined"
-						error={!!errors.userName}
-						helperText={errors.userName && errors.userName.message}
-						{...register('userName')}
+						error={!!errors.username}
+						helperText={errors.username && errors.username.message}
+						{...register('username')}
 					/>
 					<TextField
 						error={!!errors.email}
