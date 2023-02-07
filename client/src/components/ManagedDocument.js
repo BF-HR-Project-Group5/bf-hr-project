@@ -71,7 +71,40 @@ const ManagedDocument = (props) => {
                         {/* go to next case */}
                         {/* (cond1) ? "something" : (cond2) ? "something2" : "something3" */}
                         {document.status == "PENDING" ? "Waiting for HR to approve" :
-                            document.status == "APPROVED" ?
+
+                                document.status == "APPROVED" && props.activeStep == 2 ?      
+                                    <>
+                                        <ListItem button>
+                                            <ListItemText primary={document.type} />
+                                            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                                <Button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        document.map((doc,i) => {
+                                                            let splitLink = doc.link.split(".")
+                                                            const endTag = splitLink[splitLink.length - 1]
+                                                            fileDownload(doc.link, `${props.user.name.last}${props.user.name.first}${props.user.profile.workAuth.title}.${endTag}`)
+                                                        })
+                                                    }}
+                                                >
+                                                    Download
+                                                </Button>
+                                                <Button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        document.map((doc,i) => {
+                                                            filePreview(doc.link)
+                                                        })
+                                                    }}
+                                                >
+                                                    Preview
+                                                </Button>
+                                            </ButtonGroup>
+                                        </ListItem>
+                                    </>
+                                :
+
+                                document.status == "APPROVED" ?
                                 <>
                                     <ListItem button>
                                         <ListItemText primary={document.type} />
@@ -106,37 +139,6 @@ const ManagedDocument = (props) => {
                                         ></iframe>}
 
                                 </>
-                                : 
-                                document.status == "APPROVED" && props.activeStep == 2 ?      
-                                    <>
-                                        <ListItem button>
-                                            <ListItemText primary={document.type} />
-                                            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                                <Button
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        document.map((doc,i) => {
-                                                            let splitLink = doc.link.split(".")
-                                                            const endTag = splitLink[splitLink.length - 1]
-                                                            fileDownload(doc.link, `${props.user.name.last}${props.user.name.first}${props.user.profile.workAuth.title}.${endTag}`)
-                                                        })
-                                                    }}
-                                                >
-                                                    Download
-                                                </Button>
-                                                <Button
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        document.map((doc,i) => {
-                                                            filePreview(doc.link)
-                                                        })
-                                                    }}
-                                                >
-                                                    Preview
-                                                </Button>
-                                            </ButtonGroup>
-                                        </ListItem>
-                                    </>
                                 :
 
                                 document.status == "REJECTED" ?
