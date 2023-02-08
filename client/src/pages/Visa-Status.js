@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Navigation from '../components/navigation/navigation';
 import ManagedDocument from '../components/ManagedDocument';
 import  {refreshUser} from '../redux/actions/index';
+import DocumentRow from '../components/DocumentRow';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -138,15 +139,18 @@ const VisaStatus = (props) => {
 					<div>
 						{/* {getStepContent(activeStep, props)} */}
 						<Typography className={classes.instructions}></Typography>
-						{ activeStep == 2 &&
-						<div>
-							<DocumentRow title='Empty Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
-							<DocumentRow title='Sample Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
-						</div>}
+						
 						<ManagedDocument
 							user={props.auth.user}
 							document={props.auth.user?.profile?.documents[activeStep]}
 						/>
+						{ activeStep == 2 &&
+						(<div>
+							<DocumentRow title='Empty Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+							<DocumentRow title='Sample Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+						</div>)
+						}
+						<br />
 						<div>
 							<Button
 								variant="contained"
