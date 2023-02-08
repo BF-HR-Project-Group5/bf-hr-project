@@ -24,100 +24,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-<<<<<<< HEAD
-const VisaStatus = (props) => {
-    console.log('props',props)
-    const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
-
-    const [disabled, setDisabled] = React.useState(true);
-
-    const steps = getSteps();
-  
-    // const isStepOptional = (step) => {
-    //   return step === 1;
-    // };
-  
-    const handleNext = () => {
-      let newSkipped = skipped;
-      console.log({newSkipped})
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
-    };
-  
-    // const handleBack = () => {
-    //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    // };
-  
-    // const handleSkip = () => {
-    //   if (!isStepOptional(activeStep)) {
-    //     // You probably want to guard against something like this,
-    //     // it should never occur unless someone's actively trying to break something.
-    //     throw new Error("You can't skip a step that isn't optional.");
-    //   }
-  
-    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //   setSkipped((prevSkipped) => {
-    //     const newSkipped = new Set(prevSkipped.values());
-    //     newSkipped.add(activeStep);
-    //     return newSkipped;
-    //   });
-    // };
-  
-    // const handleReset = () => {
-    //   setActiveStep(0);
-    // };
-
-    // const stepToNext = () => {
-    //   setActiveStep(activeStep+1);
-    // }
-  
-    return (
-      <div className={classes.root}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div className="container">
-          {activeStep === steps.length || props.auth.user?.profile?.nextStep === 'COMPLETED' ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&apos;re finished
-              </Typography>
-            </div>
-          ) : (
-            <div>
-              {/* {getStepContent(activeStep, props)} */}
-              <Typography className={classes.instructions}></Typography>
-              <ManagedDocument user={props.auth.user} document={props.auth.user?.profile?.documents[activeStep]} activeStep={activeStep}  />
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  className={classes.button} 
-                  disabled= {props.auth.user?.profile?.documents[activeStep]?.status !== "APPROVED"}
-                >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-=======
 function getSteps() {
 	return ['OPT Receipt', 'OPT EAD', 'I-983', 'I-20'];
->>>>>>> master
 }
 
 function getStepContent(step, props) {
@@ -230,6 +138,11 @@ const VisaStatus = (props) => {
 					<div>
 						{/* {getStepContent(activeStep, props)} */}
 						<Typography className={classes.instructions}></Typography>
+						{ activeStep == 2 &&
+						<div>
+							<DocumentRow title='Empty Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+							<DocumentRow title='Sample Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+						</div>}
 						<ManagedDocument
 							user={props.auth.user}
 							document={props.auth.user?.profile?.documents[activeStep]}
