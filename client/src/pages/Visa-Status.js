@@ -138,6 +138,11 @@ const VisaStatus = (props) => {
 					<div>
 						{/* {getStepContent(activeStep, props)} */}
 						<Typography className={classes.instructions}></Typography>
+						{ activeStep == 2 &&
+						<div>
+							<DocumentRow title='Empty Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+							<DocumentRow title='Sample Template' link="https://bf-hr-project.s3.us-west-2.amazonaws.com/Spotify-Specs.pdf" user={props.auth.user}/>
+						</div>}
 						<ManagedDocument
 							user={props.auth.user}
 							document={props.auth.user?.profile?.documents[activeStep]}
